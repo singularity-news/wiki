@@ -1,1 +1,101 @@
+name: MediaWiki → GitHub Pages Root Mirror
 
+on:
+  schedule:
+    - cron: "0 0,12 * * *"
+  workflow_dispatch:
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Repository auschecken
+        uses: actions/checkout@v4
+
+      - name: Abhängigkeiten installieren
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jq curl
+
+      - name: Änderungen im Wiki prüfen
+        id: changes
+        run: |
+          API="https://wiki.free.nf/api.php"
+          SINCE_FILE=".last_sync"
+
+          if [ -f "$SINCE_FILE" ]; then
+            SINCE=$(cat "$SINCE_FILE")
+          else
+            SINCE="1970-01-01T00:00:00Z"
+          fi
+
+          RESPONSE=$(curl -s "$API?action=query&list=recentchanges&rcprop=title|timestamp&rclimit=50&format=json")
+          echo "$RESPONSE" > recent.json
+
+          COUNT=$(jq "[.query.recentchanges[] | select(.timestamp > \"$SINCE\")] | length" recent.json)
+          echo "count=$COUNT" >> $GITHUB_OUTPUT
+
+          if [ "$COUNT" -eq 0 ]; then
+            echo "Keine Änderungen erkannt."
+            exit 0
+          fi
+
+          jq -r ".query.recentchanges[] | select(.timestamp > \"$SINCE\") | .title" recent.json | sort -u > pages.txt
+
+      - name: Geänderte Seiten rendern
+        if: steps.changes.outputs.count != '0'
+        run: |
+          API="https://wiki.free.nf/api.php"
+
+          while read TITLE; do
+            SAFE=$(echo "$TITLE" | tr ' ' '_' | tr -cd '[:alnum:]_')
+            FILE="$SAFE.html"
+            ESCAPED_TITLE=$(printf '%s\n' "$TITLE" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g')
+
+            HTML=$(curl -s "$API?action=parse&page=$(printf "%s" "$TITLE" | jq -sRr @uri)&prop=text&format=json" \
+              | jq -r '.parse.text["*"]')
+
+            cat > "$FILE" <<EOF
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>$ESCAPED_TITLE</title>
+<link rel="canonical" href="https://singularity-news.github.io/$SAFE.html">
+</head>
+<body>
+$HTML
+</body>
+</html>
+EOF
+          done < pages.txt
+
+      - name: Sitemap aktualisieren
+        if: steps.changes.outputs.count != '0'
+        run: |
+          echo '<?xml version="1.0" encoding="UTF-8"?>' > sitemap.xml
+          echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' >> sitemap.xml
+
+          find . -maxdepth 1 -name "*.html" ! -name "index.html" | sort | while read f; do
+            FILE=$(basename "$f")
+            echo "<url><loc>https://singularity-news.github.io/$FILE</loc></url>" >> sitemap.xml
+          done
+
+          echo '</urlset>' >> sitemap.xml
+
+      - name: Sync‑Zeitpunkt speichern
+        if: steps.changes.outputs.count != '0'
+        run: |
+          date -u +"%Y-%m-%dT%H:%M:%SZ" > .last_sync
+
+      - name: Änderungen committen und pushen
+        if: steps.changes.outputs.count != '0'
+        run: |
+          git diff --quiet && exit 0
+          git config user.name "wiki-mirror-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add .
+          git commit -m "Automatischer MediaWiki‑Root‑Sync"
+          git push
