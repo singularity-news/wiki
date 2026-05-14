@@ -1,12 +1,7 @@
-name: MediaWiki → GitHub Pages Root Mirror
+name: MediaWiki → GitHub Pages Root Mirror (DIAGNOSE)
 
 on:
-  schedule:
-    - cron: "0 0,12 * * *"
   workflow_dispatch:
-
-env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   mirror:
@@ -17,95 +12,52 @@ jobs:
     steps:
       - name: Repository auschecken
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Abhängigkeiten installieren
         run: |
           sudo apt-get update -q
           sudo apt-get install -y jq curl python3
 
-      - name: Änderungen im Wiki prüfen
-        id: changes
+      - name: Diagnose – Seitenliste erzwingen
         run: |
           API="https://wiki.free.nf/api.php"
 
-          if [ ! -f .initial_render_done ]; then
-            echo "Initialer Lauf – alle Seiten rendern"
-            curl -s -H "User-Agent: Mozilla/5.0" \
-              "$API?action=query&list=allpages&aplimit=max&format=json" \
-              | jq -r '.query.allpages[].title' > pages.txt
-            echo "count=$(wc -l < pages.txt)" >> $GITHUB_OUTPUT
-            exit 0
-          fi
+          curl -s -H "User-Agent: Mozilla/5.0" \
+            "$API?action=query&list=allpages&aplimit=10&format=json" \
+            | jq -r '.query.allpages[].title' > pages.txt
 
-          RESPONSE=$(curl -s -H "User-Agent: Mozilla/5.0" \
-            "$API?action=query&list=recentchanges&rcprop=title&rclimit=100&format=json")
+          echo "pages.txt:"
+          wc -l pages.txt
+          cat pages.txt
 
-          if [ -z "$RESPONSE" ]; then
-            echo "count=0" >> $GITHUB_OUTPUT
-            exit 0
-          fi
-
-          echo "$RESPONSE" \
-            | jq -r '.query.recentchanges[].title' \
-            | grep -v -E '^(Special:|MediaWiki:|File:|Template:|Category:|User:|Talk:)' \
-            | sort -u > pages.txt
-
-          echo "count=$(wc -l < pages.txt)" >> $GITHUB_OUTPUT
-
-      - name: Seiten rendern
-        if: steps.changes.outputs.count != '0'
+      - name: Diagnose – Eine Seite rendern
         run: |
           API="https://wiki.free.nf/api.php"
 
-          while IFS= read -r TITLE || [[ -n "$TITLE" ]]; do
-            [ -z "$TITLE" ] && continue
+          while read -r TITLE; do
+            echo "Rendere: $TITLE"
 
-            SAFE=$(echo "$TITLE" | tr ' ' '_' | sed 's/[^a-zA-Z0-9_aeoeueAEOEUEss-]//g')
-            FILE="${SAFE}.html"
+            ENCODED=$(python3 - <<EOF
+import urllib.parse,sys
+print(urllib.parse.quote(sys.argv[1]))
+EOF
+"$TITLE")
 
-            ENCODED_TITLE=$(python3 - <<EOF
-            import urllib.parse,sys
-            print(urllib.parse.quote(sys.argv[1]))
-            EOF
-            "$TITLE")
+            URL="$API?action=parse&page=$ENCODED&prop=text&format=json"
 
-            ENCODED_TITLE=$(python3 -c "import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1]))" "$TITLE")
+            RAW=$(curl -s -H "User-Agent: Mozilla/5.0" "$URL")
+            HTML=$(echo "$RAW" | jq -r '.parse.text["*"] // empty')
 
-            URL="$API?action=parse&page=${ENCODED_TITLE}&prop=text&format=json"
+            echo "HTML-Länge: ${#HTML}"
 
-            RAW_JSON=$(curl -s \
-            -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64)" \
-            -H "Accept: application/json" \
-            "$URL" || echo "")
-
-            RAW_JSON=$(curl -s -H "User-Agent: Mozilla/5.0" "$URL" || echo "")
-            RAW_HTML=$(echo "$RAW_JSON" | jq -r '.parse.text["*"] // empty')
-
-            [ -z "$RAW_HTML" ] && continue
-
-            {
-              echo '<!DOCTYPE html><html lang="de"><head>'
-              echo "<title>$TITLE</title>"
-              echo '<meta charset="utf-8">'
-              echo '<link rel="stylesheet" href="assets/style.css">'
-              echo '</head><body>'
-              echo "<h1>$TITLE</h1>"
-              printf "%s\n" "$RAW_HTML"
-              echo '</body></html>'
-            } > "$FILE"
-
-            echo "✓ $FILE"
+            echo "<html><body><h1>$TITLE</h1>$HTML</body></html>" > test.html
+            break
           done < pages.txt
 
-          touch .initial_render_done
-
-      - name: Änderungen committen
-        if: steps.changes.outputs.count != '0'
+      - name: Commit Testdatei
         run: |
           git config user.name "wiki-mirror-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add .
-          git commit -m "Wiki mirror update" || exit 0
+          git add test.html pages.txt
+          git commit -m "Diagnose: render test page" || exit 0
           git push
