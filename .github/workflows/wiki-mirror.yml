@@ -27,111 +27,203 @@ jobs:
           sudo apt-get update -y
           sudo apt-get install -y pandoc python3
 
-      - name: Build encyclopedia
+      - name: Build encyclopedia from backup/wiki.xml
         run: |
           python3 <<'PY'
-          import os, re, json, html, unicodedata
+          import os, re, json, html, unicodedata, sys
           import xml.etree.ElementTree as ET
           from collections import Counter
 
           XML = "backup/wiki.xml"
-          TEMPLATE = open("template.html", encoding="utf-8").read()
+          TEMPLATE_PATH = "template.html"
           BASE = "https://singularity-news.github.io/wiki"
 
-          # Namespace-agnostic tag stripper
+          if not os.path.isfile(XML):
+              print("ERROR: backup/wiki.xml not found", file=sys.stderr)
+              sys.exit(2)
+          if not os.path.isfile(TEMPLATE_PATH):
+              print("ERROR: template.html not found", file=sys.stderr)
+              sys.exit(2)
+
+          template = open(TEMPLATE_PATH, encoding="utf-8").read()
+          if "{{CONTENT}}" not in template:
+              print("ERROR: template.html must contain {{CONTENT}}", file=sys.stderr)
+              sys.exit(2)
+
+          STOP = set("der die das und oder aber wenn dann weil wie was wer wo warum wieso ein eine einer eines einem einen im in ins am an auf aus bei mit nach von vom zum zur über unter für gegen ohne um als ist sind war waren nicht kein keine keinen keiner dieses diese dieser diesen the a an and or but if then because how what who where why in on at to from for with without of is are was were be been being not no yes".split())
+
           def strip_ns(tag):
               return tag.split("}", 1)[-1]
 
-          STOP = set("der die das und oder ein eine the and or for with from".split())
-
-          def safe(t):
+          def safe_filename(title: str) -> str:
+              t = (title or "").strip()
               t = unicodedata.normalize("NFKC", t)
               t = re.sub(r"[^\w\- ]+", "", t)
-              return (t.replace(" ", "_") or "Untitled") + ".html"
+              t = t.replace(" ", "_")
+              if not t:
+                  t = "Untitled"
+              return f"{t}.html"
 
-          def strip_tags(s):
-              s = re.sub(r"<[^>]+>", " ", s)
-              return re.sub(r"\s+", " ", html.unescape(s)).strip()
+          def strip_html_tags(s: str) -> str:
+              s = re.sub(r"(?is)<script.*?>.*?</script>", " ", s)
+              s = re.sub(r"(?is)<style.*?>.*?</style>", " ", s)
+              s = re.sub(r"(?is)<[^>]+>", " ", s)
+              s = html.unescape(s)
+              s = re.sub(r"\s+", " ", s).strip()
+              return s
 
-          def keywords(text):
-              words = re.findall(r"[A-Za-z0-9]{3,}", text.lower())
-              return [w for w,_ in Counter(w for w in words if w not in STOP).most_common(10)]
+          def top_keywords(text: str, n=10):
+              words = re.findall(r"[A-Za-zÀ-ÖØ-öø-ÿ0-9_'-]{3,}", text.lower())
+              words = [w for w in words if w not in STOP and not w.isdigit()]
+              c = Counter(words)
+              return [w for w,_ in c.most_common(n)]
 
           pages = []
-
-          # Parse ANY MediaWiki XML version
-          for event, elem in ET.iterparse(XML, events=("end",)):
-              if strip_ns(elem.tag) == "page":
-                  title_el = elem.find(".//{*}title")
-                  text_el = elem.find(".//{*}text")
-                  title = (title_el.text or "").strip() if title_el is not None else ""
-                  text = text_el.text or "" if text_el is not None else ""
-                  if title:
-                      pages.append((title, text))
-                  elem.clear()
+          try:
+              for event, elem in ET.iterparse(XML, events=("end",)):
+                  if strip_ns(elem.tag) == "page":
+                      title_el = elem.find(".//{*}title")
+                      text_el  = elem.find(".//{*}text")
+                      title = (title_el.text or "").strip() if title_el is not None else ""
+                      wikitext = text_el.text or "" if text_el is not None else ""
+                      if title:
+                          pages.append((title, wikitext))
+                      elem.clear()
+          except Exception as e:
+              print("XML parse error:", e, file=sys.stderr)
+              sys.exit(3)
 
           print("Parsed pages:", len(pages))
-
           if not pages:
-              raise SystemExit("ERROR: No pages parsed. Check XML namespace.")
+              print("ERROR: No pages parsed from wiki.xml", file=sys.stderr)
+              sys.exit(4)
 
-          # Build title → filename map
-          title_map = {}
-          for t,_ in pages:
-              fn = safe(t)
-              title_map[t] = fn
-              title_map[t.replace(" ", "_")] = fn
+          # title → filename map
+          title_to_file = {}
+          for title, _ in pages:
+              fn = safe_filename(title)
+              title_to_file[title] = fn
+              title_to_file[title.replace(" ", "_")] = fn
+              title_to_file[title.replace("_", " ")] = fn
 
-          search = []
-
-          for i,(title,wikitext) in enumerate(pages,1):
-              fn = safe(title)
-
-              tmp_in = f"/tmp/{i}.wiki"
-              tmp_out = f"/tmp/{i}.html"
-              open(tmp_in,"w",encoding="utf-8").write(wikitext)
-              os.system(f'pandoc "{tmp_in}" -f mediawiki -t html --wrap=none -o "{tmp_out}"')
-
-              body = open(tmp_out,encoding="utf-8").read()
-
-              # Rewrite internal links
+          def rewrite_internal_links(html_fragment: str) -> str:
               def repl(m):
                   href = m.group(1)
-                  key = href.split("#",1)[0].split("?",1)[0].replace(" ", "_")
-                  return f'href="{title_map.get(key, href)}"'
-              body = re.sub(r'href="([^"]+)"', repl, body)
+                  raw = href
+                  for p in ("/wiki/", "./", "../"):
+                      if href.startswith(p):
+                          href = href[len(p):]
+                  href = href.split("#", 1)[0]
+                  href = href.split("?", 1)[0]
+                  href = href.replace(" ", "_")
+                  if href in title_to_file:
+                      return f'href="{title_to_file[href]}"'
+                  return f'href="{raw}"'
+              return re.sub(r'href="([^"]+)"', repl, html_fragment)
 
-              plain = strip_tags(body)
-              desc = plain[:300]
-              keys = keywords(plain)
+          search_index = []
+          rendered = 0
+
+          for i, (title, wikitext) in enumerate(pages, 1):
+              fn = safe_filename(title)
+              tmp_wiki = f"/tmp/{i}.wiki"
+              tmp_html = f"/tmp/{i}.html"
+
+              with open(tmp_wiki, "w", encoding="utf-8") as f:
+                  f.write(wikitext)
+
+              rc = os.system(f'pandoc "{tmp_wiki}" -f mediawiki -t html --wrap=none -o "{tmp_html}"')
+              if rc != 0:
+                  print(f"pandoc failed for '{title}' (rc={rc})", file=sys.stderr)
+                  continue
+
+              fragment = open(tmp_html, "r", encoding="utf-8").read().strip()
+              fragment = rewrite_internal_links(fragment)
+
+              plain = strip_html_tags(fragment)
+              description = (plain[:300] + "…") if len(plain) > 300 else plain
+              keywords = top_keywords(plain, 10)
               canonical = f"{BASE}/{fn}"
 
-              page = TEMPLATE.replace("{{CONTENT}}", body)
-              page = page.replace("</head>", f"""
+              jsonld = json.dumps({
+                  "@context": "https://schema.org",
+                  "@type": "Article",
+                  "headline": title,
+                  "description": description,
+                  "mainEntityOfPage": {"@type": "WebPage", "@id": canonical}
+              }, ensure_ascii=False)
+
+              page_html = template.replace("{{CONTENT}}", fragment)
+              head_inject = f"""
               <title>{html.escape(title)}</title>
-              <meta name="description" content="{html.escape(desc)}">
-              <meta name="keywords" content="{', '.join(keys)}">
-              <link rel="canonical" href="{canonical}">
-              </head>""")
+              <meta name="description" content="{html.escape(description)}">
+              <meta name="keywords" content="{html.escape(', '.join(keywords))}">
+              <link rel="canonical" href="{html.escape(canonical)}">
+              <script type="application/ld+json">{jsonld}</script>
+              """.strip()
 
-              open(fn,"w",encoding="utf-8").write(page)
+              if "</head>" in page_html:
+                  page_html = page_html.replace("</head>", head_inject + "\n</head>")
+              else:
+                  page_html = "<head>" + head_inject + "</head>" + page_html
 
-              search.append({"title":title,"file":fn,"text":plain[:20000]})
+              with open(fn, "w", encoding="utf-8") as f:
+                  f.write(page_html)
 
-          json.dump(search, open("search-index.json","w",encoding="utf-8"), ensure_ascii=False, indent=2)
+              search_index.append({
+                  "title": title,
+                  "file": fn,
+                  "text": plain[:20000]
+              })
+              rendered += 1
 
-          # Sitemap
-          html_files = [f for f in os.listdir(".") if f.endswith(".html")]
-          sm = ['<?xml version="1.0" encoding="UTF-8"?>',
-                '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+          print("Rendered pages:", rendered)
+          if rendered == 0:
+              print("ERROR: No HTML files rendered", file=sys.stderr)
+              sys.exit(5)
+
+          with open("search-index.json", "w", encoding="utf-8") as f:
+              json.dump(search_index, f, ensure_ascii=False, indent=2)
+
+          html_files = sorted([
+              f for f in os.listdir(".")
+              if f.lower().endswith(".html") and f.lower() != "template.html"
+          ])
+
+          sitemap = ['<?xml version="1.0" encoding="UTF-8"?>',
+                     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
           for f in html_files:
-              sm.append(f"<url><loc>{BASE}/{f}</loc></url>")
-          sm.append("</urlset>")
-          open("sitemap.xml","w").write("\n".join(sm))
+              sitemap.append(f"  <url><loc>{html.escape(BASE + '/' + f)}</loc></url>")
+          sitemap.append("</urlset>")
 
+          with open("sitemap.xml", "w", encoding="utf-8") as f:
+              f.write("\n".join(sitemap))
+
+          if not os.path.isfile("index.html"):
+              if "encyclopedia.html" in html_files:
+                  import shutil
+                  shutil.copyfile("encyclopedia.html", "index.html")
+                  print("Created index.html from encyclopedia.html")
+              else:
+                  with open("index.html", "w", encoding="utf-8") as f:
+                      f.write("<!doctype html><html><head><meta charset='utf-8'><title>Wiki</title></head><body><h1>Wiki</h1><ul>" +
+                              "".join([f"<li><a href='{h}'>{h}</a></li>" for h in html_files[:200]]) +
+                              "</ul></body></html>")
+                  print("Created minimal index.html")
+
+          print("Done.")
           PY
 
-      - name: Upload artifact
+      - name: Show generated files
+        run: |
+          echo "=== HTML files ==="
+          ls -la *.html || true
+          echo "=== search-index.json ==="
+          ls -la search-index.json || true
+          echo "=== sitemap.xml ==="
+          ls -la sitemap.xml || true
+
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: .
