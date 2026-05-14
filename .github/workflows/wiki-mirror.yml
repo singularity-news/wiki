@@ -39,7 +39,6 @@ jobs:
 
           echo "Prüfe Änderungen seit: $SINCE"
 
-          # Abfrage der letzten Änderungen
           RESPONSE=$(curl -s --max-time 30 \
             "$API?action=query&list=recentchanges&rcprop=title|timestamp&rclimit=100&format=json")
 
@@ -50,13 +49,10 @@ jobs:
           fi
 
           echo "$RESPONSE" > recent.json
-          
-          # Zähle neue Änderungen seit $SINCE
           COUNT=$(jq "[.query.recentchanges[] | select(.timestamp > \"$SINCE\")] | length" recent.json)
           echo "count=$COUNT" >> $GITHUB_OUTPUT
 
           if [ "$COUNT" != "0" ]; then
-            # Extrahiere Titel, filtere Namensräume (Special:, File:, etc.)
             jq -r ".query.recentchanges[] | select(.timestamp > \"$SINCE\") | .title" recent.json \
               | grep -v -E '^(Special:|MediaWiki:|File:|Template:|Category:|Benutzer:|User:|Talk:|Diskussion:)' \
               | sort -u > pages.txt
@@ -72,11 +68,9 @@ jobs:
           while IFS= read -r TITLE || [[ -n "$TITLE" ]]; do
             [ -z "$TITLE" ] && continue
             
-            # SEO-konformer Dateiname (Spaces zu Underlines, keine Sonderzeichen)
             SAFE=$(echo "$TITLE" | tr ' ' '_' | sed 's/[^a-zA-Z0-9_aeoeueAEOEUEss-]//g')
             FILE="${SAFE}.html"
             
-            # API-Call zum Rendern des HTML-Inhalts
             ENCODED_TITLE=$(python3 -c "import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1]))" "$TITLE")
             RAW_JSON=$(curl -s --max-time 30 "$API?action=parse&page=$ENCODED_TITLE&prop=text&format=json")
             RAW_HTML=$(echo "$RAW_JSON" | jq -r '.parse.text["*"] // empty')
@@ -86,38 +80,28 @@ jobs:
               continue
             fi
 
-            # Meta-Daten Aufbereitung
             TITLE_ESC=$(echo "$TITLE" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g')
             DESC=$(echo "$RAW_HTML" | sed 's/<[^>]*>//g' | tr '\n' ' ' | sed 's/  */ /g' | cut -c1-250)
             DESC_ESC=$(echo "$DESC" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g')
 
-            # HTML Datei schreiben (Root-Struktur)
-            cat > "$FILE" <<EOF
-<!DOCTYPE html>
-<html lang="de" data-theme="dark">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${TITLE_ESC} — Singularity Encyclopedia</title>
-<meta name="description" content="${DESC_ESC}">
-<link rel="canonical" href="https://singularity-news.github.io/${FILE}">
-<link rel="stylesheet" href="assets/style.css">
-</head>
-<body>
-<header class="topbar">
-  <a href="index.html" class="logo">Singularity News</a>
-</header>
-<main id="content">
-  <article>
-    <h1>${TITLE_ESC}</h1>
-    ${RAW_HTML}
-  </article>
-</main>
-<script src="assets/app.js"></script>
-</body>
-</html>
-EOF
-            echo "Erstellt: $FILE"
+            {
+              echo '<!DOCTYPE html>'
+              echo '<html lang="de" data-theme="dark">'
+              echo '<head>'
+              echo '<meta charset="utf-8">'
+              echo '<meta name="viewport" content="width=device-width, initial-scale=1">'
+              echo "<title>${TITLE_ESC} — Singularity Encyclopedia</title>"
+              echo "<meta name=\"description\" content=\"${DESC_ESC}\">"
+              echo "<link rel=\"canonical\" href=\"https://singularity-news.github.io/${FILE}\">"
+              echo '<link rel="stylesheet" href="assets/style.css">'
+              echo '</head><body>'
+              echo '<header class="topbar"><a href="index.html" class="logo">Singularity News</a></header>'
+              echo "<main id=\"content\"><article><h1>${TITLE_ESC}</h1>"
+              printf "%s\n" "$RAW_HTML"
+              echo '</article></main><script src="assets/app.js"></script></body></html>'
+            } > "$FILE"
+            
+            echo "✓ $FILE"
           done < pages.txt
 
       - name: SEO-Indizes aktualisieren
