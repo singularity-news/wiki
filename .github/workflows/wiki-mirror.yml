@@ -262,7 +262,7 @@ jobs:
 
             </body>
             </html>
-HTMLEOF
+         HTMLEOF
 
             echo "Rendered: $FILE"
 
