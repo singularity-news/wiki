@@ -1,11 +1,12 @@
 # .github/workflows/wiki-mirror.yml
 
-name: Wiki XML → Root HTML + Search + Sitemap + Pages
+name: Wiki XML → Encyclopedia Pages
 
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches:
+      - main
 
 permissions:
   contents: write
@@ -29,268 +30,22 @@ jobs:
           sudo apt-get update -q
           sudo apt-get install -y pandoc python3
 
+      - name: Verify structure
+        run: |
+          echo "ROOT CONTENTS:"
+          ls -la
+
+          echo "BACKUP:"
+          ls -la backup || true
+
+          echo "XML:"
+          file backup/wiki.xml || true
+
       - name: Build encyclopedia
         run: |
-          python3 <<'PY'
-          import os
-          import re
-          import json
-          import html
-          import shutil
-          import unicodedata
-          import subprocess
-          import xml.etree.ElementTree as ET
+          python3 build.py
 
-          from collections import Counter
-
-          BASE_URL = "https://singularity-news.github.io/wiki"
-          XML_PATH = "backup/wiki.xml"
-          TEMPLATE_PATH = "template.html"
-
-          STOPWORDS = set("""
-          der die das und oder ein eine einer einem eines
-          the and or for with from into over under
-          this that these those your their our
-          """.split())
-
-          TEMPLATE = open(TEMPLATE_PATH, encoding="utf-8").read()
-
-          ns = {
-              "mw": "http://www.mediawiki.org/xml/export-0.10/"
-          }
-
-          def slugify(title):
-              title = unicodedata.normalize("NFKC", title)
-              title = re.sub(r"[^\w\s\-]", "", title)
-              title = re.sub(r"\s+", "_", title.strip())
-              return f"{title}.html"
-
-          def strip_tags(text):
-              text = re.sub(r"<[^>]+>", " ", text)
-              text = html.unescape(text)
-              text = re.sub(r"\s+", " ", text)
-              return text.strip()
-
-          def extract_keywords(text):
-              words = re.findall(r"[a-zA-Z0-9]{4,}", text.lower())
-              filtered = [w for w in words if w not in STOPWORDS]
-              return [w for w, _ in Counter(filtered).most_common(10)]
-
-          def build_toc(content):
-              headings = re.findall(
-                  r"<h([23])[^>]*>(.*?)</h[23]>",
-                  content,
-                  re.IGNORECASE
-              )
-
-              toc = []
-
-              for idx, (level, text) in enumerate(headings):
-                  clean = re.sub(r"<[^>]+>", "", text)
-                  anchor = f"section-{idx}"
-
-                  old = f"<h{level}"
-                  new = f'<h{level} id="{anchor}"'
-
-                  content = content.replace(old, new, 1)
-
-                  toc.append({
-                      "level": level,
-                      "text": clean,
-                      "anchor": anchor
-                  })
-
-              toc_html = ""
-
-              if toc:
-                  toc_html += '<aside class="toc">'
-                  toc_html += '<h3>Contents</h3>'
-                  toc_html += '<ul>'
-
-                  for item in toc:
-                      cls = f"toc-h{item['level']}"
-                      toc_html += f'''
-                      <li class="{cls}">
-                        <a href="#{item['anchor']}">{html.escape(item['text'])}</a>
-                      </li>
-                      '''
-
-                  toc_html += '</ul></aside>'
-
-              return toc_html + content
-
-          if not os.path.exists(XML_PATH):
-              raise SystemExit(f"Missing XML file: {XML_PATH}")
-
-          pages = []
-
-          for _, elem in ET.iterparse(XML_PATH, events=("end",)):
-              if elem.tag.endswith("page"):
-
-                  title_el = elem.find("mw:title", ns)
-                  text_el = elem.find(".//mw:text", ns)
-
-                  if title_el is not None:
-                      title = title_el.text.strip()
-
-                      raw = text_el.text if text_el is not None else ""
-
-                      pages.append((title, raw or ""))
-
-                  elem.clear()
-
-          title_map = {}
-
-          for title, _ in pages:
-              title_map[title] = slugify(title)
-              title_map[title.replace(" ", "_")] = slugify(title)
-
-          search_index = []
-
-          generated_files = []
-
-          for title, raw_text in pages:
-
-              filename = slugify(title)
-
-              with open("/tmp/wiki_input.wiki", "w", encoding="utf-8") as f:
-                  f.write(raw_text)
-
-              subprocess.run([
-                  "pandoc",
-                  "/tmp/wiki_input.wiki",
-                  "-f", "mediawiki",
-                  "-t", "html",
-                  "--wrap=none",
-                  "-o", "/tmp/wiki_output.html"
-              ], check=True)
-
-              body = open(
-                  "/tmp/wiki_output.html",
-                  encoding="utf-8"
-              ).read()
-
-              # Internal Wiki Links
-              def replace_link(match):
-                  target = match.group(1)
-
-                  if target in title_map:
-                      return f'href="{title_map[target]}"'
-
-                  return f'href="{target}"'
-
-              body = re.sub(
-                  r'href="([^"]+)"',
-                  replace_link,
-                  body
-              )
-
-              body = build_toc(body)
-
-              plain_text = strip_tags(body)
-
-              description = plain_text[:300]
-
-              keywords = extract_keywords(plain_text)
-
-              canonical = f"{BASE_URL}/{filename}"
-
-              breadcrumbs = f'''
-              <nav class="breadcrumbs" aria-label="Breadcrumb">
-                <a href="encyclopedia.html">Home</a>
-                <span>›</span>
-                <span>{html.escape(title)}</span>
-              </nav>
-              '''
-
-              schema = f"""
-              <script type="application/ld+json">
-              {{
-                "@context":"https://schema.org",
-                "@type":"Article",
-                "headline":"{html.escape(title)}",
-                "description":"{html.escape(description)}",
-                "url":"{canonical}"
-              }}
-              </script>
-              """
-
-              final_content = breadcrumbs + body
-
-              page = TEMPLATE.replace(
-                  "{{CONTENT}}",
-                  final_content
-              )
-
-              page = page.replace(
-                  "{{TITLE}}",
-                  html.escape(title)
-              )
-
-              page = page.replace(
-                  "{{DESCRIPTION}}",
-                  html.escape(description)
-              )
-
-              page = page.replace(
-                  "{{KEYWORDS}}",
-                  ", ".join(keywords)
-              )
-
-              page = page.replace(
-                  "{{CANONICAL}}",
-                  canonical
-              )
-
-              page = page.replace(
-                  "{{SCHEMA}}",
-                  schema
-              )
-
-              with open(filename, "w", encoding="utf-8") as f:
-                  f.write(page)
-
-              generated_files.append(filename)
-
-              search_index.append({
-                  "title": title,
-                  "file": filename,
-                  "text": plain_text[:50000]
-              })
-
-          with open(
-              "search-index.json",
-              "w",
-              encoding="utf-8"
-          ) as f:
-              json.dump(
-                  search_index,
-                  f,
-                  ensure_ascii=False,
-                  indent=2
-              )
-
-          sitemap = [
-              '<?xml version="1.0" encoding="UTF-8"?>',
-              '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
-          ]
-
-          for file in generated_files:
-              sitemap.append(f"""
-              <url>
-                <loc>{BASE_URL}/{file}</loc>
-              </url>
-              """)
-
-          sitemap.append('</urlset>')
-
-          with open("sitemap.xml", "w", encoding="utf-8") as f:
-              f.write("\n".join(sitemap))
-
-          print(f"Generated {len(generated_files)} pages.")
-          PY
-
-      - name: Upload GitHub Pages artifact
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: .
@@ -305,6 +60,6 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - name: Deploy to GitHub Pages
+      - name: Deploy Pages
         id: deployment
         uses: actions/deploy-pages@v4
