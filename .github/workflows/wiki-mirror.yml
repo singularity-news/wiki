@@ -1,59 +1,241 @@
-name: MediaWiki → GitHub Pages Root Mirror (DIAGNOSE)
+# .github/workflows/wiki-xml-to-root-html.yml
+name: MediaWiki XML → Root HTML + search-index + sitemap
 
 on:
   workflow_dispatch:
 
 jobs:
-  mirror:
+  build:
     runs-on: ubuntu-latest
     permissions:
       contents: write
 
     steps:
-      - name: Repository auschecken
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Abhängigkeiten installieren
+      - name: Install tools
         run: |
           sudo apt-get update -q
-          sudo apt-get install -y jq curl python3
+          sudo apt-get install -y pandoc python3
 
-      - name: Diagnose – Seitenliste erzwingen
+      - name: Validate required files
         run: |
-          API="https://wiki.free.nf/api.php"
-          curl -s -H "User-Agent: Mozilla/5.0" \
-            "$API?action=query&list=allpages&aplimit=10&format=json" \
-            | jq -r '.query.allpages[].title' > pages.txt
-          wc -l pages.txt
-          cat pages.txt
+          test -f backup/wiki.xml
+          test -f template.html
+          test -d assets
 
-      - name: Diagnose – Eine Seite rendern
+      - name: Build articles into root using template.html
         run: |
-          API="https://wiki.free.nf/api.php"
-          while read -r TITLE; do
-            echo "Rendere: $TITLE"
+          python3 <<'PY'
+          import os, re, json, html, unicodedata
+          import xml.etree.ElementTree as ET
+          from collections import Counter
 
-            ENCODED=$(python3 - "$TITLE" <<'EOF'
-            import urllib.parse, sys
-            print(urllib.parse.quote(sys.argv[1]))
-            EOF
-            )
+          XML_PATH = "backup/wiki.xml"
+          TEMPLATE_PATH = "template.html"
+          OUT_ROOT = "."  # root output
+          SEARCH_INDEX_PATH = "search-index.json"
+          SITEMAP_PATH = "sitemap.xml"
 
-            URL="$API?action=parse&page=$ENCODED&prop=text&format=json"
+          # Minimal stopwords (DE+EN) for keyword extraction
+          STOP = set("""
+          der die das und oder aber wenn dann weil wie was wer wo warum wieso
+          ein eine einer eines einem einen im in ins am an auf aus bei mit nach
+          von vom zum zur über unter für gegen ohne um als ist sind war waren
+          nicht kein keine keinen keiner dieses diese dieser diesen
+          the a an and or but if then because how what who where why
+          in on at to from for with without of is are was were be been being
+          not no yes
+          """.split())
 
-            RAW=$(curl -s -H "User-Agent: Mozilla/5.0" "$URL")
-            HTML=$(echo "$RAW" | jq -r '.parse.text["*"] // "<!-- EMPTY -->"')
+          def safe_filename(title: str) -> str:
+            # Keep it close to "Artikelname.html" but filesystem-safe and SEO-friendly
+            t = title.strip().replace(" ", "_")
+            t = unicodedata.normalize("NFKC", t)
+            t = re.sub(r"[\/\\\?\#\%\:\*\|\"<>\u0000-\u001F]", "_", t)
+            t = re.sub(r"_+", "_", t).strip("_")
+            if not t:
+              t = "Untitled"
+            return f"{t}.html"
 
-            echo "HTML-Länge: ${#HTML}"
+          def strip_html_tags(s: str) -> str:
+            s = re.sub(r"(?is)<script.*?>.*?</script>", " ", s)
+            s = re.sub(r"(?is)<style.*?>.*?</style>", " ", s)
+            s = re.sub(r"(?is)<[^>]+>", " ", s)
+            s = html.unescape(s)
+            s = re.sub(r"\s+", " ", s).strip()
+            return s
 
-            echo "<html><body><h1>$TITLE</h1>$HTML</body></html>" > test.html
-            break
-          done < pages.txt
+          def top_keywords(text: str, n=10):
+            words = re.findall(r"[A-Za-zÀ-ÖØ-öø-ÿ0-9_'-]{3,}", text.lower())
+            words = [w for w in words if w not in STOP and not w.isdigit()]
+            c = Counter(words)
+            return [w for w,_ in c.most_common(n)]
 
-      - name: Commit Testdatei
+          def inject_head_meta(template_html: str, title: str, description: str, keywords: list, canonical: str, jsonld: str) -> str:
+            # Replace placeholders if present; otherwise inject into <head>
+            out = template_html
+
+            # Placeholder replacements (optional)
+            out = out.replace("{{TITLE}}", html.escape(title))
+            out = out.replace("{{DESCRIPTION}}", html.escape(description))
+            out = out.replace("{{KEYWORDS}}", html.escape(", ".join(keywords)))
+            out = out.replace("{{CANONICAL}}", html.escape(canonical))
+            out = out.replace("{{JSONLD}}", jsonld)
+
+            # If no placeholders, inject tags before </head>
+            head_inject = f"""
+          <title>{html.escape(title)}</title>
+          <meta name="description" content="{html.escape(description)}">
+          <meta name="keywords" content="{html.escape(', '.join(keywords))}">
+          <link rel="canonical" href="{html.escape(canonical)}">
+          <script type="application/ld+json">{jsonld}</script>
+          """.strip()
+
+            if "</head>" in out and ("{{TITLE}}" not in template_html):
+              # Avoid duplicate <title> if template already has one
+              if "<title" not in out.lower():
+                out = out.replace("</head>", head_inject + "\n</head>")
+              else:
+                # Still inject meta/canonical/jsonld if missing
+                out = out.replace("</head>", head_inject.replace("<title>", "<!-- title exists -->\n<title>").replace("</title>", "</title>\n<!-- /title exists -->") + "\n</head>")
+            return out
+
+          def rewrite_internal_links(html_fragment: str, title_to_file: dict) -> str:
+            # Convert href="Some_Title" or href="Some Title" to href="Some_Title.html" when it matches a known title
+            # Also handle MediaWiki-style /wiki/Title links if they appear.
+            def repl(m):
+              href = m.group(1)
+              raw = href
+
+              # Strip common prefixes
+              for p in ("/wiki/", "./", "../"):
+                if href.startswith(p):
+                  href = href[len(p):]
+
+              href = href.split("#", 1)[0]
+              href = href.split("?", 1)[0]
+              href = href.replace(" ", "_")
+
+              # Try direct title match (underscore/space variants)
+              candidates = {href, href.replace("_", " ")}
+              for c in candidates:
+                if c in title_to_file:
+                  return f'href="{title_to_file[c]}"'
+              return f'href="{raw}"'
+
+            return re.sub(r'href="([^"]+)"', repl, html_fragment)
+
+          # Load template
+          template = open(TEMPLATE_PATH, "r", encoding="utf-8").read()
+          if "{{CONTENT}}" not in template:
+            raise SystemExit("template.html must contain {{CONTENT}} placeholder")
+
+          # Parse XML (streaming)
+          ns = {"mw": "http://www.mediawiki.org/xml/export-0.10/"}
+
+          pages = []
+          for _, elem in ET.iterparse(XML_PATH, events=("end",)):
+            if elem.tag.endswith("page"):
+              title_el = elem.find("mw:title", ns)
+              text_el = elem.find(".//mw:text", ns)
+              if title_el is None:
+                elem.clear()
+                continue
+              title = (title_el.text or "").strip()
+              wikitext = (text_el.text or "") if text_el is not None else ""
+              if title:
+                pages.append((title, wikitext))
+              elem.clear()
+
+          # Build title→filename map (for link rewriting)
+          title_to_file = {}
+          for title, _ in pages:
+            fn = safe_filename(title)
+            title_to_file[title] = fn
+            title_to_file[title.replace(" ", "_")] = fn
+            title_to_file[title.replace("_", " ")] = fn
+
+          # Render each page via pandoc to HTML fragment, inject into template, write to root
+          search_index = []
+
+          for i, (title, wikitext) in enumerate(pages, 1):
+            fn = safe_filename(title)
+
+            # Write temp .wiki
+            tmp_wiki = f"/tmp/{i}.wiki"
+            with open(tmp_wiki, "w", encoding="utf-8") as f:
+              f.write(wikitext)
+
+            # Pandoc: mediawiki → html fragment (no standalone)
+            tmp_html = f"/tmp/{i}.html"
+            os.system(f'pandoc "{tmp_wiki}" -f mediawiki -t html --wrap=none -o "{tmp_html}"')
+
+            fragment = open(tmp_html, "r", encoding="utf-8").read().strip()
+            fragment = rewrite_internal_links(fragment, title_to_file)
+
+            # Plain text for SEO + search index
+            plain = strip_html_tags(fragment)
+            description = (plain[:300] + "…") if len(plain) > 300 else plain
+            keywords = top_keywords(plain, 10)
+
+            canonical = fn  # relative canonical (works on Pages); you can change to absolute later
+            jsonld = json.dumps({
+              "@context": "https://schema.org",
+              "@type": "Article",
+              "headline": title,
+              "description": description,
+              "mainEntityOfPage": {"@type": "WebPage", "@id": canonical}
+            }, ensure_ascii=False)
+
+            page_html = template.replace("{{CONTENT}}", fragment)
+            page_html = inject_head_meta(page_html, title, description, keywords, canonical, jsonld)
+
+            with open(os.path.join(OUT_ROOT, fn), "w", encoding="utf-8") as f:
+              f.write(page_html)
+
+            # search-index entry (keep text reasonably sized)
+            search_index.append({
+              "title": title,
+              "file": fn,
+              "text": plain[:20000]  # cap to keep JSON size sane
+            })
+
+          # Write search-index.json (root)
+          with open(SEARCH_INDEX_PATH, "w", encoding="utf-8") as f:
+            json.dump(search_index, f, ensure_ascii=False, indent=2)
+
+          # Write sitemap.xml (root) — include all root .html except template.html
+          html_files = sorted([
+            f for f in os.listdir(OUT_ROOT)
+            if f.lower().endswith(".html") and f.lower() != "template.html"
+          ])
+
+          # If encyclopedia.html exists (your start page), it will be included automatically.
+          sitemap = ['<?xml version="1.0" encoding="UTF-8"?>',
+                     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+          for f in html_files:
+            sitemap.append("  <url>")
+            sitemap.append(f"    <loc>{html.escape(f)}</loc>")
+            sitemap.append("  </url>")
+          sitemap.append("</urlset>")
+
+          with open(SITEMAP_PATH, "w", encoding="utf-8") as f:
+            f.write("\n".join(sitemap))
+
+          print(f"Rendered: {len(pages)} pages")
+          print(f"Wrote: {SEARCH_INDEX_PATH}, {SITEMAP_PATH}")
+          PY
+
+      - name: Commit generated files
         run: |
           git config user.name "wiki-mirror-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add test.html pages.txt
-          git commit -m "Diagnose: render test page" || exit 0
+
+          # Root HTML pages + search index + sitemap
+          git add *.html search-index.json sitemap.xml || true
+
+          # Keep your existing files untouched (index.html, encyclopedia.html, assets, etc.)
+          git commit -m "Build: XML → root HTML + search-index + sitemap" || exit 0
           git push
