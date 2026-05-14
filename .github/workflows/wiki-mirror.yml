@@ -34,10 +34,10 @@ jobs:
             echo "Rendere: $TITLE"
 
             ENCODED=$(python3 - "$TITLE" <<'EOF'
-import urllib.parse, sys
-print(urllib.parse.quote(sys.argv[1]))
-EOF
-)
+            import urllib.parse, sys
+            print(urllib.parse.quote(sys.argv[1]))
+            EOF
+            )
 
             URL="$API?action=parse&page=$ENCODED&prop=text&format=json"
 
