@@ -1,42 +1,30 @@
 # .github/workflows/wiki-mirror.yml
-# =====================================================
-# Singularity University — MediaWiki → GitHub Pages
-# Root Mirror (Modell B)
-#
-# Läuft 2× täglich (00:00 und 12:00 UTC)
-# Rendert nur geänderte Seiten als flache HTML-Dateien
-# Aktualisiert sitemap.xml und search-index.json
-# Kein Backend, kein Webhook, kein PHP nötig
-# =====================================================
 
 name: MediaWiki → GitHub Pages Root Mirror
 
 on:
   schedule:
-    - cron: "0 0,12 * * *"    # 00:00 und 12:00 UTC täglich
-  workflow_dispatch:            # Manuell auslösbar über GitHub UI
+    - cron: "0 0,12 * * *"
+  workflow_dispatch:
 
 jobs:
   mirror:
     runs-on: ubuntu-latest
     permissions:
-      contents: write           # Für git push
+      contents: write
 
     steps:
 
-      # ── 1. Repository auschecken ──────────────────
       - name: Repository auschecken
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      # ── 2. Abhängigkeiten installieren ───────────
       - name: Abhängigkeiten installieren
         run: |
           sudo apt-get update -q
           sudo apt-get install -y jq curl python3
 
-      # ── 3. Änderungen im Wiki prüfen ─────────────
       - name: Änderungen prüfen
         id: changes
         run: |
@@ -49,13 +37,10 @@ jobs:
             SINCE="1970-01-01T00:00:00Z"
           fi
 
-          echo "Prüfe Änderungen seit: $SINCE"
-
           RESPONSE=$(curl -s --max-time 30 \
             "$API?action=query&list=recentchanges&rcprop=title|timestamp&rclimit=100&format=json")
 
           if [ -z "$RESPONSE" ] || ! echo "$RESPONSE" | jq -e '.query' > /dev/null 2>&1; then
-            echo "Wiki nicht erreichbar. Abbruch."
             echo "count=0" >> $GITHUB_OUTPUT
             exit 0
           fi
@@ -64,7 +49,6 @@ jobs:
 
           COUNT=$(jq "[.query.recentchanges[] | select(.timestamp > \"$SINCE\")] | length" recent.json)
           echo "count=$COUNT" >> $GITHUB_OUTPUT
-          echo "Geänderte Seiten: $COUNT"
 
           if [ "$COUNT" -gt 0 ]; then
             jq -r ".query.recentchanges[] | select(.timestamp > \"$SINCE\") | .title" recent.json \
@@ -74,11 +58,8 @@ jobs:
               | grep -v '^Template:' \
               | grep -v '^Category:' \
               | sort -u > pages.txt
-            echo "Artikel zur Aktualisierung:"
-            cat pages.txt
           fi
 
-      # ── 4. Geänderte Seiten rendern ───────────────
       - name: Geänderte Seiten rendern
         if: steps.changes.outputs.count != '0'
         run: |
@@ -88,150 +69,64 @@ jobs:
           while IFS= read -r TITLE; do
             [ -z "$TITLE" ] && continue
 
-            # URL-sicherer Dateiname: Leerzeichen → _, nur Buchstaben/Zahlen/_ behalten
             SAFE=$(echo "$TITLE" | tr ' ' '_' | sed 's/[^a-zA-Z0-9_äöüÄÖÜß-]//g')
             FILE="${SAFE}.html"
 
-            # HTML von MediaWiki API holen
+            ENCODED_TITLE=$(python3 -c "import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1]))" "$TITLE")
+
             RAW_HTML=$(curl -s --max-time 30 \
-              "$API?action=parse&page=$(python3 -c "import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1]))" "$TITLE")&prop=text&format=json" \
+              "$API?action=parse&page=${ENCODED_TITLE}&prop=text&format=json" \
               | jq -r '.parse.text["*"] // empty')
 
             if [ -z "$RAW_HTML" ]; then
-              echo "⚠ Konnte '$TITLE' nicht rendern – übersprungen."
               ERRORS=$((ERRORS+1))
               continue
             fi
 
-            # HTML-escaped Titel für Meta-Tags
             TITLE_ESC=$(echo "$TITLE" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g')
 
-            # Beschreibung: erste 300 Zeichen Plaintext
             DESC=$(echo "$RAW_HTML" | sed 's/<[^>]*>//g' | tr '\n' ' ' | sed 's/  */ /g' | cut -c1-300)
             DESC_ESC=$(echo "$DESC" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g')
 
-            cat > "$FILE" <<HTMLEOF
+            cat <<'HTMLEOF' > "$FILE"
 <!DOCTYPE html>
-<html lang="de" data-theme="dark">
+<html lang="en" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="google-site-verification" content="D-u4byZG_DrIUxnTLQdS0BOTjJcwWmm_h-HwUXl8HO4">
 <title>${TITLE_ESC} — Singularity University Wiki</title>
 <meta name="description" content="${DESC_ESC}">
-<meta name="robots" content="index, follow">
 <link rel="canonical" href="https://singularity-news.github.io/${SAFE}.html">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest">
-<meta property="og:type" content="article">
-<meta property="og:title" content="${TITLE_ESC} — Singularity University Wiki">
-<meta property="og:description" content="${DESC_ESC}">
-<meta property="og:image" content="https://raw.githubusercontent.com/singularity-news/wiki/57d6999f3aa1e574cc45619c5ec7b52592d42e61/assets/header.png">
-<meta property="og:url" content="https://singularity-news.github.io/${SAFE}.html">
-<meta name="twitter:card" content="summary_large_image">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Article","headline":"${TITLE_ESC}","url":"https://singularity-news.github.io/${SAFE}.html","description":"${DESC_ESC}","publisher":{"@type":"Organization","name":"Singularity University Wiki","url":"https://singularity-news.github.io/"}}
-</script>
-<link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
-<div class="overlay" id="overlay" aria-hidden="true"></div>
-<header class="topbar" role="banner">
-  <button class="icon-btn" id="menuToggle" aria-label="Menü öffnen" aria-expanded="false" aria-controls="sidebar">
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor" aria-hidden="true"><rect y="2" width="18" height="2" rx="1"/><rect y="8" width="18" height="2" rx="1"/><rect y="14" width="18" height="2" rx="1"/></svg>
-  </button>
-  <a href="index.html" class="topbar-logo">
-    <img src="https://raw.githubusercontent.com/singularity-news/wiki/57d6999f3aa1e574cc45619c5ec7b52592d42e61/assets/logo.png" alt="Logo" width="36" height="36" loading="lazy">
-    <div class="topbar-logo-text">
-      <span class="site-name">Singularity University</span>
-      <span class="site-sub">KdK Krzb. Online Wiki</span>
-    </div>
-  </a>
-  <div class="topbar-actions">
-    <button class="icon-btn" id="themeToggle" aria-label="Theme wechseln">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-    </button>
-    <a href="https://wiki.free.nf" class="icon-btn" target="_blank" rel="noopener" aria-label="MediaWiki">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-    </a>
-    <a href="https://github.com/singularity-news/wiki" class="icon-btn" target="_blank" rel="noopener" aria-label="GitHub">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.74-1.33-1.74-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.48.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02.005 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.25 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.49 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.69.83.57C20.57 21.8 24 17.3 24 12 24 5.37 18.63 0 12 0z"/></svg>
-    </a>
-  </div>
-</header>
-<aside class="sidebar" id="sidebar" role="navigation" aria-label="Artikelnavigation">
-  <div class="sidebar-search"><input type="search" id="searchInput" placeholder="Artikel suchen…" aria-label="Artikel suchen" autocomplete="off"></div>
-  <div class="sidebar-section">
-    <div class="sidebar-section-title">Artikel</div>
-    <ul id="articleList" role="list"><li class="no-results">Lädt…</li></ul>
-  </div>
-  <nav class="sidebar-links">
-    <a href="index.html">🏠 Encyclopedia</a>
-    <a href="https://kdk-university.netlify.app/" target="_blank" rel="noopener">🎓 KdK University</a>
-    <a href="https://electric-paradise.start.page" target="_blank" rel="noopener">⚡ Electric Paradise</a>
-    <a href="https://singularity-news.github.io/" target="_blank" rel="noopener">📰 Singularity News</a>
-    <a href="https://wiki.free.nf" target="_blank" rel="noopener">📖 MediaWiki Live</a>
-    <a href="https://github.com/singularity-news/wiki" target="_blank" rel="noopener">📦 GitHub</a>
-  </nav>
-</aside>
-<div class="page-wrap">
-  <nav class="breadcrumbs" id="breadcrumbs" aria-label="Seitenpfad"></nav>
-  <div class="content-outer">
-    <aside class="toc-aside" aria-label="Inhaltsverzeichnis">
-      <div class="toc-box">
-        <div class="toc-box-title">Inhalt</div>
-        <ul id="toc" role="list"></ul>
-      </div>
-    </aside>
-    <main class="article-main" id="main-content">
-      <article class="article-body">
-        <h1>${TITLE_ESC}</h1>
-        <div class="article-meta">
-          <span>Quelle: <a href="https://wiki.free.nf/index.php?title=$(python3 -c "import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1]))" "$TITLE")" target="_blank" rel="noopener">MediaWiki</a></span>
-        </div>
-        ${RAW_HTML}
-      </article>
-    </main>
-  </div>
-  <footer class="footer" role="contentinfo">
-    <p>© 2026 Singularity University Wiki <span class="footer-sep">·</span> <a href="https://github.com/singularity-news/wiki" target="_blank" rel="noopener">GitHub</a> <span class="footer-sep">·</span> <a href="sitemap.xml">Sitemap</a></p>
-  </footer>
+<h1>${TITLE_ESC}</h1>
+<div>
+Quelle: <a href="https://wiki.free.nf/index.php?title=${ENCODED_TITLE}" target="_blank">MediaWiki</a>
 </div>
-<script src="assets/app.js"></script>
+<div>
+${RAW_HTML}
+</div>
 </body>
 </html>
 HTMLEOF
 
-            echo "✓ Gerendert: $FILE"
+            echo "Rendered: $FILE"
           done < pages.txt
 
-          if [ $ERRORS -gt 0 ]; then
-            echo "⚠ $ERRORS Seite(n) konnten nicht gerendert werden."
-          fi
-
-      # ── 5. search-index.json aktualisieren ────────
       - name: search-index.json aktualisieren
         if: steps.changes.outputs.count != '0'
         run: |
-          API="https://wiki.free.nf/api.php"
           TODAY=$(date -u +"%Y-%m-%d")
 
-          # Alle vorhandenen HTML-Artikel-Dateien einlesen
           echo "[" > search-index.json
           FIRST=1
 
-          find . -maxdepth 1 -name "*.html" ! -name "index.html" ! -name "template.html" | sort | while read HTMLFILE; do
-            FILENAME=$(basename "$HTMLFILE")
-            SAFE="${FILENAME%.html}"
-            # Titel: Unterstriche → Leerzeichen
-            TITLE=$(echo "$SAFE" | tr '_' ' ')
+          for HTMLFILE in *.html; do
+            [ "$HTMLFILE" = "index.html" ] && continue
 
-            # Plaintext-Excerpt aus dem HTML extrahieren (max 300 Zeichen)
-            EXCERPT=$(sed 's/<[^>]*>//g' "$HTMLFILE" | grep -v '^[[:space:]]*$' | head -30 | tr '\n' ' ' | sed 's/  */ /g' | cut -c1-300)
-            EXCERPT=$(echo "$EXCERPT" | sed 's/\\/\\\\/g; s/"/\\"/g')
-            TITLE_J=$(echo "$TITLE"   | sed 's/\\/\\\\/g; s/"/\\"/g')
+            TITLE=$(basename "$HTMLFILE" .html | tr '_' ' ')
+            EXCERPT=$(sed 's/<[^>]*>//g' "$HTMLFILE" | head -n 20 | tr '\n' ' ' | cut -c1-300)
 
             if [ "$FIRST" -eq 1 ]; then
               FIRST=0
@@ -239,55 +134,39 @@ HTMLEOF
               echo "," >> search-index.json
             fi
 
-            cat >> search-index.json <<JSONEOF
-  {"title":"${TITLE_J}","file":"${FILENAME}","text":"${EXCERPT}","date":"${TODAY}"}
-JSONEOF
+            echo "{\"title\":\"$TITLE\",\"file\":\"$HTMLFILE\",\"text\":\"$EXCERPT\",\"date\":\"$TODAY\"}" >> search-index.json
           done
 
           echo "]" >> search-index.json
-          echo "✓ search-index.json aktualisiert."
 
-      # ── 6. sitemap.xml neu erzeugen ───────────────
       - name: sitemap.xml aktualisieren
         if: steps.changes.outputs.count != '0'
         run: |
           TODAY=$(date -u +"%Y-%m-%d")
 
-          {
-            echo '<?xml version="1.0" encoding="UTF-8"?>'
-            echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'
-            echo "  <url><loc>https://singularity-news.github.io/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>"
+          echo '<?xml version="1.0" encoding="UTF-8"?>' > sitemap.xml
+          echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' >> sitemap.xml
 
-            find . -maxdepth 1 -name "*.html" ! -name "index.html" ! -name "template.html" | sort | while read f; do
-              FILE=$(basename "$f")
-              echo "  <url><loc>https://singularity-news.github.io/${FILE}</loc><lastmod>${TODAY}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>"
-            done
+          for f in *.html; do
+            echo "<url><loc>https://singularity-news.github.io/$f</loc><lastmod>$TODAY</lastmod></url>" >> sitemap.xml
+          done
 
-            echo '</urlset>'
-          } > sitemap.xml
+          echo '</urlset>' >> sitemap.xml
 
-          echo "✓ sitemap.xml aktualisiert."
+      - name: Sync speichern
+        if: steps.changes.outputs.count != '0'
+        run: date -u +"%Y-%m-%dT%H:%M:%SZ" > .last_sync
 
-      # ── 7. Sync-Zeitpunkt speichern ───────────────
-      - name: Sync-Zeitpunkt speichern
+      - name: Commit & Push
         if: steps.changes.outputs.count != '0'
         run: |
-          date -u +"%Y-%m-%dT%H:%M:%SZ" > .last_sync
-          echo "✓ .last_sync gesetzt."
-
-      # ── 8. Commit & Push ──────────────────────────
-      - name: Änderungen committen und pushen
-        if: steps.changes.outputs.count != '0'
-        run: |
-          git config user.name  "wiki-mirror-bot"
+          git config user.name "wiki-bot"
           git config user.email "bot@users.noreply.github.com"
           git add .
-          # Nur pushen wenn es wirklich Änderungen gibt
+
           if git diff --staged --quiet; then
-            echo "Keine Änderungen im Repository. Kein Commit nötig."
+            echo "No changes"
           else
-            CHANGED=$(git diff --staged --name-only | wc -l | tr -d ' ')
-            git commit -m "Auto-Sync: ${CHANGED} Datei(en) aktualisiert [$(date -u +"%Y-%m-%d %H:%M UTC")]"
+            git commit -m "Auto Sync $(date -u)"
             git push
-            echo "✓ Push erfolgreich."
           fi
