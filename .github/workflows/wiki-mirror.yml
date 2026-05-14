@@ -1,4 +1,4 @@
-name: MediaWiki to GitHub Pages Root Mirror
+name: MediaWiki → GitHub Pages Root Mirror
 
 on:
   schedule:
@@ -6,7 +6,6 @@ on:
   workflow_dispatch:
 
 env:
-  # Erleichtert den Übergang zu Node.js 24 und entfernt die Deprecation-Warnung
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
@@ -21,12 +20,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Abhaengigkeiten installieren
+      - name: Abhängigkeiten installieren
         run: |
           sudo apt-get update -q
           sudo apt-get install -y jq curl python3
 
-      - name: Aenderungen pruefen
+      - name: Änderungen im Wiki prüfen
         id: changes
         run: |
           API="https://wiki.free.nf/api.php"
@@ -38,77 +37,78 @@ jobs:
             SINCE="1970-01-01T00:00:00Z"
           fi
 
-          echo "Pruefe Aenderungen seit: $SINCE"
+          echo "Prüfe Änderungen seit: $SINCE"
 
+          # Abfrage der letzten Änderungen
           RESPONSE=$(curl -s --max-time 30 \
             "$API?action=query&list=recentchanges&rcprop=title|timestamp&rclimit=100&format=json")
 
           if [ -z "$RESPONSE" ] || ! echo "$RESPONSE" | jq -e '.query' > /dev/null 2>&1; then
-            echo "Wiki nicht erreichbar. Abbruch."
+            echo "Wiki-API nicht erreichbar oder leer."
             echo "count=0" >> $GITHUB_OUTPUT
             exit 0
           fi
 
           echo "$RESPONSE" > recent.json
-
+          
+          # Zähle neue Änderungen seit $SINCE
           COUNT=$(jq "[.query.recentchanges[] | select(.timestamp > \"$SINCE\")] | length" recent.json)
           echo "count=$COUNT" >> $GITHUB_OUTPUT
-          echo "Geaenderte Seiten: $COUNT"
 
-          if [ "$COUNT" -gt 0 ]; then
+          if [ "$COUNT" != "0" ]; then
+            # Extrahiere Titel, filtere Namensräume (Special:, File:, etc.)
             jq -r ".query.recentchanges[] | select(.timestamp > \"$SINCE\") | .title" recent.json \
-              | grep -v -E '^(Special:|MediaWiki:|File:|Template:|Category:)' \
+              | grep -v -E '^(Special:|MediaWiki:|File:|Template:|Category:|Benutzer:|User:|Talk:|Diskussion:)' \
               | sort -u > pages.txt
-            echo "Artikel zur Aktualisierung:"
+            echo "Gefundene Seiten:"
             cat pages.txt
           fi
 
-      - name: Geaenderte Seiten rendern
+      - name: Geänderte Seiten rendern
         if: steps.changes.outputs.count != '0'
         run: |
           API="https://wiki.free.nf/api.php"
-          ERRORS=0
-
+          
           while IFS= read -r TITLE || [[ -n "$TITLE" ]]; do
             [ -z "$TITLE" ] && continue
-
+            
+            # SEO-konformer Dateiname (Spaces zu Underlines, keine Sonderzeichen)
             SAFE=$(echo "$TITLE" | tr ' ' '_' | sed 's/[^a-zA-Z0-9_aeoeueAEOEUEss-]//g')
             FILE="${SAFE}.html"
-
-            RAW_HTML=$(curl -s --max-time 30 \
-              "$API?action=parse&page=$(python3 -c "import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1]))" "$TITLE")&prop=text&format=json" \
-              | jq -r '.parse.text["*"] // empty')
+            
+            # API-Call zum Rendern des HTML-Inhalts
+            ENCODED_TITLE=$(python3 -c "import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1]))" "$TITLE")
+            RAW_JSON=$(curl -s --max-time 30 "$API?action=parse&page=$ENCODED_TITLE&prop=text&format=json")
+            RAW_HTML=$(echo "$RAW_JSON" | jq -r '.parse.text["*"] // empty')
 
             if [ -z "$RAW_HTML" ]; then
-              echo "Warnung: Konnte '$TITLE' nicht rendern."
-              ERRORS=$((ERRORS+1))
+              echo "Überspringe $TITLE (kein Inhalt)."
               continue
             fi
 
+            # Meta-Daten Aufbereitung
             TITLE_ESC=$(echo "$TITLE" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g')
-            DESC=$(echo "$RAW_HTML" | sed 's/<[^>]*>//g' | tr '\n' ' ' | sed 's/  */ /g' | cut -c1-300)
+            DESC=$(echo "$RAW_HTML" | sed 's/<[^>]*>//g' | tr '\n' ' ' | sed 's/  */ /g' | cut -c1-250)
             DESC_ESC=$(echo "$DESC" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g')
 
+            # HTML Datei schreiben (Root-Struktur)
             cat > "$FILE" <<EOF
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="de" data-theme="dark">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${TITLE_ESC} — Singularity University Wiki</title>
+<title>${TITLE_ESC} — Singularity Encyclopedia</title>
 <meta name="description" content="${DESC_ESC}">
-<link rel="canonical" href="https://singularity-news.github.io/${SAFE}.html">
+<link rel="canonical" href="https://singularity-news.github.io/${FILE}">
 <link rel="stylesheet" href="assets/style.css">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Article","headline":"${TITLE_ESC}","description":"${DESC_ESC}"}
-</script>
 </head>
 <body>
 <header class="topbar">
-  <div class="topbar-logo">Singularity University Wiki</div>
+  <a href="index.html" class="logo">Singularity News</a>
 </header>
-<main class="article-main">
-  <article class="article-body">
+<main id="content">
+  <article>
     <h1>${TITLE_ESC}</h1>
     ${RAW_HTML}
   </article>
@@ -117,41 +117,37 @@ jobs:
 </body>
 </html>
 EOF
-            echo "✓ $FILE"
+            echo "Erstellt: $FILE"
           done < pages.txt
 
-      - name: search-index.json aktualisieren
+      - name: SEO-Indizes aktualisieren
         if: steps.changes.outputs.count != '0'
         run: |
           TODAY=$(date -u +"%Y-%m-%d")
-          echo "[" > search-index.json
-          FIRST=1
-          find . -maxdepth 1 -name "*.html" ! -name "index.html" | sort | while read HTMLFILE; do
-            FILENAME=$(basename "$HTMLFILE")
-            TITLE=$(echo "${FILENAME%.html}" | tr '_' ' ')
-            EXCERPT=$(sed 's/<[^>]*>//g' "$HTMLFILE" | head -c 300 | tr '"' "'")
-            
-            [ "$FIRST" -eq 0 ] && echo "," >> search-index.json
-            echo "{\"title\":\"$TITLE\",\"file\":\"$FILENAME\",\"text\":\"$EXCERPT\",\"date\":\"$TODAY\"}" >> search-index.json
-            FIRST=0
-          done
-          echo "]" >> search-index.json
-
-      - name: sitemap.xml aktualisieren
-        if: steps.changes.outputs.count != '0'
-        run: |
-          TODAY=$(date -u +"%Y-%m-%d")
+          
+          # 1. Sitemap (Root-basiert)
           echo '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' > sitemap.xml
           find . -maxdepth 1 -name "*.html" ! -name "index.html" | sort | while read f; do
             echo "<url><loc>https://singularity-news.github.io/$(basename "$f")</loc><lastmod>$TODAY</lastmod></url>" >> sitemap.xml
           done
           echo '</urlset>' >> sitemap.xml
 
+          # 2. Search-Index (JSON)
+          echo "[" > search-index.json
+          FIRST=1
+          find . -maxdepth 1 -name "*.html" ! -name "index.html" | sort | while read h; do
+            [ "$FIRST" -eq 0 ] && echo "," >> search-index.json
+            T=$(basename "$h" .html | tr '_' ' ')
+            echo "{\"title\":\"$T\",\"file\":\"$(basename "$h")\"}" >> search-index.json
+            FIRST=0
+          done
+          echo "]" >> search-index.json
+
       - name: Sync-Zeitpunkt speichern
         if: steps.changes.outputs.count != '0'
         run: date -u +"%Y-%m-%dT%H:%M:%SZ" > .last_sync
 
-      - name: Aenderungen committen und pushen
+      - name: Änderungen committen und pushen
         if: steps.changes.outputs.count != '0'
         run: |
           git config user.name "wiki-mirror-bot"
