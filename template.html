@@ -1,74 +1,101 @@
-<!--
-  template.html
-  This file is a REFERENCE ONLY.
-  The actual HTML generation is done by build.py using Python string templates.
-  It is NOT used directly by the GitHub Actions workflow.
+<!-- template.html -->
 
-  Placeholders used by build.py:
-    {title_esc}   - HTML-escaped article title
-    {safe}        - URL-safe filename (without .html)
-    {desc_esc}    - HTML-escaped description (first 300 chars of article plaintext)
-    {html_body}   - Full rendered HTML from MediaWiki API (action=parse)
-    {page_url}    - Full canonical URL of this page
-    {wiki_url}    - URL to original MediaWiki article
-    {schema}      - JSON-LD Schema.org Article object
--->
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
+
 <head>
+
 <meta charset="utf-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="google-site-verification" content="D-u4byZG_DrIUxnTLQdS0BOTjJcwWmm_h-HwUXl8HO4">
-<title>{title_esc} &mdash; Singularity University Wiki</title>
+
+<title>{title_esc}</title>
+
 <meta name="description" content="{desc_esc}">
-<meta name="robots" content="index, follow">
+
 <link rel="canonical" href="{page_url}">
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="manifest" href="/site.webmanifest">
-<meta property="og:type" content="article">
-<meta property="og:title" content="{title_esc} &mdash; Singularity University Wiki">
-<meta property="og:description" content="{desc_esc}">
-<meta property="og:image" content="https://raw.githubusercontent.com/singularity-news/wiki/57d6999f3aa1e574cc45619c5ec7b52592d42e61/assets/header.png">
-<meta property="og:url" content="{page_url}">
-<meta name="twitter:card" content="summary_large_image">
-<script type="application/ld+json">{schema}</script>
+
+<meta name="theme-color" content="#0d1117">
+
+<link rel="manifest" href="manifest.json">
+
 <link rel="stylesheet" href="assets/style.css">
+
+{schema}
+
 </head>
+
 <body>
 
-<!-- [SHARED_HEADER inserted by build.py] -->
+<div id="overlay"></div>
 
-<div class="page-wrap">
+<header class="topbar">
 
-  <nav class="breadcrumbs" id="breadcrumbs" aria-label="Page path"></nav>
+  <button id="menuToggle" class="menu-button">
+    ☰
+  </button>
 
-  <div class="content-wrap">
+  <a class="logo" href="encyclopedia.html">
+    Encyclopedia
+  </a>
 
-    <aside class="toc-col" aria-label="Table of contents">
-      <div class="toc-box">
-        <div class="toc-title">Contents</div>
-        <ul id="toc" role="list"></ul>
-      </div>
-    </aside>
+  <button id="themeToggle" class="theme-button">
+    ◐
+  </button>
 
-    <main class="article-col" id="main-content">
-      <div class="article-box">
-        <h1>{title_esc}</h1>
-        <div class="article-meta">
-          <span>Source: <a href="{wiki_url}" target="_blank" rel="noopener">MediaWiki</a></span>
-        </div>
-        {html_body}
-      </div>
-    </main>
+</header>
 
-  </div>
+<div class="layout">
 
-  <!-- [SHARED_FOOTER inserted by build.py] -->
+  <aside class="sidebar" id="sidebar">
+
+    <div class="search-box">
+
+      <input
+        id="searchInput"
+        type="search"
+        placeholder="Search articles..."
+      >
+
+    </div>
+
+    <div class="sidebar-links">
+
+      <a href="encyclopedia.html">
+        Home
+      </a>
+
+      <a href="https://kdk-university.netlify.app/">
+        KdK University
+      </a>
+
+      <a href="https://electric-paradise.start.page">
+        Electric Paradise
+      </a>
+
+      <a href="https://github.com/singularity-news/wiki">
+        GitHub
+      </a>
+
+    </div>
+
+    <div id="articleList"></div>
+
+  </aside>
+
+  <main class="content">
+
+    <article class="article-box">
+
+      {html_body}
+
+    </article>
+
+  </main>
 
 </div>
 
 <script src="assets/app.js"></script>
+
 </body>
 </html>
