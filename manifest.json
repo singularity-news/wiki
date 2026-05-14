@@ -1,0 +1,44 @@
+{
+  "name": "Singularity University Encyclopedia",
+  "short_name": "SU Encyclopedia",
+  "description": "Das öffentliche Wissensarchiv der Singularity University – KdK Kreuzberg Online Wiki",
+  "start_url": "/index.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#080c14",
+  "theme_color": "#080c14",
+  "lang": "de",
+  "categories": ["education", "reference"],
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Startseite",
+      "short_name": "Home",
+      "description": "Zur Encyclopedia-Startseite",
+      "url": "/index.html",
+      "icons": [{ "src": "/favicon-32x32.png", "sizes": "32x32" }]
+    }
+  ],
+  "related_applications": [],
+  "prefer_related_applications": false
+}
