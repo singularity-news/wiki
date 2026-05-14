@@ -1,12 +1,9 @@
-# .github/workflows/wiki-mirror.yml
-
-name: Wiki XML → Encyclopedia Pages
+name: Wiki XML → HTML Encyclopedia
 
 on:
   workflow_dispatch:
   push:
-    branches:
-      - main
+    branches: [main]
 
 permissions:
   contents: write
@@ -18,48 +15,112 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Install dependencies
         run: |
-          sudo apt-get update -q
+          sudo apt-get update -y
           sudo apt-get install -y pandoc python3
-
-      - name: Verify structure
-        run: |
-          echo "ROOT CONTENTS:"
-          ls -la
-
-          echo "BACKUP:"
-          ls -la backup || true
-
-          echo "XML:"
-          file backup/wiki.xml || true
 
       - name: Build encyclopedia
         run: |
-          python3 build.py
+          python3 <<'PY'
+          import os, re, json, html, unicodedata
+          import xml.etree.ElementTree as ET
+          from collections import Counter
 
-      - name: Upload Pages artifact
+          XML = "backup/wiki.xml"
+          TEMPLATE = open("template.html", encoding="utf-8").read()
+          BASE = "https://singularity-news.github.io/wiki"
+
+          STOP = set("der die das und oder ein eine the and or for with from".split())
+
+          def safe(t):
+              t = unicodedata.normalize("NFKC", t)
+              t = re.sub(r"[^\w\- ]+", "", t)
+              return t.replace(" ", "_") + ".html"
+
+          def strip_tags(s):
+              s = re.sub(r"<[^>]+>", " ", s)
+              return re.sub(r"\s+", " ", html.unescape(s)).strip()
+
+          def keywords(text):
+              words = re.findall(r"[a-zA-Z0-9]{4,}", text.lower())
+              return [w for w,_ in Counter(w for w in words if w not in STOP).most_common(10)]
+
+          ns = {"mw": "http://www.mediawiki.org/xml/export-0.10/"}
+          pages = []
+
+          for _, p in ET.iterparse(XML, events=("end",)):
+              if p.tag.endswith("page"):
+                  t = p.find("mw:title", ns)
+                  x = p.find(".//mw:text", ns)
+                  if t is not None:
+                      pages.append((t.text.strip(), x.text or ""))
+                  p.clear()
+
+          title_map = {t: safe(t) for t,_ in pages}
+          title_map.update({t.replace(" ","_"): safe(t) for t,_ in pages})
+
+          search = []
+
+          for title, text in pages:
+              fn = safe(title)
+
+              open("/tmp/in.wiki","w",encoding="utf-8").write(text)
+              os.system("pandoc /tmp/in.wiki -f mediawiki -t html --wrap=none -o /tmp/out.html")
+              body = open("/tmp/out.html",encoding="utf-8").read()
+
+              body = re.sub(r'href="([^"]+)"',
+                lambda m: f'href="{title_map.get(m.group(1), m.group(1))}"',
+                body)
+
+              plain = strip_tags(body)
+              desc = plain[:300]
+              keys = keywords(plain)
+              canonical = f"{BASE}/{fn}"
+
+              page = TEMPLATE.replace("{{CONTENT}}", body)
+              page = page.replace("</head>", f"""
+              <title>{html.escape(title)}</title>
+              <meta name="description" content="{html.escape(desc)}">
+              <meta name="keywords" content="{', '.join(keys)}">
+              <link rel="canonical" href="{canonical}">
+              </head>""")
+
+              open(fn,"w",encoding="utf-8").write(page)
+
+              search.append({"title":title,"file":fn,"text":plain[:20000]})
+
+          json.dump(search, open("search-index.json","w",encoding="utf-8"), ensure_ascii=False, indent=2)
+
+          htmls = [f for f in os.listdir(".") if f.endswith(".html")]
+          sm = ['<?xml version="1.0" encoding="UTF-8"?>',
+                '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+          for f in htmls:
+              sm.append(f"<url><loc>{BASE}/{f}</loc></url>")
+          sm.append("</urlset>")
+          open("sitemap.xml","w").write("\n".join(sm))
+          PY
+
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: .
 
   deploy:
     needs: build
-
     runs-on: ubuntu-latest
-
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Deploy Pages
-        id: deployment
         uses: actions/deploy-pages@v4
