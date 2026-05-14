@@ -66,12 +66,19 @@ jobs:
             FILE="${SAFE}.html"
 
             ENCODED_TITLE=$(python3 - <<EOF
-import urllib.parse,sys
-print(urllib.parse.quote(sys.argv[1]))
-EOF
-"$TITLE")
+            import urllib.parse,sys
+            print(urllib.parse.quote(sys.argv[1]))
+            EOF
+            "$TITLE")
 
-            URL="$API?action=parse&page=$ENCODED_TITLE&prop=text&format=json"
+            ENCODED_TITLE=$(python3 -c "import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1]))" "$TITLE")
+
+            URL="$API?action=parse&page=${ENCODED_TITLE}&prop=text&format=json"
+
+            RAW_JSON=$(curl -s \
+            -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64)" \
+            -H "Accept: application/json" \
+            "$URL" || echo "")
 
             RAW_JSON=$(curl -s -H "User-Agent: Mozilla/5.0" "$URL" || echo "")
             RAW_HTML=$(echo "$RAW_JSON" | jq -r '.parse.text["*"] // empty')
