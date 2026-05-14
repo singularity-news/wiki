@@ -21,32 +21,28 @@ jobs:
       - name: Diagnose – Seitenliste erzwingen
         run: |
           API="https://wiki.free.nf/api.php"
-
           curl -s -H "User-Agent: Mozilla/5.0" \
             "$API?action=query&list=allpages&aplimit=10&format=json" \
             | jq -r '.query.allpages[].title' > pages.txt
-
-          echo "pages.txt:"
           wc -l pages.txt
           cat pages.txt
 
       - name: Diagnose – Eine Seite rendern
         run: |
           API="https://wiki.free.nf/api.php"
-
           while read -r TITLE; do
             echo "Rendere: $TITLE"
 
-            ENCODED=$(python3 - <<EOF
-import urllib.parse,sys
+            ENCODED=$(python3 - "$TITLE" <<'EOF'
+import urllib.parse, sys
 print(urllib.parse.quote(sys.argv[1]))
 EOF
-"$TITLE")
+)
 
             URL="$API?action=parse&page=$ENCODED&prop=text&format=json"
 
             RAW=$(curl -s -H "User-Agent: Mozilla/5.0" "$URL")
-            HTML=$(echo "$RAW" | jq -r '.parse.text["*"] // empty')
+            HTML=$(echo "$RAW" | jq -r '.parse.text["*"] // "<!-- EMPTY -->"')
 
             echo "HTML-Länge: ${#HTML}"
 
