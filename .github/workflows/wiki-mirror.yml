@@ -72,7 +72,10 @@ jobs:
             FILE="${SAFE}.html"
             
             ENCODED_TITLE=$(python3 -c "import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1]))" "$TITLE")
-            RAW_JSON=$(curl -s --max-time 30 "$API?action=parse&page=$ENCODED_TITLE&prop=text&format=json")
+            RAW_JSON=$(curl -s \
+            -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64)" \
+            -H "Accept: application/json" \
+            --fail "$URL" || echo "")
             RAW_HTML=$(echo "$RAW_JSON" | jq -r '.parse.text["*"] // empty')
 
             if [ -z "$RAW_HTML" ]; then
