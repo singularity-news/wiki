@@ -29,118 +29,76 @@ jobs:
         id: changes
         run: |
           API="https://wiki.free.nf/api.php"
-          SINCE_FILE=".last_sync"
 
-          if [ -f "$SINCE_FILE" ]; then
-            SINCE=$(cat "$SINCE_FILE")
-          else
-            SINCE="1970-01-01T00:00:00Z"
+          if [ ! -f .initial_render_done ]; then
+            echo "Initialer Lauf – alle Seiten rendern"
+            curl -s -H "User-Agent: Mozilla/5.0" \
+              "$API?action=query&list=allpages&aplimit=max&format=json" \
+              | jq -r '.query.allpages[].title' > pages.txt
+            echo "count=$(wc -l < pages.txt)" >> $GITHUB_OUTPUT
+            exit 0
           fi
 
-          echo "Prüfe Änderungen seit: $SINCE"
+          RESPONSE=$(curl -s -H "User-Agent: Mozilla/5.0" \
+            "$API?action=query&list=recentchanges&rcprop=title&rclimit=100&format=json")
 
-          RESPONSE=$(curl -s --max-time 30 \
-            "$API?action=query&list=recentchanges&rcprop=title|timestamp&rclimit=100&format=json")
-
-          if [ -z "$RESPONSE" ] || ! echo "$RESPONSE" | jq -e '.query' > /dev/null 2>&1; then
-            echo "Wiki-API nicht erreichbar oder leer."
+          if [ -z "$RESPONSE" ]; then
             echo "count=0" >> $GITHUB_OUTPUT
             exit 0
           fi
 
-          echo "$RESPONSE" > recent.json
-          COUNT=$(jq "[.query.recentchanges[] | select(.timestamp > \"$SINCE\")] | length" recent.json)
-          echo "count=$COUNT" >> $GITHUB_OUTPUT
+          echo "$RESPONSE" \
+            | jq -r '.query.recentchanges[].title' \
+            | grep -v -E '^(Special:|MediaWiki:|File:|Template:|Category:|User:|Talk:)' \
+            | sort -u > pages.txt
 
-          if [ "$COUNT" != "0" ]; then
-            jq -r ".query.recentchanges[] | select(.timestamp > \"$SINCE\") | .title" recent.json \
-              | grep -v -E '^(Special:|MediaWiki:|File:|Template:|Category:|Benutzer:|User:|Talk:|Diskussion:)' \
-              | sort -u > pages.txt
-            echo "Gefundene Seiten:"
-            cat pages.txt
-          fi
+          echo "count=$(wc -l < pages.txt)" >> $GITHUB_OUTPUT
 
-      - name: Geänderte Seiten rendern
+      - name: Seiten rendern
         if: steps.changes.outputs.count != '0'
         run: |
           API="https://wiki.free.nf/api.php"
-          
+
           while IFS= read -r TITLE || [[ -n "$TITLE" ]]; do
             [ -z "$TITLE" ] && continue
-            
+
             SAFE=$(echo "$TITLE" | tr ' ' '_' | sed 's/[^a-zA-Z0-9_aeoeueAEOEUEss-]//g')
             FILE="${SAFE}.html"
-            
-            ENCODED_TITLE=$(python3 -c "import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1]))" "$TITLE")
-            RAW_JSON=$(curl -s \
-            -H "User-Agent: Mozilla/5.0 (X11; Linux x86_64)" \
-            -H "Accept: application/json" \
-            --fail "$URL" || echo "")
+
+            ENCODED_TITLE=$(python3 - <<EOF
+import urllib.parse,sys
+print(urllib.parse.quote(sys.argv[1]))
+EOF
+"$TITLE")
+
+            URL="$API?action=parse&page=$ENCODED_TITLE&prop=text&format=json"
+
+            RAW_JSON=$(curl -s -H "User-Agent: Mozilla/5.0" "$URL" || echo "")
             RAW_HTML=$(echo "$RAW_JSON" | jq -r '.parse.text["*"] // empty')
 
-            if [ -z "$RAW_HTML" ]; then
-              echo "Überspringe $TITLE (kein Inhalt)."
-              continue
-            fi
-
-            TITLE_ESC=$(echo "$TITLE" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g')
-            DESC=$(echo "$RAW_HTML" | sed 's/<[^>]*>//g' | tr '\n' ' ' | sed 's/  */ /g' | cut -c1-250)
-            DESC_ESC=$(echo "$DESC" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g; s/"/\&quot;/g')
+            [ -z "$RAW_HTML" ] && continue
 
             {
-              echo '<!DOCTYPE html>'
-              echo '<html lang="de" data-theme="dark">'
-              echo '<head>'
+              echo '<!DOCTYPE html><html lang="de"><head>'
+              echo "<title>$TITLE</title>"
               echo '<meta charset="utf-8">'
-              echo '<meta name="viewport" content="width=device-width, initial-scale=1">'
-              echo "<title>${TITLE_ESC} — Singularity Encyclopedia</title>"
-              echo "<meta name=\"description\" content=\"${DESC_ESC}\">"
-              echo "<link rel=\"canonical\" href=\"https://singularity-news.github.io/${FILE}\">"
               echo '<link rel="stylesheet" href="assets/style.css">'
               echo '</head><body>'
-              echo '<header class="topbar"><a href="index.html" class="logo">Singularity News</a></header>'
-              echo "<main id=\"content\"><article><h1>${TITLE_ESC}</h1>"
+              echo "<h1>$TITLE</h1>"
               printf "%s\n" "$RAW_HTML"
-              echo '</article></main><script src="assets/app.js"></script></body></html>'
+              echo '</body></html>'
             } > "$FILE"
-            
+
             echo "✓ $FILE"
           done < pages.txt
 
-      - name: SEO-Indizes aktualisieren
-        if: steps.changes.outputs.count != '0'
-        run: |
-          TODAY=$(date -u +"%Y-%m-%d")
-          
-          # 1. Sitemap (Root-basiert)
-          echo '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' > sitemap.xml
-          find . -maxdepth 1 -name "*.html" ! -name "index.html" | sort | while read f; do
-            echo "<url><loc>https://singularity-news.github.io/$(basename "$f")</loc><lastmod>$TODAY</lastmod></url>" >> sitemap.xml
-          done
-          echo '</urlset>' >> sitemap.xml
+          touch .initial_render_done
 
-          # 2. Search-Index (JSON)
-          echo "[" > search-index.json
-          FIRST=1
-          find . -maxdepth 1 -name "*.html" ! -name "index.html" | sort | while read h; do
-            [ "$FIRST" -eq 0 ] && echo "," >> search-index.json
-            T=$(basename "$h" .html | tr '_' ' ')
-            echo "{\"title\":\"$T\",\"file\":\"$(basename "$h")\"}" >> search-index.json
-            FIRST=0
-          done
-          echo "]" >> search-index.json
-
-      - name: Sync-Zeitpunkt speichern
-        if: steps.changes.outputs.count != '0'
-        run: date -u +"%Y-%m-%dT%H:%M:%SZ" > .last_sync
-
-      - name: Änderungen committen und pushen
+      - name: Änderungen committen
         if: steps.changes.outputs.count != '0'
         run: |
           git config user.name "wiki-mirror-bot"
           git config user.email "bot@users.noreply.github.com"
           git add .
-          if ! git diff --staged --quiet; then
-            git commit -m "Auto-Sync [$(date -u +'%Y-%m-%d %H:%M')]"
-            git push
-          fi
+          git commit -m "Wiki mirror update" || exit 0
+          git push
