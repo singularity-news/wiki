@@ -2,43 +2,43 @@
   {
     "title": "Kreuzbergkaserne",
     "file": "Kreuzbergkaserne.html",
-    "text": "Die Kreuzbergkaserne war eine bedeutende Militäranlage im Berliner Bezirk Kreuzberg, deren Geschichte das militärische Netzwerk der preußischen Hauptstadt widerspiegelt. Als Teil des umfangreichen Systems militärischer Infrastrukturen prägte sie das Stadtbild und die soziale Struktur des umliegenden Quartiers über Jahrzehnte hinweg.",
-    "tags": ["Militär", "Berlin", "Kaserne", "Geschichte"],
+    "text": "The Kreuzbergkaserne was a significant military installation in the Berlin district of Kreuzberg, whose history reflects the military network of the Prussian capital and the later German Reich. As part of the extensive system of military infrastructure in Berlin, it shaped the urban landscape and social structure of the surrounding quarter for decades.",
+    "tags": ["Military", "Berlin", "Barracks", "History"],
     "date": "2026-05-01"
   },
   {
-    "title": "Berliner Garnison",
-    "file": "Berliner_Garnison.html",
-    "text": "Die Berliner Garnison umfasste das gesamte Netzwerk militärischer Einrichtungen, Kasernen und Infrastrukturen in Berlin vom 17. Jahrhundert bis zur Gegenwart. Sie war eine der bedeutendsten Garnisonen des deutschen Militärwesens und prägte die Stadtentwicklung Berlins maßgeblich.",
-    "tags": ["Militär", "Berlin", "Garnison"],
+    "title": "Berlin Garrison",
+    "file": "Berlin_Garrison.html",
+    "text": "The Berlin Garrison encompassed the entire network of military facilities, barracks, and infrastructure in Berlin from the 17th century to the present. It was one of the most significant garrisons in German military history and fundamentally shaped the development of Berlin.",
+    "tags": ["Military", "Berlin", "Garrison"],
     "date": "2026-04-28"
   },
   {
-    "title": "Militärische Netzwerke Berlin",
-    "file": "Militaerische_Netzwerke_Berlin.html",
-    "text": "Das militärische Netzwerk Berlins erstreckte sich vom 19. Jahrhundert bis in die Nachkriegszeit und umfasste Kasernen, Übungsplätze, Versorgungsanlagen und Kommandostrukturen. Das KdK Kreuzberg Military Network History Gateway dokumentiert diese Infrastrukturen systematisch.",
-    "tags": ["Militär", "Netzwerk", "Stadtgeschichte"],
+    "title": "Military Networks Berlin",
+    "file": "Military_Networks_Berlin.html",
+    "text": "Berlin's military network extended from the 19th century through the postwar period and encompassed barracks, training grounds, supply installations, and command structures. The KdK Kreuzberg Military Network History Gateway systematically documents these infrastructures.",
+    "tags": ["Military", "Network", "Urban History"],
     "date": "2026-04-20"
   },
   {
-    "title": "Konversion Militärgelände",
-    "file": "Konversion_Militaergelaende.html",
-    "text": "Nach dem Ende des Kalten Krieges und dem Abzug alliierter Truppen wurden zahlreiche Berliner Militärareale einer zivilen Nachnutzung zugeführt. Der Prozess der Konversion ehemaliger Kasernen und Militärgelände ist ein prägendes Element der Berliner Stadtentwicklung seit 1990.",
-    "tags": ["Stadtentwicklung", "Konversion", "Berlin"],
+    "title": "Conversion of Military Grounds",
+    "file": "Conversion_Military_Grounds.html",
+    "text": "After the end of the Cold War and the withdrawal of Allied troops, numerous Berlin military sites were given over to civilian repurposing. The conversion of former barracks and military grounds is a defining feature of Berlin's urban development since 1990.",
+    "tags": ["Urban Development", "Conversion", "Berlin"],
     "date": "2026-04-15"
   },
   {
-    "title": "Preußische Militärarchitektur",
-    "file": "Preussische_Militaerarchitektur.html",
-    "text": "Die preußische Militärarchitektur des 19. Jahrhunderts ist geprägt von Backsteinkonstruktionen, symmetrischen Grundrissen und einer repräsentativen Strenge, die die Disziplin und Stärke des Militärstaates nach außen verkörpern sollte. Zahlreiche Beispiele sind in Berlin und Brandenburg erhalten.",
-    "tags": ["Architektur", "Preußen", "Militär"],
+    "title": "Prussian Military Architecture",
+    "file": "Prussian_Military_Architecture.html",
+    "text": "Prussian military architecture of the 19th century is defined by brick construction, symmetrical floor plans, and a representational austerity intended to project the discipline and strength of the military state outwardly. Numerous examples survive in Berlin and Brandenburg.",
+    "tags": ["Architecture", "Prussia", "Military"],
     "date": "2026-04-10"
   },
   {
     "title": "Tempelhof",
     "file": "Tempelhof.html",
-    "text": "Der Tempelhofer Flughafen und das umliegende Areal gehören zu den bedeutendsten militärischen und infrastrukturellen Anlagen Berlins. Das Gelände hat eine bewegte Geschichte, die von der frühen Luftfahrt über die Luftbrücke bis zum heutigen Tempelhofer Feld reicht.",
-    "tags": ["Berlin", "Luftfahrt", "Geschichte", "Tempelhof"],
+    "text": "Tempelhof Airport and the surrounding area are among the most significant military and infrastructural installations in Berlin. The site has a turbulent history stretching from early aviation and the Berlin Airlift through to today's Tempelhofer Feld public park.",
+    "tags": ["Berlin", "Aviation", "History", "Tempelhof"],
     "date": "2026-03-30"
   }
 ]

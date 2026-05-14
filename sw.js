@@ -1,15 +1,9 @@
-/* ===================================================
-   Singularity University Encyclopedia
-   sw.js  —  Service Worker (Offline PWA)
-   Cache-first for static assets, network-first for
-   article HTML so fresh content is always preferred.
-   =================================================== */
+/* Singularity University Encyclopedia | sw.js */
+/* Cache-first for assets, network-first for pages and JSON */
 
-const CACHE_NAME    = 'su-encyclopedia-v2';
-const OFFLINE_PAGE  = '/index.html';
-
-/* Assets that are always cached on install */
-const PRECACHE = [
+var CACHE = 'su-enc-v2';
+var OFFLINE = '/index.html';
+var PRECACHE = [
   '/',
   '/index.html',
   '/assets/style.css',
@@ -18,109 +12,62 @@ const PRECACHE = [
   '/manifest.json'
 ];
 
-/* ── Install ── */
-self.addEventListener('install', event => {
+self.addEventListener('install', function (e) {
   self.skipWaiting();
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(PRECACHE))
+  e.waitUntil(
+    caches.open(CACHE).then(function (c) { return c.addAll(PRECACHE); })
   );
 });
 
-/* ── Activate: clean up old caches ── */
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(
-        keys
-          .filter(k => k !== CACHE_NAME)
-          .map(k => caches.delete(k))
-      )
-    ).then(() => self.clients.claim())
+self.addEventListener('activate', function (e) {
+  e.waitUntil(
+    caches.keys().then(function (keys) {
+      return Promise.all(
+        keys.filter(function (k) { return k !== CACHE; }).map(function (k) { return caches.delete(k); })
+      );
+    }).then(function () { return self.clients.claim(); })
   );
 });
 
-/* ── Fetch strategy ── */
-self.addEventListener('fetch', event => {
-  const { request } = event;
-  const url = new URL(request.url);
+self.addEventListener('fetch', function (e) {
+  var req = e.request;
+  var url = new URL(req.url);
+  if (req.method !== 'GET') return;
+  if (url.origin !== self.location.origin && !url.hostname.includes('raw.githubusercontent.com')) return;
 
-  /* Skip non-GET and cross-origin (except GitHub raw assets) */
-  if (request.method !== 'GET') return;
-  if (
-    url.origin !== self.location.origin &&
-    !url.hostname.includes('raw.githubusercontent.com')
-  ) return;
-
-  /* search-index.json: network first, fallback to cache */
-  if (url.pathname.endsWith('search-index.json')) {
-    event.respondWith(networkFirst(request));
-    return;
+  if (url.pathname.endsWith('search-index.json') || url.pathname.endsWith('.html')) {
+    e.respondWith(networkFirst(req));
+  } else {
+    e.respondWith(cacheFirst(req));
   }
-
-  /* HTML article pages: network first, fallback to cache */
-  if (
-    request.headers.get('Accept')?.includes('text/html') ||
-    url.pathname.endsWith('.html')
-  ) {
-    event.respondWith(networkFirstHTML(request));
-    return;
-  }
-
-  /* CSS / JS / images: cache first */
-  event.respondWith(cacheFirst(request));
 });
 
-/* ── Strategies ── */
-
-async function cacheFirst(request) {
-  const cached = await caches.match(request);
-  if (cached) return cached;
-  try {
-    const response = await fetch(request);
-    if (response.ok) {
-      const cache = await caches.open(CACHE_NAME);
-      cache.put(request, response.clone());
-    }
-    return response;
-  } catch {
-    return new Response('Offline – Ressource nicht verfügbar.', {
-      status: 503,
-      headers: { 'Content-Type': 'text/plain; charset=utf-8' }
-    });
-  }
-}
-
-async function networkFirst(request) {
-  try {
-    const response = await fetch(request);
-    if (response.ok) {
-      const cache = await caches.open(CACHE_NAME);
-      cache.put(request, response.clone());
-    }
-    return response;
-  } catch {
-    const cached = await caches.match(request);
-    return cached || new Response('[]', {
-      headers: { 'Content-Type': 'application/json; charset=utf-8' }
-    });
-  }
-}
-
-async function networkFirstHTML(request) {
-  try {
-    const response = await fetch(request);
-    if (response.ok) {
-      const cache = await caches.open(CACHE_NAME);
-      cache.put(request, response.clone());
-    }
-    return response;
-  } catch {
-    const cached = await caches.match(request);
+function cacheFirst(req) {
+  return caches.match(req).then(function (cached) {
     if (cached) return cached;
-    /* Fallback to index as offline shell */
-    return caches.match(OFFLINE_PAGE) || new Response(
-      '<h1>Offline</h1><p>Keine Verbindung. Bitte später erneut versuchen.</p>',
-      { headers: { 'Content-Type': 'text/html; charset=utf-8' } }
-    );
-  }
+    return fetch(req).then(function (resp) {
+      if (resp.ok) {
+        caches.open(CACHE).then(function (c) { c.put(req, resp.clone()); });
+      }
+      return resp;
+    }).catch(function () {
+      return new Response('Offline.', { status: 503, headers: { 'Content-Type': 'text/plain' } });
+    });
+  });
+}
+
+function networkFirst(req) {
+  return fetch(req).then(function (resp) {
+    if (resp.ok) {
+      caches.open(CACHE).then(function (c) { c.put(req, resp.clone()); });
+    }
+    return resp;
+  }).catch(function () {
+    return caches.match(req).then(function (cached) {
+      return cached || caches.match(OFFLINE) || new Response(
+        '<h1>Offline</h1>',
+        { headers: { 'Content-Type': 'text/html' } }
+      );
+    });
+  });
 }
