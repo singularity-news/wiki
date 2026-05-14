@@ -15,12 +15,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
 
     steps:
-
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -40,47 +38,68 @@ jobs:
           TEMPLATE = open("template.html", encoding="utf-8").read()
           BASE = "https://singularity-news.github.io/wiki"
 
+          # Namespace-agnostic tag stripper
+          def strip_ns(tag):
+              return tag.split("}", 1)[-1]
+
           STOP = set("der die das und oder ein eine the and or for with from".split())
 
           def safe(t):
               t = unicodedata.normalize("NFKC", t)
               t = re.sub(r"[^\w\- ]+", "", t)
-              return t.replace(" ", "_") + ".html"
+              return (t.replace(" ", "_") or "Untitled") + ".html"
 
           def strip_tags(s):
               s = re.sub(r"<[^>]+>", " ", s)
               return re.sub(r"\s+", " ", html.unescape(s)).strip()
 
           def keywords(text):
-              words = re.findall(r"[a-zA-Z0-9]{4,}", text.lower())
+              words = re.findall(r"[A-Za-z0-9]{3,}", text.lower())
               return [w for w,_ in Counter(w for w in words if w not in STOP).most_common(10)]
 
-          ns = {"mw": "http://www.mediawiki.org/xml/export-0.10/"}
           pages = []
 
-          for _, p in ET.iterparse(XML, events=("end",)):
-              if p.tag.endswith("page"):
-                  t = p.find("mw:title", ns)
-                  x = p.find(".//mw:text", ns)
-                  if t is not None:
-                      pages.append((t.text.strip(), x.text or ""))
-                  p.clear()
+          # Parse ANY MediaWiki XML version
+          for event, elem in ET.iterparse(XML, events=("end",)):
+              if strip_ns(elem.tag) == "page":
+                  title_el = elem.find(".//{*}title")
+                  text_el = elem.find(".//{*}text")
+                  title = (title_el.text or "").strip() if title_el is not None else ""
+                  text = text_el.text or "" if text_el is not None else ""
+                  if title:
+                      pages.append((title, text))
+                  elem.clear()
 
-          title_map = {t: safe(t) for t,_ in pages}
-          title_map.update({t.replace(" ","_"): safe(t) for t,_ in pages})
+          print("Parsed pages:", len(pages))
+
+          if not pages:
+              raise SystemExit("ERROR: No pages parsed. Check XML namespace.")
+
+          # Build title → filename map
+          title_map = {}
+          for t,_ in pages:
+              fn = safe(t)
+              title_map[t] = fn
+              title_map[t.replace(" ", "_")] = fn
 
           search = []
 
-          for title, text in pages:
+          for i,(title,wikitext) in enumerate(pages,1):
               fn = safe(title)
 
-              open("/tmp/in.wiki","w",encoding="utf-8").write(text)
-              os.system("pandoc /tmp/in.wiki -f mediawiki -t html --wrap=none -o /tmp/out.html")
-              body = open("/tmp/out.html",encoding="utf-8").read()
+              tmp_in = f"/tmp/{i}.wiki"
+              tmp_out = f"/tmp/{i}.html"
+              open(tmp_in,"w",encoding="utf-8").write(wikitext)
+              os.system(f'pandoc "{tmp_in}" -f mediawiki -t html --wrap=none -o "{tmp_out}"')
 
-              body = re.sub(r'href="([^"]+)"',
-                lambda m: f'href="{title_map.get(m.group(1), m.group(1))}"',
-                body)
+              body = open(tmp_out,encoding="utf-8").read()
+
+              # Rewrite internal links
+              def repl(m):
+                  href = m.group(1)
+                  key = href.split("#",1)[0].split("?",1)[0].replace(" ", "_")
+                  return f'href="{title_map.get(key, href)}"'
+              body = re.sub(r'href="([^"]+)"', repl, body)
 
               plain = strip_tags(body)
               desc = plain[:300]
@@ -101,13 +120,15 @@ jobs:
 
           json.dump(search, open("search-index.json","w",encoding="utf-8"), ensure_ascii=False, indent=2)
 
-          htmls = [f for f in os.listdir(".") if f.endswith(".html")]
+          # Sitemap
+          html_files = [f for f in os.listdir(".") if f.endswith(".html")]
           sm = ['<?xml version="1.0" encoding="UTF-8"?>',
                 '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
-          for f in htmls:
+          for f in html_files:
               sm.append(f"<url><loc>{BASE}/{f}</loc></url>")
           sm.append("</urlset>")
           open("sitemap.xml","w").write("\n".join(sm))
+
           PY
 
       - name: Upload artifact
