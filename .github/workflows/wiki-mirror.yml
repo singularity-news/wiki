@@ -22,7 +22,10 @@ jobs:
         id: changes
         run: |
           API="https://wiki.free.nf/api.php"
-          SINCE_FILE=".last_sync"
+          STATE_DIR=".github/wiki-sync"
+          SINCE_FILE="$STATE_DIR/.last_sync"
+
+          mkdir -p "$STATE_DIR"
 
           if [ -f "$SINCE_FILE" ]; then
             SINCE=$(cat "$SINCE_FILE")
@@ -30,7 +33,7 @@ jobs:
             SINCE="1970-01-01T00:00:00Z"
           fi
 
-          RESPONSE=$(curl -s "$API?action=query&list=recentchanges&rcprop=title|timestamp&rclimit=50&format=json")
+          RESPONSE=$(curl -s "$API?action=query&list=recentchanges&rcprop=title|timestamp&rclimit=500&format=json")
           echo "$RESPONSE" > recent.json
 
           COUNT=$(jq "[.query.recentchanges[] | select(.timestamp > \"$SINCE\")] | length" recent.json)
@@ -47,14 +50,15 @@ jobs:
         if: steps.changes.outputs.count != '0'
         run: |
           API="https://wiki.free.nf/api.php"
+          MOD=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
           while read TITLE; do
-            SAFE=$(echo "$TITLE" | tr ' ' '_' | tr -cd '[:alnum:]_')
+            SAFE=$(printf "%s" "$TITLE" | jq -sRr @uri)
             FILE="$SAFE.html"
             ESCAPED_TITLE=$(printf '%s\n' "$TITLE" | sed 's/&/\&amp;/g; s/</\&lt;/g; s/>/\&gt;/g')
 
             HTML=$(curl -s "$API?action=parse&page=$(printf "%s" "$TITLE" | jq -sRr @uri)&prop=text&format=json" \
-              | jq -r '.parse.text["*"]')
+              | jq -r '.parse.text["*"] // "<p>Fehler beim Rendern dieser Seite.</p>"')
 
             cat > "$FILE" <<EOF
 <!DOCTYPE html>
@@ -63,7 +67,7 @@ jobs:
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>$ESCAPED_TITLE</title>
-<link rel="canonical" href="https://singularity-news.github.io/$SAFE.html">
+<link rel="canonical" href="https://singularity-news.github.io/wiki/$SAFE">
 </head>
 <body>
 $HTML
@@ -75,20 +79,34 @@ EOF
       - name: Sitemap aktualisieren
         if: steps.changes.outputs.count != '0'
         run: |
+          MOD=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
           echo '<?xml version="1.0" encoding="UTF-8"?>' > sitemap.xml
           echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' >> sitemap.xml
 
           find . -maxdepth 1 -name "*.html" ! -name "index.html" | sort | while read f; do
             FILE=$(basename "$f")
-            echo "<url><loc>https://singularity-news.github.io/$FILE</loc></url>" >> sitemap.xml
+            echo "<url><loc>https://singularity-news.github.io/$FILE</loc><lastmod>$MOD</lastmod></url>" >> sitemap.xml
           done
 
           echo '</urlset>' >> sitemap.xml
 
-      - name: Sync‑Zeitpunkt speichern
+      - name: Index-Seite erzeugen
         if: steps.changes.outputs.count != '0'
         run: |
-          date -u +"%Y-%m-%dT%H:%M:%SZ" > .last_sync
+          echo '<!DOCTYPE html><html><head><meta charset="utf-8"><title>Wiki Mirror</title></head><body>' > index.html
+          echo '<h1>International Treaty Law Wiki – Mirror</h1>' >> index.html
+          echo '<ul>' >> index.html
+          for f in *.html; do
+            [ "$f" = "index.html" ] && continue
+            echo "<li><a href=\"$f\">$f</a></li>" >> index.html
+          done
+          echo '</ul></body></html>' >> index.html
+
+      - name: Sync-Zeitpunkt speichern
+        if: steps.changes.outputs.count != '0'
+        run: |
+          date -u +"%Y-%m-%dT%H:%M:%SZ" > .github/wiki-sync/.last_sync
 
       - name: Änderungen committen und pushen
         if: steps.changes.outputs.count != '0'
@@ -97,5 +115,5 @@ EOF
           git config user.name "wiki-mirror-bot"
           git config user.email "bot@users.noreply.github.com"
           git add .
-          git commit -m "Automatischer MediaWiki‑Root‑Sync"
+          git commit -m "Automatischer MediaWiki Root Mirror Sync"
           git push
