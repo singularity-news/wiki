@@ -1,0 +1,123 @@
+# shared_html.py
+# Imported by build.py — contains the shared topbar + sidebar HTML
+
+LOGO_URL = "https://raw.githubusercontent.com/singularity-news/wiki/57d6999f3aa1e574cc45619c5ec7b52592d42e61/assets/logo.png"
+OG_IMAGE  = "https://raw.githubusercontent.com/singularity-news/wiki/57d6999f3aa1e574cc45619c5ec7b52592d42e61/assets/header.png"
+
+TOPBAR_HTML = """
+<div class="overlay" id="overlay" aria-hidden="true"></div>
+
+<header class="topbar" role="banner">
+  <button class="icon-btn" id="menuToggle" aria-label="Open menu" aria-expanded="false" aria-controls="sidebar">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor" aria-hidden="true">
+      <rect y="2" width="18" height="2" rx="1"/>
+      <rect y="8" width="18" height="2" rx="1"/>
+      <rect y="14" width="18" height="2" rx="1"/>
+    </svg>
+  </button>
+  <a href="index.html" class="topbar-logo">
+    <img src="{logo}" alt="Logo" width="34" height="34" loading="lazy">
+    <div class="logo-text">
+      <span class="logo-name">Singularity University</span>
+      <span class="logo-sub">KdK Krzb. Online Wiki</span>
+    </div>
+  </a>
+  <div class="topbar-actions">
+    <button class="icon-btn" id="themeToggle" aria-label="Toggle theme" title="Toggle theme">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <circle cx="12" cy="12" r="5"/>
+        <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+        <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+      </svg>
+    </button>
+    <a href="search.html" class="icon-btn" aria-label="Search" title="Search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+    </a>
+    <a href="https://github.com/singularity-news/wiki" class="icon-btn" target="_blank" rel="noopener" aria-label="GitHub">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.44 9.8 8.21 11.39.6.11.82-.26.82-.58v-2.03c-3.34.73-4.04-1.61-4.04-1.61-.54-1.38-1.33-1.74-1.33-1.74-1.09-.74.08-.73.08-.73 1.2.09 1.84 1.24 1.84 1.24 1.07 1.83 2.8 1.3 3.48.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 0 1 3-.4c1.02.005 2.04.14 3 .4 2.28-1.55 3.29-1.23 3.29-1.23.66 1.66.25 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.49 5.92.43.37.82 1.1.82 2.22v3.29c0 .32.22.69.83.57C20.57 21.8 24 17.3 24 12 24 5.37 18.63 0 12 0z"/>
+      </svg>
+    </a>
+  </div>
+</header>
+
+<aside class="sidebar" id="sidebar" role="navigation" aria-label="Article navigation">
+  <div class="sidebar-search">
+    <input type="search" id="searchInput" placeholder="Search articles..." aria-label="Search articles" autocomplete="off">
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-label">Articles</div>
+    <ul id="articleList" role="list">
+      <li class="no-results">Loading...</li>
+    </ul>
+  </div>
+  <nav class="sidebar-links" aria-label="Navigation">
+    <a href="index.html">&#127968; Encyclopedia</a>
+    <a href="search.html">&#128269; Search</a>
+    <a href="https://kdk-university.netlify.app/" target="_blank" rel="noopener">&#127891; KdK University</a>
+    <a href="https://electric-paradise.start.page" target="_blank" rel="noopener">&#9889; Electric Paradise</a>
+    <a href="https://singularity-news.github.io/" target="_blank" rel="noopener">&#128240; Singularity News</a>
+    <a href="https://github.com/singularity-news/wiki" target="_blank" rel="noopener">&#128230; GitHub</a>
+  </nav>
+</aside>
+""".strip().format(logo=LOGO_URL)
+
+FOOTER_HTML = """
+<footer class="footer" role="contentinfo">
+  <div class="footer-inner">
+    <a class="footer-link" href="https://world.rf.gd" target="_blank" rel="noopener">
+      <span class="footer-icon">&#127760;</span>
+      <span><strong>WSD - World Succession Deed 1400/98</strong><br>world.rf.gd &middot; worldsold.wixsite.com/world-sold/en</span>
+    </a>
+    <a class="footer-link" href="https://global-archive.rf.gd" target="_blank" rel="noopener">
+      <span class="footer-icon">&#127760;</span>
+      <span><strong>WSD &ndash; Global Legal Succession Archive</strong><br>global-archive.rf.gd &middot; worldsold.wixsite.com/global-archive</span>
+    </a>
+    <a class="footer-link" href="https://ep.ct.ws" target="_blank" rel="noopener">
+      <span class="footer-icon">&#127760;</span>
+      <span><strong>Electric Technocracy</strong><br>ep.ct.ws &middot; worldsold.wixsite.com/electric-technocracy</span>
+    </a>
+    <a class="footer-link" href="https://videos.xo.je" target="_blank" rel="noopener">
+      <span class="footer-icon">&#127909;</span>
+      <span><strong>YouTube Channel</strong><br>videos.xo.je &middot; youtube.com/@Staatensukzessionsurkunde-1400</span>
+    </a>
+    <a class="footer-link" href="https://nwo.likesyou.org" target="_blank" rel="noopener">
+      <span class="footer-icon">&#127911;</span>
+      <span><strong>Podcast Show</strong><br>nwo.likesyou.org &middot; Spotify</span>
+    </a>
+    <a class="footer-link" href="https://electric-paradise.start.page" target="_blank" rel="noopener">
+      <span class="footer-icon">&#128640;</span>
+      <span><strong>Start-Page WSD &amp; Electric Paradise</strong><br>electric-paradise.start.page</span>
+    </a>
+    <a class="footer-link" href="https://patch98.wordpress.com" target="_blank" rel="noopener">
+      <span class="footer-icon">&#9889;</span>
+      <span><strong>The Patch Blog: Exponential Tech</strong><br>patch98.wordpress.com</span>
+    </a>
+    <a class="footer-link" href="https://now31.wordpress.com" target="_blank" rel="noopener">
+      <span class="footer-icon">&#127963;</span>
+      <span><strong>Homo Nexus Blog</strong><br>now31.wordpress.com</span>
+    </a>
+    <a class="footer-link" href="https://chatgpt.com/g/g-69d8635591d48191adc315b8f2b8be32-electric-technocracy-a-new-form-of-government" target="_blank" rel="noopener">
+      <span class="footer-icon">&#128172;</span>
+      <span><strong>Electric Technocracy GPT</strong><br>chatgpt.com</span>
+    </a>
+    <a class="footer-link" href="https://chatgpt.com/g/g-69d95a89896081918fcb207e1665bf26-juridical-singularity-domestic-international-law" target="_blank" rel="noopener">
+      <span class="footer-icon">&#128172;</span>
+      <span><strong>Juridical SINGULARITY GPT</strong><br>chatgpt.com</span>
+    </a>
+  </div>
+  <div class="footer-bottom">
+    <p>
+      &copy; 2026 Singularity University Wiki &middot; KdK Kreuzberg
+      <span class="footer-sep">&middot;</span>
+      <a href="https://github.com/singularity-news/wiki" target="_blank" rel="noopener">GitHub</a>
+      <span class="footer-sep">&middot;</span>
+      <a href="sitemap.xml">Sitemap</a>
+    </p>
+  </div>
+</footer>
+""".strip()
