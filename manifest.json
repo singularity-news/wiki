@@ -1,11 +1,39 @@
-// manifest.json
-
 {
-  "name": "Singularity Encyclopedia",
-  "short_name": "Encyclopedia",
-  "start_url": "encyclopedia.html",
+  "name": "Singularity University Encyclopedia",
+  "short_name": "SU Encyclopedia",
+  "description": "Public knowledge archive of Singularity University - KdK Kreuzberg Online Wiki",
+  "start_url": "/index.html",
+  "scope": "/",
   "display": "standalone",
-  "background_color": "#0d1117",
-  "theme_color": "#0d1117",
-  "icons": []
+  "orientation": "portrait-primary",
+  "background_color": "#07090f",
+  "theme_color": "#07090f",
+  "lang": "en",
+  "categories": ["education", "reference"],
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Home",
+      "url": "/index.html",
+      "icons": [{ "src": "/favicon-32x32.png", "sizes": "32x32" }]
+    }
+  ]
 }
