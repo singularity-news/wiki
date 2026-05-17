@@ -1,7 +1,7 @@
 # wiki
 An independent scholarly wiki dedicated to the structure, doctrine, and practice of international treaty law. Offering precise, verifiable analysis of treaties, state practice, depositary functions, and global legal regimes for researchers and practitioners.  
 
-👓 Read more about it:
+👓 Read more about it: 
 
 🌐 WSD - World Succession Deed 1400/98
 
@@ -15,7 +15,7 @@ https://global-archive.rf.gd
 
 https://worldsold.wixsite.com/global-archive
 
-🌐 Electric Technocracy
+🌐 Electric Technocracy 
 
 https://ep.ct.ws
 
@@ -31,11 +31,11 @@ https://worldsold.wixsite.com/navigator
 
 https://worldsold.wixsite.com/international
 
-🚦WSD Age of Transition
+🚦WSD Age of Transition 
 
 https://aitechnocracy.wixsite.com/age-of-transition
 
-🚦 Future Technocracy Navigator
+🚦 Future Technocracy Navigator 
 
 https://aitechnocracy.wixsite.com/future
 
@@ -43,11 +43,12 @@ https://aitechnocracy.wixsite.com/future
 
 https://wiki.free.nf/
 
-📘 Read the eBooks & Download free PDF:
+
+📘 Read the eBooks & Download free PDF: 
 
 https://4u.free.nf
 
-🎥 YouTube Channel
+🎥 YouTube Channel 
 
 https://videos.xo.je
 
@@ -59,7 +60,7 @@ https://nwo.likesyou.org
 
 https://creators.spotify.com/pod/show/world-succession-deed
 
-🍏 Apple Podcast
+🍏 Apple Podcast 
 
 https://podcasts.apple.com/de/podcast/world-sold-world-succession-deed-1400-98-http-world/id1786462631
 
@@ -75,11 +76,11 @@ https://electrictechnocracy.start.page
 
 https://bit.ly/m/Electric-Technocracy
 
-🌳 Linktr.ee Link collection
+🌳 Linktr.ee Link collection 
 
 https://linktr.ee/electric.technocracy
 
-🎵 Electric Technocracy Sound Collective Link Collection
+🎵 Electric Technocracy Sound Collective Link Collection 
 
 https://lnk.bio/electric.technocracy
 
@@ -87,7 +88,7 @@ https://lnk.bio/electric.technocracy
 
 https://wiki.free.nf/Juridical_Singularity
 
-🪢Electric Technocracy Pioneers Community
+🪢Electric Technocracy Pioneers Community  
 
 https://community.xo.je
 
@@ -121,11 +122,11 @@ https://doi.org/10.5281/zenodo.18216674
 
 https://doi.org/10.5281/zenodo.18505843
 
-💡 GitHub Page Pioneers Community
+💡 GitHub Page Pioneers Community 
 
 https://et-pioneer.github.io/Electric-Technocracy-Pioneers-Community/
 
-💡 GitHub Page Pioneers Community Encyclopedia
+💡 GitHub Page Pioneers Community Encyclopedia 
 
 https://et-pioneer.github.io/Electric-Technocracy-Pioneers-Community/encyclopedia.html
 
@@ -133,11 +134,11 @@ https://et-pioneer.github.io/Electric-Technocracy-Pioneers-Community/encyclopedi
 
 https://repository.ct.ws
 
-💡 Electric Technocracy Pioneers Community WIKI
+💡 Electric Technocracy Pioneers Community WIKI 
 
 https://github.com/ET-Pioneer/Electric-Technocracy-Pioneers-Community/wiki
 
-⚡ Electric Technocracy Pioneers Community Navigator
+⚡ Electric Technocracy Pioneers Community Navigator 
 
 https://github.com/ET-Pioneer/electric-navigator
 
@@ -157,7 +158,7 @@ https://mranonymousnwo.github.io/One_World/encyclopedia.html
 
 https://github.com/MrAnonymousNWO/One_World/
 
-🌍 One World GitHub WIKI
+🌍 One World GitHub WIKI 
 
 https://github.com/MrAnonymousNWO/One_World/wiki
 
@@ -165,19 +166,20 @@ https://github.com/MrAnonymousNWO/One_World/wiki
 
 https://mranonymousnwo.github.io/One_World/encyclopedia.html
 
-🗺️ United World
+🗺️ United World 
 
 https://mranonymousnwo.github.io/United-World
 
-🗺️ United World GitHub
+🗺️ United World GitHub 
 
 https://github.com/MrAnonymousNWO/United-World
 
-🗺️ United World WIKI
+🗺️ United World WIKI 
 
 https://github.com/MrAnonymousNWO/United-World/wiki
 
-🔗 GitHub PDF Vault Electric Technocracy - Visionary AI Governance System
+🔗 GitHub PDF Vault
+Electric Technocracy - Visionary AI Governance System 
 
 https://github.com/ET-Pioneer/Electric-Technocracy-Pioneers-Community/blob/4fe4bdf1b29b7534ca69b04fd1a993ce344d7682/pdf/english/Electric_Technocracy.pdf
 
@@ -185,11 +187,11 @@ https://github.com/ET-Pioneer/Electric-Technocracy-Pioneers-Community/blob/4fe4b
 
 https://github.com/ET-Pioneer/Electric-Technocracy-Pioneers-Community/blob/4fe4bdf1b29b7534ca69b04fd1a993ce344d7682/pdf/english/English_turenne_barracks_treaty_1400_98_06_10_1998_nato_brd_nl.PDF
 
-🏝️ Micronations Made Easy
+🏝️ Micronations Made Easy 
 
 https://github.com/ET-Pioneer/Electric-Technocracy-Pioneers-Community/blob/4fe4bdf1b29b7534ca69b04fd1a993ce344d7682/pdf/english/Micronation_Made_Easy.pdf
 
-®️ Starting a State for Dummies
+®️ Starting a State for Dummies 
 
 https://github.com/ET-Pioneer/Electric-Technocracy-Pioneers-Community/blob/4fe4bdf1b29b7534ca69b04fd1a993ce344d7682/pdf/english/State_Founding_for_Dummies_How_to_Start_Your_Own_Country.pdf
 
@@ -197,27 +199,27 @@ https://github.com/ET-Pioneer/Electric-Technocracy-Pioneers-Community/blob/4fe4b
 
 https://github.com/ET-Pioneer/Electric-Technocracy-Pioneers-Community/blob/4fe4bdf1b29b7534ca69b04fd1a993ce344d7682/pdf/english/Trillions%20for%20the%20Future-AI%2C%20Power%2C%20and%20Post-Scarcity%20-%20Electric%20Technocracy.pdf
 
-💱 Universal Basic Income and the Electric Technocracy
+💱 Universal Basic Income and the Electric Technocracy 
 
 https://github.com/ET-Pioneer/Electric-Technocracy-Pioneers-Community/blob/4fe4bdf1b29b7534ca69b04fd1a993ce344d7682/pdf/english/UBI%20Universal%20Basic%20Income%20And%20The%20Electric%20Technocracy.pdf
 
-💲 Unconditional Basic Income, Tech Tax, and a World Without Nation States in the Electric Technocracy: Humans Tax-Free
+💲 Unconditional Basic Income, Tech Tax, and a World Without Nation States in the Electric Technocracy: Humans Tax-Free 
 
 https://github.com/ET-Pioneer/Electric-Technocracy-Pioneers-Community/blob/4fe4bdf1b29b7534ca69b04fd1a993ce344d7682/pdf/english/UBI%20and%20the%20Future%20of%20Humanity%20%E2%80%93%20From%20Work%20to%20Electric%20Technocracy.pdf
 
-⚖️ World Succession Deed: Global Succession Explained
+⚖️ World Succession Deed: Global Succession Explained 
 
 https://github.com/ET-Pioneer/Electric-Technocracy-Pioneers-Community/blob/4fe4bdf1b29b7534ca69b04fd1a993ce344d7682/pdf/english/World-Sold-Non-fiction-Succession-Deed.pdf
 
-🗺️ World Sold: The WSD 1400 Treaty
+🗺️ World Sold: The WSD 1400 Treaty 
 
 https://github.com/ET-Pioneer/Electric-Technocracy-Pioneers-Community/blob/4fe4bdf1b29b7534ca69b04fd1a993ce344d7682/pdf/english/World_Sold_State_succession_deed_1400.pdf
 
-⚖️ Juridical Singularity
+⚖️ Juridical Singularity 
 
 https://github.com/ET-Pioneer/Electric-Technocracy-Pioneers-Community/blob/6a2725be468c8ba3863c6717a4a7661bae9e8402/preprint/Singularity%20in%20International%20Law.pdf
 
-✒️ Drittverwahrung von Internationalen Abkommen
+✒️ Drittverwahrung von Internationalen Abkommen 
 
 https://github.com/ET-Pioneer/Electric-Technocracy-Pioneers-Community/blob/4e0c77c143a96d93a513bd1df522ef12d155d66c/preprint/Drittverwahrung-von-nationalen%20und%20internationalen%20Vertr%C3%A4gen.pdf
 
@@ -245,7 +247,9 @@ https://mrsilawsingularity.substack.com/p/the-law-architecture-of-the-end
 
 https://mrsilawsingularity.substack.com/p/age-of-transition-and-the-mental
 
-◽ Medium ◾ The Global Detroit: Why Abundance Without Transformation Leads to Chaos
+◽ Medium 
+
+◾ The Global Detroit: Why Abundance Without Transformation Leads to Chaos
 
 https://medium.com/@sukzession1998/the-global-detroit-why-abundance-without-transformation-leads-to-chaos-f7c7a25cfcbf
 
@@ -261,7 +265,8 @@ https://medium.com/@sukzession1998/die-gro%C3%9Fe-erz%C3%A4hlung-vom-bedingungsl
 
 https://medium.com/@sukzession1998/afd-und-die-sage-vom-rattenf%C3%A4nger-von-hameln-f597d61409f8
 
-◾ Electric Technocracy - Elektronische Technokratie Al Governance explained
+◾ Electric Technocracy - Elektronische Technokratie
+Al Governance explained
 
 https://medium.com/@sukzession1998/electric-technocracy-elektronische-technokratie-65d337e06625
 
@@ -299,7 +304,7 @@ https://mega.nz/folder/0qN23TzB#6EFkueLyOaZEWD4aLNk1fQ
 
 📚 Important Encyclopedia.Pub Articles
 
-📜 Juridical Singularity: Law’s Irreversible Point of No Return
+📜 Juridical Singularity: Law’s Irreversible Point of No Return 
 
 https://encyclopedia.pub/entry/59508
 
@@ -323,11 +328,11 @@ https://et-pioneer.github.io/Electric-Technocracy-Pioneers-Community/search#gsc.
 
 https://cse.google.com/cse?cx=86021a982e3a14848
 
-🏰 (German) Wikipedia Kreuzbergkaserne
+🏰 (German) Wikipedia Kreuzbergkaserne 
 
 https://de.m.wikipedia.org/wiki/Kreuzbergkaserne_Zweibr%C3%BCcken
 
-🏰 (English) Wikipedia Kreuzbergkaserne
+🏰 (English) Wikipedia Kreuzbergkaserne 
 
 https://en.wikipedia.org/wiki/Kreuzbergkaserne_Zweibr%C3%BCcken
 
@@ -335,12 +340,14 @@ https://en.wikipedia.org/wiki/Kreuzbergkaserne_Zweibr%C3%BCcken
 
 https://kreuzbergkaserne.page.gd/
 
-🇩🇪 German
+🇩🇪 German 
 
 https://kreuzbergkaserne.lovable.app
 
-🏴󠁧󠁢󠁥󠁮󠁧󠁿 Englisch https://kreuzbergkaserne-network-history.sticklight.app
+🏴󠁧󠁢󠁥󠁮󠁧󠁿 Englisch
 
+ https://kreuzbergkaserne-network-history.sticklight.app
+ 
 https://kreuzberg-barracks.lovable.app
 
 https://kreuzbergkaserne-a-historical-military-network-hub-an-1.jimdosite.com
@@ -359,7 +366,9 @@ https://electric-technocracy.sticklight.app
 
 https://sovereign-island.lovable.app
 
-🗨️ World Succession Deed GPT https://chatgpt.com/g/g-69d82340e27081918e08803ce62e46e1-new-international-law-world-succession-deed-1400
+🗨️ World Succession Deed GPT
+
+https://chatgpt.com/g/g-69d82340e27081918e08803ce62e46e1-new-international-law-world-succession-deed-1400
 
 🗨️ Electric Technocracy GPT
 
@@ -373,10 +382,10 @@ https://chatgpt.com/g/g-69d95a89896081918fcb207e1665bf26-juridical-singularity-d
 
 https://chatgpt.com/g/g-69d98081a2c881919de667f21dd2063c-a-complete-micronation-guide
 
-🗨️ AGE OF TRANSITION & THE MENTAL SINGULARITY GPT
+🗨️ AGE OF TRANSITION & THE MENTAL SINGULARITY GPT 
 
 https://chatgpt.com/g/g-69d99f78d6a081919cd29d8d33531852-age-of-transition-the-mental-singularity
-
+ 
 🗨️ Kreuzbergkaserne Research GPT
 
 https://chatgpt.com/g/g-69e02f1a2f608191b164d972f49876f7-kreuzbergkaserne-research-gpt
@@ -385,7 +394,7 @@ https://chatgpt.com/g/g-69e02f1a2f608191b164d972f49876f7-kreuzbergkaserne-resear
 
 https://future-self-qualification-test.sticklight.app
 
-🗣️ Join the NotebookLM Chat WSD:
+🗣️ Join the NotebookLM Chat WSD: 
 
 https://chat-wsd.rf.gd
 
@@ -399,15 +408,16 @@ https://chat-kb.rf.gd
 
 https://micro.page.gd
 
-🖼️ Micronation Storybook: The Slactivist’s Guide to Saving a Forest (By Declaring It a Country)
-
+ 🖼️ Micronation Storybook: The Slactivist's Guide to Saving a Forest (By Declaring It a Country)
+ 
 https://g.co/gemini/share/9fe07106afff
 
-🧑‍💻 Micronations Blog
+🧑‍💻 Micronations Blog 
 
 https://micronation-guide.blogspot.com/
 
-📜 The Buyer’s Memoir: A Journey to Unwitting Sovereignty
+📜 The Buyer's Memoir:
+A Journey to Unwitting Sovereignty
 
 https://ab.page.gd
 
@@ -427,11 +437,11 @@ https://ubi.gt.tc
 
 https://g.co/gemini/share/4a457895642b
 
-📽️ YouTube explainer Video Universal Basic Income (UBI):
+📽️ YouTube explainer Video Universal Basic Income (UBI): 
 
 https://youtu.be/cbyME1y4m4o
 
-🎧 Podcast Episode Universal Basic Income (UBI):
+🎧 Podcast Episode Universal Basic Income (UBI): 
 
 https://open.spotify.com/episode/1oTeGrNnXazJmkBdyH0Uhz
 
@@ -475,13 +485,13 @@ https://worldsold.wixsite.com/world-sold/post/deinen-eigenen-staat-gruenden-souv
 
 https://archive.org/details/turenne_kaserne_vertrag_1400_98_06_10_1998_nato_brd_nl_vn_itu_hns
 
-🪩 Social Media
+🪩 Social Media 
 
-🌐 Facebook world sold
+🌐 Facebook world sold 
 
 https://www.facebook.com/share/1ER7GbN7kM/
 
-🤖Facebook Electric Technocracy
+🤖Facebook Electric Technocracy 
 
 https://www.facebook.com/share/1DEMSyrrAt/
 
@@ -489,7 +499,7 @@ https://www.facebook.com/share/1DEMSyrrAt/
 
 https://www.facebook.com/groups/528455169898378/
 
-🚀 Facebook Profile
+🚀 Facebook Profile 
 
 https://www.facebook.com/share/1CZ2JE3Sjb/
 
@@ -523,11 +533,11 @@ https://open.spotify.com/playlist/6gaGFsnID15ZbtbORp3uRg?si=oePYMsn7RhWGfq4XFTEU
 
 https://listen.free.nf
 
-🪖 This is Anti-War Music
+🪖 This is Anti-War Music 
 
 https://music.page.gd
 
-🌪️ PCloud Music Vault
+🌪️ PCloud Music Vault 
 
 https://u.pcloud.link/publink/show?code=0Z8jWC5Z9eG2iGcELwJdrikBBCArhzNjeu0V
 
@@ -581,7 +591,7 @@ https://medium.com/p/68e73fa29ce4?postPublishedType=initial#introduction-a-syste
 
 https://now31.wordpress.com/2026/05/11/goodbye_politicians/
 
-✋ Homo Nexus Blog: At the Crossroads
+✋ Homo Nexus Blog: At the Crossroads 
 
 https://now31.wordpress.com/2026/05/11/at_the_crossroads/
 
