@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Dawn of Electronic Technocracy | Post-Scarcity Civilization</title>
+<meta name="description" content="Explore the rise of Electronic Technocracy, a post-scarcity global civilization powered by ASI, Direct Digital Democracy, Universal Basic Income, automation, fusion energy, and the World Succession Deed 1400/98." />
+<meta name="keywords" content="Electronic Technocracy, Electrocracy, ASI, Artificial Superintelligence, Universal Basic Income, UBI, Direct Digital Democracy, Post-Scarcity, World Succession Deed, 1400/98, Technological Singularity, Nanotechnology, Fusion Energy, Robotics, Automation, Blockchain Democracy, Transhumanism, Longevity, Smart Civilization, Electronic Paradise" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Exo+2:ital,wght@0,300;0,400;0,600;1,300&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#020810;--blue:#00d4ff;--teal:#00ffcc;--gold:#ffcc44;--white:#e8f4ff;--grey:#4a6070;--glow-blue:0 0 20px #00d4ff88,0 0 60px #00d4ff33;--glow-teal:0 0 20px #00ffcc88,0 0 60px #00ffcc33;--glow-gold:0 0 20px #ffcc4488,0 0 60px #ffcc4433;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--white);font-family:'Exo 2',sans-serif;font-weight:300;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.03) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0;}
+
+@keyframes scan{0%{transform:translateY(-100%);}100%{transform:translateY(100vh);}}
+.scan-line{position:fixed;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(0,212,255,.12),transparent);animation:scan 9s linear infinite;pointer-events:none;z-index:999;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 48px;background:linear-gradient(180deg,#020810f0 0%,transparent 100%);border-bottom:1px solid rgba(0,212,255,.1);backdrop-filter:blur(10px);}
+.nav-logo{display:flex;align-items:center;gap:14px;text-decoration:none;}
+.nav-logo svg{width:36px;height:36px;filter:drop-shadow(var(--glow-blue));}
+.nav-brand{font-family:'Orbitron',monospace;font-size:12px;font-weight:700;letter-spacing:3px;color:var(--blue);text-shadow:var(--glow-blue);text-transform:uppercase;}
+.nav-right{display:flex;align-items:center;gap:24px;}
+.nav-links{display:flex;gap:24px;list-style:none;}
+.nav-links a{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--grey);text-decoration:none;transition:color .3s;}
+.nav-links a:hover{color:var(--gold);}
+.back-btn{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(0,255,204,.7);text-decoration:none;border:1px solid rgba(0,255,204,.25);padding:8px 20px;transition:all .3s;display:flex;align-items:center;gap:8px;}
+.back-btn:hover{color:var(--teal);border-color:var(--teal);box-shadow:var(--glow-teal);}
+
+/* TICKER */
+.ticker{overflow:hidden;border-top:1px solid rgba(255,204,68,.12);border-bottom:1px solid rgba(255,204,68,.12);padding:13px 0;background:rgba(255,204,68,.015);position:relative;z-index:1;margin-top:70px;}
+.ticker-inner{display:flex;gap:70px;white-space:nowrap;animation:ticker 40s linear infinite;}
+.ticker-item{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:3px;color:rgba(255,204,68,.45);text-transform:uppercase;flex-shrink:0;}
+.ticker-item span{color:var(--blue);margin:0 8px;}
+@keyframes ticker{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* HERO */
+.hero{position:relative;padding:90px 48px 80px;overflow:hidden;z-index:1;text-align:center;border-bottom:1px solid rgba(0,212,255,.08);}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center top,rgba(0,212,255,.07) 0%,rgba(255,204,68,.04) 40%,transparent 70%);pointer-events:none;}
+.hero-eyebrow{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:6px;color:rgba(255,204,68,.6);text-transform:uppercase;margin-bottom:24px;animation:fade-up .7s ease both;}
+.hero h1{font-family:'Orbitron',monospace;font-size:clamp(28px,5.5vw,64px);font-weight:900;line-height:1.08;background:linear-gradient(135deg,#e8f4ff 0%,#ffcc44 35%,#00d4ff 70%,#00ffcc 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:20px;animation:fade-up .7s ease .1s both;}
+.hero-sub{font-family:'Orbitron',monospace;font-size:clamp(12px,2vw,18px);font-weight:400;color:rgba(232,244,255,.45);letter-spacing:2px;margin-bottom:40px;animation:fade-up .7s ease .2s both;font-style:italic;}
+.hero-desc{max-width:820px;margin:0 auto 48px;animation:fade-up .7s ease .3s both;}
+.hero-desc p{font-size:16px;line-height:1.95;color:rgba(232,244,255,.6);margin-bottom:14px;}
+.hero-desc p strong{color:var(--blue);}
+.hero-desc p em{color:var(--teal);font-style:normal;}
+.hero-ctas{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;animation:fade-up .7s ease .4s both;}
+.cta-btn{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;padding:14px 32px;text-decoration:none;transition:all .3s;}
+.cta-primary{background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.4);color:var(--blue);}
+.cta-primary:hover{background:rgba(0,212,255,.18);border-color:var(--blue);box-shadow:var(--glow-blue);}
+.cta-secondary{border:1px solid rgba(255,204,68,.3);color:rgba(255,204,68,.7);}
+.cta-secondary:hover{border-color:var(--gold);color:var(--gold);box-shadow:var(--glow-gold);}
+@keyframes fade-up{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+/* TOC */
+.toc-bar{background:rgba(255,204,68,.02);border-bottom:1px solid rgba(255,204,68,.1);padding:18px 48px;z-index:1;position:relative;}
+.toc-inner{max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:10px;align-items:center;}
+.toc-label{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:4px;color:var(--gold);text-transform:uppercase;margin-right:10px;opacity:.7;}
+.toc-link{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1.5px;color:rgba(232,244,255,.35);text-decoration:none;text-transform:uppercase;padding:5px 12px;border:1px solid rgba(255,204,68,.12);transition:all .3s;}
+.toc-link:hover{color:var(--gold);border-color:rgba(255,204,68,.4);}
+
+/* LAYOUT */
+.container{max-width:1280px;margin:0 auto;padding:0 48px;}
+.wiki-layout{display:grid;grid-template-columns:1fr 300px;gap:60px;padding:72px 0 100px;align-items:start;}
+section{position:relative;z-index:1;}
+
+/* ARTICLE */
+.article h2{font-family:'Orbitron',monospace;font-size:clamp(18px,2.6vw,28px);font-weight:700;color:var(--white);margin:64px 0 10px;line-height:1.2;display:flex;align-items:center;gap:16px;}
+.article h2:first-child{margin-top:0;}
+.article h2 .sec-num{font-size:10px;font-weight:700;color:var(--gold);border:1px solid rgba(255,204,68,.35);padding:4px 10px;letter-spacing:2px;flex-shrink:0;box-shadow:var(--glow-gold);}
+.article h2 .b{color:var(--blue);text-shadow:var(--glow-blue);}
+.article h2 .t{color:var(--teal);text-shadow:var(--glow-teal);}
+.article h2 .g{color:var(--gold);text-shadow:var(--glow-gold);}
+.article h3{font-family:'Orbitron',monospace;font-size:12px;font-weight:600;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin:32px 0 16px;padding-bottom:10px;border-bottom:1px solid rgba(255,204,68,.12);}
+.article h3.b{color:var(--blue);border-bottom-color:rgba(0,212,255,.12);}
+.article h3.t{color:var(--teal);border-bottom-color:rgba(0,255,204,.12);}
+.article p{font-size:15px;line-height:1.95;color:rgba(232,244,255,.65);margin-bottom:16px;}
+.article p strong{color:var(--white);font-weight:600;}
+.article p em{color:var(--teal);font-style:normal;}
+.sec-anchor{display:block;height:90px;margin-top:-90px;visibility:hidden;}
+
+/* DEF BOX */
+.def-box{border:1px solid rgba(255,204,68,.2);background:rgba(255,204,68,.03);padding:28px 32px;margin:28px 0;position:relative;overflow:hidden;}
+.def-box::before{content:'DEF';position:absolute;top:12px;right:16px;font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:3px;color:rgba(255,204,68,.2);}
+.def-box p{margin:0;font-size:15px;line-height:1.85;color:rgba(232,244,255,.7);}
+.def-box p strong{color:var(--gold);}
+
+/* FEAT LIST */
+.feat-list{list-style:none;display:flex;flex-direction:column;gap:9px;margin:18px 0 26px;}
+.feat-list li{display:flex;align-items:flex-start;gap:14px;padding:12px 16px;border:1px solid rgba(0,212,255,.08);background:rgba(0,212,255,.02);font-size:14px;line-height:1.6;color:rgba(232,244,255,.62);transition:border-color .3s,background .3s;}
+.feat-list li:hover{border-color:rgba(0,212,255,.25);background:rgba(0,212,255,.04);}
+.feat-list li::before{content:'◆';color:var(--blue);font-size:8px;flex-shrink:0;margin-top:4px;text-shadow:var(--glow-blue);}
+.feat-list li strong{color:var(--white);}
+.feat-list.teal li{border-color:rgba(0,255,204,.08);background:rgba(0,255,204,.02);}
+.feat-list.teal li:hover{border-color:rgba(0,255,204,.25);background:rgba(0,255,204,.04);}
+.feat-list.teal li::before{color:var(--teal);text-shadow:var(--glow-teal);}
+.feat-list.gold li{border-color:rgba(255,204,68,.1);background:rgba(255,204,68,.02);}
+.feat-list.gold li:hover{border-color:rgba(255,204,68,.3);background:rgba(255,204,68,.04);}
+.feat-list.gold li::before{color:var(--gold);text-shadow:var(--glow-gold);}
+
+/* HIGHLIGHT BOX */
+.highlight-box{border:1px solid rgba(0,212,255,.2);border-left:3px solid var(--blue);padding:24px 28px;margin:28px 0;background:rgba(0,212,255,.04);}
+.highlight-box.teal{border:1px solid rgba(0,255,204,.2);border-left:3px solid var(--teal);background:rgba(0,255,204,.03);}
+.highlight-box.gold{border:1px solid rgba(255,204,68,.2);border-left:3px solid var(--gold);background:rgba(255,204,68,.03);}
+.highlight-box p{margin:0;font-size:15px;line-height:1.85;color:rgba(232,244,255,.72);}
+.highlight-box p strong{color:var(--blue);}
+.highlight-box.teal p strong{color:var(--teal);}
+.highlight-box.gold p strong{color:var(--gold);}
+
+/* WISHMASTER GRID */
+.wish-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0 28px;}
+.wish-card{padding:22px 18px;border:1px solid rgba(0,212,255,.12);background:rgba(0,212,255,.02);position:relative;overflow:hidden;transition:all .3s;}
+.wish-card::before{content:'→';position:absolute;top:14px;right:14px;color:rgba(0,212,255,.2);font-size:18px;}
+.wish-card:hover{border-color:rgba(0,212,255,.3);background:rgba(0,212,255,.05);}
+.wc-from{font-family:'Share Tech Mono',monospace;font-size:11px;color:rgba(232,244,255,.4);margin-bottom:6px;letter-spacing:1px;}
+.wc-to{font-size:13px;color:var(--teal);font-weight:600;}
+
+/* DIVIDER */
+.art-divider{height:1px;background:linear-gradient(90deg,rgba(255,204,68,.12),transparent);margin:56px 0;}
+
+/* PARADISE BANNER */
+.paradise-banner{background:rgba(0,255,204,.025);border:1px solid rgba(0,255,204,.15);padding:48px;margin:60px 0 0;position:relative;overflow:hidden;text-align:center;}
+.paradise-banner::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--teal),transparent);}
+.paradise-banner::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--teal),transparent);}
+.paradise-title{font-family:'Orbitron',monospace;font-size:clamp(20px,3vw,36px);font-weight:700;margin-bottom:12px;}
+.paradise-title span{color:var(--teal);text-shadow:var(--glow-teal);}
+.paradise-sub{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:4px;color:rgba(232,244,255,.25);text-transform:uppercase;margin-bottom:28px;}
+.paradise-list{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:28px;}
+.p-tag{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:2px;color:rgba(0,255,204,.6);border:1px solid rgba(0,255,204,.2);padding:8px 18px;text-transform:uppercase;}
+.paradise-desc{max-width:700px;margin:0 auto;font-size:15px;line-height:1.85;color:rgba(232,244,255,.55);}
+.paradise-desc strong{color:var(--white);}
+
+/* SIDEBAR */
+.sidebar{position:sticky;top:100px;display:flex;flex-direction:column;gap:20px;}
+.sidebar-card{border:1px solid rgba(255,204,68,.12);padding:24px;background:rgba(255,204,68,.02);position:relative;overflow:hidden;}
+.sidebar-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.sidebar-card.blue{border-color:rgba(0,212,255,.12);}
+.sidebar-card.blue::before{background:linear-gradient(90deg,transparent,var(--blue),transparent);}
+.sidebar-card.teal{border-color:rgba(0,255,204,.12);}
+.sidebar-card.teal::before{background:linear-gradient(90deg,transparent,var(--teal),transparent);}
+.sidebar-title{font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:16px;}
+.sidebar-card.blue .sidebar-title{color:var(--blue);}
+.sidebar-card.teal .sidebar-title{color:var(--teal);}
+.sidebar-nav{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.sidebar-nav a{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:1px;color:rgba(232,244,255,.38);text-decoration:none;transition:color .3s;display:flex;align-items:center;gap:8px;}
+.sidebar-nav a::before{content:'›';color:var(--gold);font-size:14px;}
+.sidebar-nav a:hover{color:var(--gold);}
+.quick-facts{display:flex;flex-direction:column;gap:0;}
+.qf-row{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,204,68,.07);}
+.qf-row:last-child{border-bottom:none;}
+.qf-key{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1.5px;color:rgba(255,204,68,.5);text-transform:uppercase;flex:0 0 95px;}
+.qf-val{font-size:12px;line-height:1.5;color:rgba(232,244,255,.6);}
+.qf-val strong{color:var(--white);}
+.ext-link-list{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.ext-link-list a{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:1px;color:rgba(0,255,204,.5);text-decoration:none;transition:all .3s;display:flex;align-items:center;gap:8px;padding:9px 12px;border:1px solid rgba(0,255,204,.08);}
+.ext-link-list a:hover{color:var(--teal);border-color:rgba(0,255,204,.3);background:rgba(0,255,204,.04);}
+.ext-link-list a::before{content:'→';color:var(--teal);flex-shrink:0;}
+.ext-link-list.gold a{color:rgba(255,204,68,.5);border-color:rgba(255,204,68,.08);}
+.ext-link-list.gold a::before{color:var(--gold);}
+.ext-link-list.gold a:hover{color:var(--gold);border-color:rgba(255,204,68,.3);background:rgba(255,204,68,.03);}
+
+/* MANIFESTO BAND */
+.manifesto-band{padding:80px 48px;text-align:center;position:relative;overflow:hidden;z-index:1;border-top:1px solid rgba(255,204,68,.1);border-bottom:1px solid rgba(255,204,68,.1);}
+.manifesto-band::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(255,204,68,.05) 0%,transparent 70%);pointer-events:none;}
+.manifesto-quote{font-family:'Orbitron',monospace;font-size:clamp(14px,2.3vw,24px);font-weight:600;line-height:1.65;max-width:900px;margin:0 auto 28px;position:relative;}
+.manifesto-quote .b{color:var(--blue);text-shadow:var(--glow-blue);}
+.manifesto-quote .t{color:var(--teal);text-shadow:var(--glow-teal);}
+.manifesto-quote .g{color:var(--gold);text-shadow:var(--glow-gold);}
+.manifesto-sub{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:5px;color:rgba(232,244,255,.2);text-transform:uppercase;}
+
+/* FOOTER */
+footer{border-top:1px solid rgba(0,212,255,.1);padding:60px 48px 40px;position:relative;z-index:1;}
+.footer-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:56px;margin-bottom:52px;}
+.footer-brand p{font-size:13px;line-height:1.8;color:rgba(232,244,255,.28);margin-top:14px;max-width:280px;}
+.footer-col h5{font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:3px;color:var(--blue);text-transform:uppercase;margin-bottom:18px;}
+.footer-col ul{list-style:none;}
+.footer-col li{margin-bottom:10px;}
+.footer-col a{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:1px;color:rgba(232,244,255,.3);text-decoration:none;transition:color .3s;}
+.footer-col a:hover{color:var(--teal);}
+.footer-bottom{border-top:1px solid rgba(0,212,255,.08);padding-top:26px;display:flex;justify-content:space-between;align-items:center;max-width:1280px;margin:0 auto;}
+.footer-bottom p{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;color:rgba(232,244,255,.16);}
+.footer-wsd{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;color:rgba(255,204,68,.25);}
+
+@media(max-width:1024px){.wiki-layout{grid-template-columns:1fr;}.sidebar{position:static;}.wish-grid{grid-template-columns:1fr;}.footer-inner{grid-template-columns:1fr 1fr;}}
+@media(max-width:768px){nav{padding:14px 20px;}.nav-links{display:none;}.container{padding:0 20px;}.hero{padding:70px 20px 60px;}.manifesto-band,.footer{padding-left:20px;padding-right:20px;}.toc-bar{padding:16px 20px;}.footer-inner{grid-template-columns:1fr;}.footer-bottom{flex-direction:column;gap:10px;text-align:center;}}
+</style>
+</head>
+<body>
+<div class="scan-line"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="electric-technocracy.html" class="nav-logo">
+    <svg viewBox="0 0 60 60" fill="none">
+      <circle cx="30" cy="30" r="27" stroke="#00d4ff" stroke-width="1.5"/>
+      <circle cx="30" cy="30" r="21" stroke="#00d4ff" stroke-width="0.6" opacity="0.5"/>
+      <line x1="3" y1="30" x2="14" y2="30" stroke="#00d4ff" stroke-width="2"/>
+      <line x1="3" y1="26" x2="11" y2="26" stroke="#00d4ff" stroke-width="1.2"/>
+      <line x1="3" y1="34" x2="11" y2="34" stroke="#00d4ff" stroke-width="1.2"/>
+      <line x1="46" y1="30" x2="57" y2="30" stroke="#00d4ff" stroke-width="2"/>
+      <line x1="49" y1="26" x2="57" y2="26" stroke="#00d4ff" stroke-width="1.2"/>
+      <line x1="49" y1="34" x2="57" y2="34" stroke="#00d4ff" stroke-width="1.2"/>
+      <path d="M36 7 L21 30 L30 30 L24 53 L39 28 L30 28 Z" fill="#00d4ff"/>
+    </svg>
+    <div class="nav-brand">Electric Technocracy</div>
+  </a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#s1">WSD</a></li>
+      <li><a href="#s2">ASI</a></li>
+      <li><a href="#s3">DDD</a></li>
+      <li><a href="#s4">Economy</a></li>
+      <li><a href="#s5">UBI</a></li>
+      <li><a href="#s6">Wishmaster</a></li>
+      <li><a href="#s9">Paradise</a></li>
+    </ul>
+    <a href="electric-technocracy.html" class="back-btn"><span>←</span> Back to Home</a>
+  </div>
+</nav>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <div class="ticker-item">Electronic Technocracy <span>◆</span></div>
+    <div class="ticker-item">World Succession Deed 1400/98 <span>◆</span></div>
+    <div class="ticker-item">Juridical Singularity <span>◆</span></div>
+    <div class="ticker-item">ASI Governance <span>◆</span></div>
+    <div class="ticker-item">Direct Digital Democracy <span>◆</span></div>
+    <div class="ticker-item">Post-Scarcity Civilization <span>◆</span></div>
+    <div class="ticker-item">Wishmaster Civilization <span>◆</span></div>
+    <div class="ticker-item">Universal Basic Income <span>◆</span></div>
+    <div class="ticker-item">Fusion Energy <span>◆</span></div>
+    <div class="ticker-item">Longevity Escape Velocity <span>◆</span></div>
+    <div class="ticker-item">Electronic Paradise <span>◆</span></div>
+    <div class="ticker-item">Electronic Technocracy <span>◆</span></div>
+    <div class="ticker-item">World Succession Deed 1400/98 <span>◆</span></div>
+    <div class="ticker-item">Juridical Singularity <span>◆</span></div>
+    <div class="ticker-item">ASI Governance <span>◆</span></div>
+    <div class="ticker-item">Direct Digital Democracy <span>◆</span></div>
+    <div class="ticker-item">Post-Scarcity Civilization <span>◆</span></div>
+    <div class="ticker-item">Wishmaster Civilization <span>◆</span></div>
+    <div class="ticker-item">Universal Basic Income <span>◆</span></div>
+    <div class="ticker-item">Fusion Energy <span>◆</span></div>
+    <div class="ticker-item">Longevity Escape Velocity <span>◆</span></div>
+    <div class="ticker-item">Electronic Paradise <span>◆</span></div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Analysis · Vision · Civilization</div>
+  <h1>The Rise of Electronic Technocracy</h1>
+  <div class="hero-sub">A New Civilization Beyond Politics, Scarcity, and National Borders</div>
+  <div class="hero-desc">
+    <p>Electronic Technocracy represents a transformative vision for humanity's future — a global civilization structured around <strong>Artificial Superintelligence (ASI)</strong>, scientific coordination, automated abundance, and direct citizen participation.</p>
+    <p>Unlike traditional systems based on competition between nation-states, scarcity economics, and political conflict, this model proposes a unified planetary administration designed to maximize <em>peace, prosperity, technological progress, and human potential</em>.</p>
+  </div>
+  <div class="hero-ctas">
+    <a href="#s1" class="cta-btn cta-primary">Explore Framework</a>
+    <a href="#s9" class="cta-btn cta-secondary">Electronic Paradise</a>
+  </div>
+</section>
+
+<!-- TOC -->
+<div class="toc-bar">
+  <div class="toc-inner">
+    <span class="toc-label">Contents</span>
+    <a href="#s1" class="toc-link">§1 WSD</a>
+    <a href="#s2" class="toc-link">§2 ASI</a>
+    <a href="#s3" class="toc-link">§3 DDD</a>
+    <a href="#s4" class="toc-link">§4 Economy</a>
+    <a href="#s5" class="toc-link">§5 UBI</a>
+    <a href="#s6" class="toc-link">§6 Wishmaster</a>
+    <a href="#s7" class="toc-link">§7 Fusion &amp; Nano</a>
+    <a href="#s8" class="toc-link">§8 Longevity</a>
+    <a href="#s9" class="toc-link">§9 Multi-Planet</a>
+    <a href="#s10" class="toc-link">§10 Paradise</a>
+  </div>
+</div>
+
+<!-- WIKI LAYOUT -->
+<section>
+  <div class="container">
+    <div class="wiki-layout">
+
+      <article class="article">
+
+        <!-- CONTEXT -->
+        <div class="def-box">
+          <p>At the center of this concept stands the belief that the structures dominating the industrial age are no longer capable of managing an increasingly complex technological civilization. Political parties, ideological conflicts, and fragmented national systems are viewed as <strong>outdated mechanisms</strong> unable to solve global crises such as climate instability, automation-driven unemployment, economic inequality, resource conflicts, and corruption.</p>
+        </div>
+
+        <p>Electronic Technocracy proposes an alternative civilization model where governance is guided by <strong>real-time data analysis</strong>, advanced AI systems, transparent digital participation, and fully automated infrastructure. The long-term objective is the emergence of an <em>Electronic Paradise</em> — a stable post-scarcity civilization where humanity is liberated from involuntary labor and material insecurity.</p>
+
+        <div class="art-divider"></div>
+
+        <!-- §1 WSD -->
+        <span class="sec-anchor" id="s1"></span>
+        <h2><span class="sec-num">§ 1</span>The <span class="g">Legal Foundation</span> of the New Global Order</h2>
+        <h3>The World Succession Deed 1400/98</h3>
+
+        <p>The legal basis of Electronic Technocracy is connected to the <strong>World Succession Deed 1400/98</strong>, notarized in 1998. According to the framework surrounding the document, the treaty initiated a global state succession process through the transfer of a NATO-linked infrastructure complex, including telecommunications and utility systems connected to international networks.</p>
+
+        <div class="highlight-box gold">
+          <p>This mechanism is described as a <strong>domino effect of jurisdictional transition</strong>, in which interconnected infrastructure networks extended legal and administrative influence far beyond the original property itself.</p>
+        </div>
+
+        <p>The framework argues that because modern civilization operates through globally linked communication, logistics, and energy systems, control over critical infrastructure carries implications far beyond traditional territorial concepts.</p>
+        <p>The deed is interpreted as establishing the beginning of a unified international legal structure — sometimes referred to as the <em>Juridical Singularity</em>. Within this interpretation, fragmented sovereignty gradually dissolves into a singular global administrative order supported by interconnected technological systems.</p>
+
+        <div class="art-divider"></div>
+
+        <!-- §2 ASI -->
+        <span class="sec-anchor" id="s2"></span>
+        <h2><span class="sec-num">§ 2</span>Artificial <span class="b">Superintelligence</span> as the Administrative Core</h2>
+        <h3 class="b">The Emergence of ASI Governance</h3>
+
+        <p>A central pillar of Electronic Technocracy is the use of <strong>Artificial Superintelligence (ASI)</strong> as an advisory, analytical, and administrative intelligence system. Rather than functioning as a dictator or authoritarian ruler, the ASI operates as a hyper-rational coordination engine capable of processing planetary-scale data in real time.</p>
+
+        <p>The ASI continuously evaluates:</p>
+        <ul class="feat-list">
+          <li>Global resource distribution</li>
+          <li>Climate and ecological changes</li>
+          <li>Economic productivity</li>
+          <li>Healthcare systems</li>
+          <li>Infrastructure efficiency</li>
+          <li>Energy consumption</li>
+          <li>Scientific research</li>
+          <li>Population needs</li>
+        </ul>
+
+        <div class="highlight-box">
+          <p>Using this information, the ASI develops optimized proposals for governance and resource management. Because the intelligence has no biological self-interest, emotional bias, or susceptibility to corruption, supporters argue that it can produce <strong>more rational and fair solutions</strong> than traditional political institutions.</p>
+        </div>
+
+        <p>The role of the ASI is therefore not ideological leadership, but <em>scientific optimization of civilization itself</em>.</p>
+
+        <div class="art-divider"></div>
+
+        <!-- §3 DDD -->
+        <span class="sec-anchor" id="s3"></span>
+        <h2><span class="sec-num">§ 3</span>Direct Digital <span class="t">Democracy</span> (DDD)</h2>
+        <h3 class="t">From Representative Politics to Continuous Participation</h3>
+
+        <p>Electronic Technocracy replaces traditional representative democracy with <strong>Direct Digital Democracy (DDD)</strong>. Citizens no longer vote for political parties or career politicians. Instead, people participate directly in decision-making through secure global online voting systems supported by blockchain-like verification technologies.</p>
+        <p>Every major proposal generated by the ASI can be reviewed, debated, modified, and voted on by the global population. This system is intended to eliminate:</p>
+
+        <ul class="feat-list teal">
+          <li>Lobbyism</li>
+          <li>Political corruption</li>
+          <li>Partisan manipulation</li>
+          <li>Hidden influence networks</li>
+          <li>Slow bureaucratic decision-making</li>
+        </ul>
+
+        <div class="highlight-box teal">
+          <p>The ASI acts as a transparent analytical advisor, while final legitimacy remains with humanity itself through worldwide digital participation. In this structure, politics evolves from ideological conflict into <strong>collaborative problem-solving</strong>.</p>
+        </div>
+
+        <div class="art-divider"></div>
+
+        <!-- §4 ECONOMY -->
+        <span class="sec-anchor" id="s4"></span>
+        <h2><span class="sec-num">§ 4</span>The Economic <span class="g">Transition to Post-Scarcity</span></h2>
+        <h3>Automation and the End of Forced Labor</h3>
+
+        <p>Electronic Technocracy is built on the assumption that advanced robotics, AI systems, nanotechnology, and automation will eventually outperform human labor across most sectors of the economy. Factories, logistics, transportation, agriculture, manufacturing, and administrative processes become increasingly autonomous.</p>
+
+        <div class="def-box">
+          <p>As machine productivity accelerates exponentially, the traditional relationship between labor and survival collapses. The system therefore introduces a new economic principle: <strong>Humans become tax-free, while automated systems generate the primary economic surplus.</strong></p>
+        </div>
+
+        <p>Rather than taxing workers, the civilization finances itself through technology-based productivity systems:</p>
+        <ul class="feat-list gold">
+          <li>Robot productivity taxes</li>
+          <li>AI-generated value taxation</li>
+          <li>Automated corporate output contributions</li>
+          <li>Energy-based industrial taxation</li>
+        </ul>
+        <p>This creates the financial foundation for a globally distributed <strong>Universal Basic Income (UBI)</strong>.</p>
+
+        <div class="art-divider"></div>
+
+        <!-- §5 UBI -->
+        <span class="sec-anchor" id="s5"></span>
+        <h2><span class="sec-num">§ 5</span>Universal Basic Income as a <span class="t">Civilizational Dividend</span></h2>
+        <h3 class="t">The End of Poverty Economics</h3>
+
+        <p>In Electronic Technocracy, UBI is not viewed as welfare or charity. It is framed as a <strong>civilizational dividend</strong> generated by collective technological productivity. Every person receives guaranteed access to:</p>
+
+        <ul class="feat-list teal">
+          <li>Food</li>
+          <li>Housing</li>
+          <li>Healthcare</li>
+          <li>Education</li>
+          <li>Energy</li>
+          <li>Communication infrastructure</li>
+        </ul>
+
+        <p>As automation expands, the abundance generated by machine labor increases the size of the global dividend itself. The objective is not merely survival, but liberation from economic fear. Humans are no longer forced to compete for basic existence and can instead focus on:</p>
+
+        <ul class="feat-list">
+          <li>Creativity</li>
+          <li>Science</li>
+          <li>Research</li>
+          <li>Art</li>
+          <li>Exploration</li>
+          <li>Personal development</li>
+        </ul>
+
+        <div class="highlight-box teal">
+          <p>This transition fundamentally redefines civilization from a <strong>scarcity-based economy</strong> into an <strong>abundance-based society</strong>.</p>
+        </div>
+
+        <div class="art-divider"></div>
+
+        <!-- §6 WISHMASTER -->
+        <span class="sec-anchor" id="s6"></span>
+        <h2><span class="sec-num">§ 6</span>The <span class="b">Wishmaster</span> Civilization</h2>
+        <h3 class="b">Humanity as Visionary and Creator</h3>
+
+        <p>As machines increasingly handle physical labor and logistical complexity, the role of humans evolves dramatically. Electronic Technocracy describes humanity as the new <strong>"Wishmaster Civilization"</strong> — humans provide imagination, emotional insight, artistic expression, scientific curiosity, and visionary thinking. The ASI and automated production systems then transform those ideas into reality.</p>
+
+        <div class="wish-grid">
+          <div class="wish-card">
+            <div class="wc-from">Architect sketches a concept</div>
+            <div class="wc-to">→ AI designs an entire city</div>
+          </div>
+          <div class="wish-card">
+            <div class="wc-from">Artist imagines a sculpture</div>
+            <div class="wc-to">→ Robotic systems manufacture it instantly</div>
+          </div>
+          <div class="wish-card">
+            <div class="wc-from">Scientist develops a theory</div>
+            <div class="wc-to">→ Quantum simulations test it in real time</div>
+          </div>
+          <div class="wish-card">
+            <div class="wc-from">Child describes a fantasy world</div>
+            <div class="wc-to">→ Immersive digital environments auto-generate</div>
+          </div>
+        </div>
+
+        <div class="highlight-box">
+          <p>The civilization therefore shifts from <strong>labor-centered identity</strong> toward <strong>creativity-centered existence</strong>.</p>
+        </div>
+
+        <div class="art-divider"></div>
+
+        <!-- §7 FUSION / NANO -->
+        <span class="sec-anchor" id="s7"></span>
+        <h2><span class="sec-num">§ 7</span>Fusion Energy, <span class="g">Nanotechnology</span>, and Infinite Production</h2>
+        <h3>The Infrastructure of Abundance</h3>
+
+        <p>The long-term technological backbone of Electronic Technocracy relies on several major breakthroughs:</p>
+        <ul class="feat-list gold">
+          <li><strong>Nuclear fusion energy</strong></li>
+          <li><strong>Nanotechnology &amp; molecular assemblers</strong></li>
+          <li><strong>Quantum computing</strong></li>
+          <li><strong>Self-repairing infrastructure</strong></li>
+          <li><strong>Autonomous robotics</strong></li>
+        </ul>
+
+        <p>Fusion energy promises nearly unlimited clean electricity, while nanofactories enable production-on-demand systems capable of manufacturing goods locally with minimal waste. This eliminates many limitations of traditional industrial economics:</p>
+
+        <ul class="feat-list">
+          <li>Mass scarcity</li>
+          <li>Global supply chain instability</li>
+          <li>Resource monopolies</li>
+          <li>Artificial shortages</li>
+          <li>Overproduction waste</li>
+        </ul>
+
+        <p>The result is a civilization where material abundance becomes technically achievable for the entire population.</p>
+
+        <div class="art-divider"></div>
+
+        <!-- §8 LONGEVITY -->
+        <span class="sec-anchor" id="s8"></span>
+        <h2><span class="sec-num">§ 8</span>Longevity, Transhumanism, and <span class="t">Human Evolution</span></h2>
+        <h3 class="t">The Expansion of Human Potential</h3>
+
+        <p>Electronic Technocracy also embraces advanced biotechnology and transhumanist development. Aging is increasingly viewed not as an unavoidable destiny, but as a treatable biological process. Key technologies include:</p>
+
+        <ul class="feat-list teal">
+          <li>Gene editing &amp; CRISPR therapies</li>
+          <li>Regenerative medicine</li>
+          <li>Brain-computer interfaces</li>
+          <li>Medical nanobots</li>
+          <li>Neural enhancement systems</li>
+        </ul>
+
+        <div class="highlight-box teal">
+          <p>The long-term goal is the achievement of <strong>Longevity Escape Velocity (LEV)</strong>, where medical progress extends life expectancy faster than biological aging progresses. This evolution expands human intellectual, emotional, and creative capabilities while allowing humanity to coexist symbiotically with increasingly advanced AI systems.</p>
+        </div>
+
+        <div class="art-divider"></div>
+
+        <!-- §9 MULTI-PLANET -->
+        <span class="sec-anchor" id="s9"></span>
+        <h2><span class="sec-num">§ 9</span>Humanity <span class="b">Beyond Earth</span></h2>
+        <h3 class="b">A Multi-Planetary Civilization</h3>
+
+        <p>Electronic Technocracy views space colonization as the natural continuation of technological civilization. With AI coordination, fusion energy, and automated construction systems, humanity can establish self-sustaining habitats beyond Earth. Future developments may include:</p>
+
+        <ul class="feat-list">
+          <li><strong>Orbital megacities</strong></li>
+          <li><strong>Terraforming projects</strong></li>
+          <li><strong>Autonomous lunar industries</strong></li>
+          <li><strong>Martian settlements</strong></li>
+          <li><strong>Asteroid mining systems</strong></li>
+          <li><strong>Interplanetary transportation networks</strong></li>
+        </ul>
+
+        <p>This transition transforms humanity from a single-planet species into a <strong>multi-planetary civilization</strong>.</p>
+
+        <div class="art-divider"></div>
+
+        <!-- §10 PARADISE -->
+        <span class="sec-anchor" id="s10"></span>
+        <h2><span class="sec-num">§ 10</span>The <span class="t">Electronic Paradise</span></h2>
+        <h3 class="t">The Long-Term Vision</h3>
+
+        <div class="paradise-banner">
+          <div class="paradise-title">The <span>Electronic Paradise</span></div>
+          <div class="paradise-sub">Final Stage · Post-Scarcity Civilization · Global Unity</div>
+          <div class="paradise-list">
+            <span class="p-tag">Wars Disappear</span>
+            <span class="p-tag">Scarcity Overcome</span>
+            <span class="p-tag">Corruption Minimized</span>
+            <span class="p-tag">Universal Healthcare</span>
+            <span class="p-tag">Human Creativity Central</span>
+            <span class="p-tag">Technology for All</span>
+          </div>
+          <div class="paradise-desc">
+            <p>In this vision, the combination of ASI, Direct Digital Democracy, post-scarcity economics, and technological abundance creates the foundation for a peaceful and highly advanced global civilization. <strong>Rather than humanity serving machines, the system proposes that machines become instruments for the expansion of human freedom, imagination, and collective evolution.</strong></p>
+          </div>
+        </div>
+
+      </article>
+
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+
+        <div class="sidebar-card">
+          <div class="sidebar-title">Quick Facts</div>
+          <div class="quick-facts">
+            <div class="qf-row"><div class="qf-key">Legal Basis</div><div class="qf-val"><strong>WSD 1400/98</strong></div></div>
+            <div class="qf-row"><div class="qf-key">Governance</div><div class="qf-val">ASI + DDD</div></div>
+            <div class="qf-row"><div class="qf-key">Economy</div><div class="qf-val">Post-Scarcity + UBI</div></div>
+            <div class="qf-row"><div class="qf-key">Human Tax</div><div class="qf-val"><strong>0%</strong></div></div>
+            <div class="qf-row"><div class="qf-key">Energy</div><div class="qf-val">Fusion + Renewables</div></div>
+            <div class="qf-row"><div class="qf-key">Human Role</div><div class="qf-val">Wishmaster Civilization</div></div>
+            <div class="qf-row"><div class="qf-key">Goal</div><div class="qf-val">Electronic Paradise</div></div>
+          </div>
+        </div>
+
+        <div class="sidebar-card blue">
+          <div class="sidebar-title">Sections</div>
+          <ul class="sidebar-nav">
+            <li><a href="#s1">§ 1 — World Succession Deed</a></li>
+            <li><a href="#s2">§ 2 — ASI Governance</a></li>
+            <li><a href="#s3">§ 3 — Direct Digital Democracy</a></li>
+            <li><a href="#s4">§ 4 — Post-Scarcity Economy</a></li>
+            <li><a href="#s5">§ 5 — Universal Basic Income</a></li>
+            <li><a href="#s6">§ 6 — Wishmaster Civilization</a></li>
+            <li><a href="#s7">§ 7 — Fusion &amp; Nanotechnology</a></li>
+            <li><a href="#s8">§ 8 — Longevity &amp; Transhumanism</a></li>
+            <li><a href="#s9">§ 9 — Multi-Planetary</a></li>
+            <li><a href="#s10">§ 10 — Electronic Paradise</a></li>
+          </ul>
+        </div>
+
+        <div class="sidebar-card teal">
+          <div class="sidebar-title">Official Links</div>
+          <ul class="ext-link-list">
+            <li><a href="https://worldsold.wixsite.com/electric-technocracy" target="_blank">Electric Technocracy</a></li>
+            <li><a href="https://electric-paradise.start.page" target="_blank">Electronic Paradise</a></li>
+            <li><a href="https://worldsold.wixsite.com/world-sold/en" target="_blank">World Sold</a></li>
+            <li><a href="https://creators.spotify.com/pod/show/world-succession-deed" target="_blank">Podcast</a></li>
+            <li><a href="https://www.youtube.com/@Staatensukzessionsurkunde-1400" target="_blank">YouTube Channel</a></li>
+            <li><a href="https://wiki.free.nf/" target="_blank">Wiki</a></li>
+            <li><a href="https://zenodo.org/communities/electric-technocracy" target="_blank">Research Archive</a></li>
+            <li><a href="https://wiki.free.nf/index.php/Juridical_Singularity" target="_blank">Juridical Singularity</a></li>
+          </ul>
+        </div>
+
+        <div class="sidebar-card">
+          <div class="sidebar-title">Related Pages</div>
+          <ul class="ext-link-list gold">
+            <li><a href="singularity-news.github.io/wiki/" target="_blank">Singularity News Wiki</a></li>
+            <li><a href="singularity41.wordpress.com/" target="_blank">Singularity41 Blog</a></li>
+            <li><a href="electric-paradise-blog.html">Electric Paradise Blog</a></li>
+            <li><a href="electronic-technocracy-wiki.html">Lexicon &amp; Wiki</a></li>
+          </ul>
+        </div>
+
+        <div class="sidebar-card blue">
+          <div class="sidebar-title">Navigate</div>
+          <a href="electric-technocracy.html" class="back-btn" style="width:100%;justify-content:center;margin-bottom:10px;">← Back to Home</a>
+          <a href="electronic-technocracy-wiki.html" class="back-btn" style="width:100%;justify-content:center;border-color:rgba(255,204,68,.25);color:rgba(255,204,68,.7);">→ Lexicon &amp; Wiki</a>
+        </div>
+
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- MANIFESTO BAND -->
+<div class="manifesto-band">
+  <p class="manifesto-quote">
+    "Rather than humanity serving machines, the system proposes that machines become
+    <span class="t">instruments for the expansion</span> of human
+    <span class="b">freedom, imagination</span>, and
+    <span class="g">collective evolution</span>."
+  </p>
+  <div class="manifesto-sub">[ Electronic Technocracy · WSD 1400/98 · Electronic Paradise · Electrocracy ]</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="nav-brand" style="font-size:14px;">Electric Technocracy</div>
+      <p>A new form of government and society for a united world — governed by AI, ASI, and digital democracy, building universal abundance for all of humanity.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Sections</h5>
+      <ul>
+        <li><a href="#s1">§ 1 World Succession Deed</a></li>
+        <li><a href="#s2">§ 2 ASI Governance</a></li>
+        <li><a href="#s3">§ 3 DDD</a></li>
+        <li><a href="#s4">§ 4 Post-Scarcity</a></li>
+        <li><a href="#s5">§ 5 UBI</a></li>
+        <li><a href="#s10">§ 10 Electronic Paradise</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>External</h5>
+      <ul>
+        <li><a href="https://worldsold.wixsite.com/electric-technocracy" target="_blank">Electric Technocracy</a></li>
+        <li><a href="https://electric-paradise.start.page" target="_blank">Electronic Paradise</a></li>
+        <li><a href="https://zenodo.org/communities/electric-technocracy" target="_blank">Zenodo Research</a></li>
+        <li><a href="https://singularity41.wordpress.com/" target="_blank">Singularity41</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Legal</h5>
+      <ul>
+        <li><a href="https://worldsold.wixsite.com/world-sold/en" target="_blank">WSD 1400/98</a></li>
+        <li><a href="https://wiki.free.nf/index.php/Juridical_Singularity" target="_blank">Juridical Singularity</a></li>
+        <li><a href="https://wiki.free.nf/" target="_blank">Treaty Law Wiki</a></li>
+        <li><a href="mailto:sukzession1998@gmail.com">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© Electronic Technocracy · The Dawn of Electronic Technocracy · All Rights Reserved</p>
+    <div class="footer-wsd">WSD 1400/98 · LEGAL BASIS</div>
+  </div>
+</footer>
+
+</body>
+</html>
