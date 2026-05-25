@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Longevity Singularity and the Rise of Electric Technocracy</title>
+<meta name="description" content="Explore the future of radical longevity, AI medicine, nanotechnology, gene editing, synthetic biology, and Electric Technocracy. Discover how humanity may overcome aging, disease, scarcity, and biological limitations forever.">
+<meta name="keywords" content="Longevity, Radical Longevity, Electric Technocracy, Anti Aging, Nanotechnology, AI Medicine, Telomerase, CRISPR, Mind Uploading, Synthetic Biology, Immortality, Transhumanism, ASI, Digital Democracy, UBI, Future Technology, Genome Editing, Nanobots, Cybernetics, Post Scarcity">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Exo+2:ital,wght@0,300;0,400;0,600;1,300&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#020810;--blue:#00d4ff;--teal:#00ffcc;--gold:#ffcc44;--purple:#aa66ff;--green:#44ff99;--white:#e8f4ff;--grey:#4a6070;--glow-blue:0 0 20px #00d4ff88,0 0 60px #00d4ff33;--glow-teal:0 0 20px #00ffcc88,0 0 60px #00ffcc33;--glow-gold:0 0 20px #ffcc4488,0 0 60px #ffcc4433;--glow-purple:0 0 20px #aa66ff88,0 0 60px #aa66ff33;--glow-green:0 0 20px #44ff9988,0 0 60px #44ff9933;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--white);font-family:'Exo 2',sans-serif;font-weight:300;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(0,212,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,212,255,.025) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0;}
+@keyframes scan{0%{transform:translateY(-100%);}100%{transform:translateY(100vh);}}
+.scan-line{position:fixed;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(68,255,153,.1),transparent);animation:scan 9s linear infinite;pointer-events:none;z-index:999;}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 48px;background:linear-gradient(180deg,#020810f0 0%,transparent 100%);border-bottom:1px solid rgba(68,255,153,.1);backdrop-filter:blur(10px);}
+.nav-logo{display:flex;align-items:center;gap:14px;text-decoration:none;}
+.nav-logo svg{width:36px;height:36px;filter:drop-shadow(var(--glow-blue));}
+.nav-brand{font-family:'Orbitron',monospace;font-size:12px;font-weight:700;letter-spacing:3px;color:var(--blue);text-shadow:var(--glow-blue);text-transform:uppercase;}
+.nav-right{display:flex;align-items:center;gap:24px;}
+.nav-links{display:flex;gap:22px;list-style:none;}
+.nav-links a{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--grey);text-decoration:none;transition:color .3s;}
+.nav-links a:hover{color:var(--green);}
+.back-btn{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(0,255,204,.7);text-decoration:none;border:1px solid rgba(0,255,204,.25);padding:8px 20px;transition:all .3s;display:flex;align-items:center;gap:8px;}
+.back-btn:hover{color:var(--teal);border-color:var(--teal);box-shadow:var(--glow-teal);}
+
+/* TICKER */
+.ticker{overflow:hidden;border-top:1px solid rgba(68,255,153,.1);border-bottom:1px solid rgba(68,255,153,.1);padding:13px 0;background:rgba(68,255,153,.01);position:relative;z-index:1;margin-top:70px;}
+.ticker-inner{display:flex;gap:70px;white-space:nowrap;animation:ticker 46s linear infinite;}
+.ticker-item{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:3px;color:rgba(68,255,153,.45);text-transform:uppercase;flex-shrink:0;}
+.ticker-item span{color:var(--blue);margin:0 8px;}
+@keyframes ticker{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+/* HERO */
+.hero{position:relative;padding:90px 48px 80px;overflow:hidden;z-index:1;border-bottom:1px solid rgba(68,255,153,.07);}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(68,255,153,.07) 0%,rgba(0,212,255,.04) 50%,transparent 80%);pointer-events:none;}
+.hero-inner{max-width:900px;}
+.hero-eyebrow{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:6px;color:rgba(68,255,153,.65);text-transform:uppercase;margin-bottom:22px;animation:fade-up .7s ease both;display:flex;align-items:center;gap:14px;}
+.hero-eyebrow::after{content:'';flex:0 0 60px;height:1px;background:linear-gradient(90deg,var(--green),transparent);opacity:.5;}
+.hero h1{font-family:'Orbitron',monospace;font-size:clamp(24px,4.2vw,54px);font-weight:900;line-height:1.1;margin-bottom:22px;animation:fade-up .7s ease .1s both;}
+.hero h1 .g{color:var(--green);text-shadow:var(--glow-green);}
+.hero h1 .b{color:var(--blue);text-shadow:var(--glow-blue);}
+.hero-desc{animation:fade-up .7s ease .2s both;}
+.hero-desc p{font-size:16px;line-height:1.95;color:rgba(232,244,255,.6);margin-bottom:14px;max-width:820px;}
+.hero-desc p strong{color:var(--white);}
+.hero-desc p em{color:var(--green);font-style:normal;}
+.hero-ctas{display:flex;gap:16px;flex-wrap:wrap;margin-top:36px;animation:fade-up .7s ease .3s both;}
+.cta-btn{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;padding:14px 32px;text-decoration:none;transition:all .3s;}
+.cta-green{background:rgba(68,255,153,.08);border:1px solid rgba(68,255,153,.35);color:var(--green);}
+.cta-green:hover{background:rgba(68,255,153,.15);border-color:var(--green);box-shadow:var(--glow-green);}
+.cta-blue{border:1px solid rgba(0,212,255,.3);color:rgba(0,212,255,.8);}
+.cta-blue:hover{border-color:var(--blue);color:var(--blue);box-shadow:var(--glow-blue);}
+@keyframes fade-up{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+/* TOC */
+.toc-bar{background:rgba(68,255,153,.01);border-bottom:1px solid rgba(68,255,153,.08);padding:18px 48px;z-index:1;position:relative;}
+.toc-inner{max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:9px;align-items:center;}
+.toc-label{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:4px;color:var(--green);text-transform:uppercase;margin-right:10px;opacity:.7;}
+.toc-link{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1.5px;color:rgba(232,244,255,.32);text-decoration:none;text-transform:uppercase;padding:5px 11px;border:1px solid rgba(68,255,153,.1);transition:all .3s;}
+.toc-link:hover{color:var(--green);border-color:rgba(68,255,153,.35);}
+
+/* LAYOUT */
+.container{max-width:1280px;margin:0 auto;padding:0 48px;}
+.wiki-layout{display:grid;grid-template-columns:1fr 300px;gap:60px;padding:72px 0 100px;align-items:start;}
+section{position:relative;z-index:1;}
+
+/* ARTICLE */
+.article h2{font-family:'Orbitron',monospace;font-size:clamp(17px,2.4vw,26px);font-weight:700;color:var(--white);margin:64px 0 10px;line-height:1.2;display:flex;align-items:center;gap:16px;}
+.article h2:first-child{margin-top:0;}
+.article h2 .sec-num{font-size:10px;font-weight:700;color:var(--green);border:1px solid rgba(68,255,153,.35);padding:4px 10px;letter-spacing:2px;flex-shrink:0;box-shadow:var(--glow-green);}
+.article h2 .gn{color:var(--green);text-shadow:var(--glow-green);}
+.article h2 .b{color:var(--blue);text-shadow:var(--glow-blue);}
+.article h2 .t{color:var(--teal);text-shadow:var(--glow-teal);}
+.article h2 .g{color:var(--gold);text-shadow:var(--glow-gold);}
+.article h2 .p{color:var(--purple);text-shadow:var(--glow-purple);}
+.article h3{font-family:'Orbitron',monospace;font-size:11px;font-weight:600;letter-spacing:2px;color:var(--green);text-transform:uppercase;margin:28px 0 14px;padding-bottom:10px;border-bottom:1px solid rgba(68,255,153,.12);}
+.article h3.b{color:var(--blue);border-color:rgba(0,212,255,.1);}
+.article h3.t{color:var(--teal);border-color:rgba(0,255,204,.1);}
+.article h3.g{color:var(--gold);border-color:rgba(255,204,68,.1);}
+.article h3.p{color:var(--purple);border-color:rgba(170,102,255,.12);}
+.article p{font-size:15px;line-height:1.95;color:rgba(232,244,255,.65);margin-bottom:16px;}
+.article p strong{color:var(--white);font-weight:600;}
+.article p em{color:var(--green);font-style:normal;}
+.sec-anchor{display:block;height:90px;margin-top:-90px;visibility:hidden;}
+.art-divider{height:1px;background:linear-gradient(90deg,rgba(68,255,153,.1),transparent);margin:56px 0;}
+
+/* BOXES */
+.def-box{border:1px solid rgba(68,255,153,.18);background:rgba(68,255,153,.025);padding:26px 30px;margin:24px 0;position:relative;}
+.def-box::before{content:'KEY';position:absolute;top:12px;right:14px;font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:3px;color:rgba(68,255,153,.18);}
+.def-box p{margin:0;font-size:15px;line-height:1.85;color:rgba(232,244,255,.72);}
+.def-box p strong{color:var(--green);}
+
+.highlight-box{border:1px solid rgba(68,255,153,.16);border-left:3px solid var(--green);padding:22px 26px;margin:22px 0;background:rgba(68,255,153,.03);}
+.highlight-box.b{border:1px solid rgba(0,212,255,.16);border-left:3px solid var(--blue);background:rgba(0,212,255,.03);}
+.highlight-box.t{border:1px solid rgba(0,255,204,.16);border-left:3px solid var(--teal);background:rgba(0,255,204,.025);}
+.highlight-box.g{border:1px solid rgba(255,204,68,.16);border-left:3px solid var(--gold);background:rgba(255,204,68,.025);}
+.highlight-box.p{border:1px solid rgba(170,102,255,.16);border-left:3px solid var(--purple);background:rgba(170,102,255,.03);}
+.highlight-box p{margin:0;font-size:15px;line-height:1.85;color:rgba(232,244,255,.72);}
+.highlight-box p strong{color:var(--green);}
+.highlight-box.b p strong{color:var(--blue);}
+.highlight-box.t p strong{color:var(--teal);}
+.highlight-box.g p strong{color:var(--gold);}
+.highlight-box.p p strong{color:var(--purple);}
+
+/* FEAT LIST */
+.feat-list{list-style:none;display:flex;flex-direction:column;gap:8px;margin:16px 0 24px;}
+.feat-list li{display:flex;align-items:flex-start;gap:14px;padding:11px 16px;border:1px solid rgba(68,255,153,.08);background:rgba(68,255,153,.015);font-size:14px;line-height:1.6;color:rgba(232,244,255,.6);transition:all .3s;}
+.feat-list li:hover{border-color:rgba(68,255,153,.25);background:rgba(68,255,153,.035);}
+.feat-list li::before{content:'◆';color:var(--green);font-size:8px;flex-shrink:0;margin-top:4px;text-shadow:var(--glow-green);}
+.feat-list li strong{color:var(--white);}
+.feat-list.b li{border-color:rgba(0,212,255,.08);background:rgba(0,212,255,.02);}
+.feat-list.b li:hover{border-color:rgba(0,212,255,.24);background:rgba(0,212,255,.04);}
+.feat-list.b li::before{color:var(--blue);text-shadow:var(--glow-blue);}
+.feat-list.t li{border-color:rgba(0,255,204,.08);background:rgba(0,255,204,.018);}
+.feat-list.t li:hover{border-color:rgba(0,255,204,.24);background:rgba(0,255,204,.04);}
+.feat-list.t li::before{color:var(--teal);text-shadow:var(--glow-teal);}
+.feat-list.g li{border-color:rgba(255,204,68,.1);background:rgba(255,204,68,.018);}
+.feat-list.g li:hover{border-color:rgba(255,204,68,.28);background:rgba(255,204,68,.04);}
+.feat-list.g li::before{color:var(--gold);text-shadow:var(--glow-gold);}
+.feat-list.p li{border-color:rgba(170,102,255,.1);background:rgba(170,102,255,.018);}
+.feat-list.p li:hover{border-color:rgba(170,102,255,.28);background:rgba(170,102,255,.04);}
+.feat-list.p li::before{color:var(--purple);text-shadow:var(--glow-purple);}
+
+/* TWO-COL */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0 24px;}
+
+/* LEV PROGRESS */
+.lev-bar{margin:22px 0 28px;}
+.lev-label{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:3px;color:rgba(68,255,153,.5);text-transform:uppercase;margin-bottom:10px;}
+.lev-track{height:6px;background:rgba(68,255,153,.1);border:1px solid rgba(68,255,153,.15);position:relative;overflow:hidden;margin-bottom:6px;}
+.lev-fill{height:100%;background:linear-gradient(90deg,var(--green),var(--teal));animation:fill-grow 2s ease 0.5s both;}
+@keyframes fill-grow{from{width:0;}to{width:var(--w);}}
+.lev-note{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1px;color:rgba(232,244,255,.3);}
+
+/* NANO GRID */
+.nano-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:18px 0 26px;}
+.nano-card{padding:18px 14px;border:1px solid rgba(68,255,153,.12);background:rgba(68,255,153,.02);text-align:center;transition:all .3s;}
+.nano-card:hover{border-color:rgba(68,255,153,.3);background:rgba(68,255,153,.04);}
+.nano-icon{font-size:22px;margin-bottom:8px;}
+.nano-label{font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:2px;color:var(--green);text-transform:uppercase;margin-bottom:5px;}
+.nano-desc{font-size:11px;color:rgba(232,244,255,.42);line-height:1.5;}
+
+/* HOMO NEXUS CARD */
+.homo-card{background:linear-gradient(135deg,rgba(68,255,153,.04) 0%,rgba(0,212,255,.03) 100%);border:1px solid rgba(68,255,153,.2);padding:36px;margin:24px 0;position:relative;overflow:hidden;}
+.homo-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--green),var(--blue),transparent);}
+.homo-title{font-family:'Orbitron',monospace;font-size:18px;font-weight:700;margin-bottom:8px;}
+.homo-title .gn{color:var(--green);text-shadow:var(--glow-green);}
+.homo-sub{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:3px;color:rgba(232,244,255,.25);text-transform:uppercase;margin-bottom:18px;}
+.homo-desc p{font-size:14px;line-height:1.85;color:rgba(232,244,255,.6);margin-bottom:10px;}
+.homo-desc p strong{color:var(--white);}
+.homo-desc p em{color:var(--green);}
+
+/* FUTURE LIST */
+.future-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:18px 0 26px;}
+.future-item{display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:1px solid rgba(0,212,255,.09);background:rgba(0,212,255,.018);font-size:13px;line-height:1.6;color:rgba(232,244,255,.58);}
+.future-item::before{content:'→';color:var(--blue);flex-shrink:0;font-size:12px;margin-top:2px;}
+.future-item strong{color:var(--white);}
+
+/* CONCLUSION */
+.conclusion{background:linear-gradient(135deg,rgba(68,255,153,.04) 0%,rgba(0,212,255,.03) 60%,rgba(170,102,255,.03) 100%);border:1px solid rgba(68,255,153,.15);padding:48px;margin-top:56px;position:relative;overflow:hidden;}
+.conclusion::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--green),var(--blue),var(--purple));}
+.conclusion::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--purple),var(--blue),var(--green));}
+.conclusion h3{font-family:'Orbitron',monospace;font-size:20px;font-weight:700;margin-bottom:16px;}
+.conclusion h3 .gn{color:var(--green);}
+.conclusion p{font-size:15px;line-height:1.9;color:rgba(232,244,255,.58);margin-bottom:14px;}
+.conclusion p strong{color:var(--white);}
+.conclusion p em{color:var(--green);}
+
+/* MANIFESTO BAND */
+.manifesto-band{padding:80px 48px;text-align:center;position:relative;overflow:hidden;z-index:1;border-top:1px solid rgba(68,255,153,.08);border-bottom:1px solid rgba(68,255,153,.08);}
+.manifesto-band::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(68,255,153,.05) 0%,rgba(0,212,255,.03) 50%,transparent 75%);pointer-events:none;}
+.manifesto-quote{font-family:'Orbitron',monospace;font-size:clamp(13px,2vw,22px);font-weight:600;line-height:1.7;max-width:900px;margin:0 auto 28px;}
+.manifesto-quote .gn{color:var(--green);text-shadow:var(--glow-green);}
+.manifesto-quote .b{color:var(--blue);text-shadow:var(--glow-blue);}
+.manifesto-quote .p{color:var(--purple);text-shadow:var(--glow-purple);}
+.manifesto-sub{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:5px;color:rgba(232,244,255,.18);text-transform:uppercase;}
+
+/* SIDEBAR */
+.sidebar{position:sticky;top:100px;display:flex;flex-direction:column;gap:18px;}
+.sidebar-card{border:1px solid rgba(68,255,153,.12);padding:22px;background:rgba(68,255,153,.015);position:relative;overflow:hidden;}
+.sidebar-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--green),transparent);}
+.sidebar-card.b{border-color:rgba(0,212,255,.12);}
+.sidebar-card.b::before{background:linear-gradient(90deg,transparent,var(--blue),transparent);}
+.sidebar-card.t{border-color:rgba(0,255,204,.12);}
+.sidebar-card.t::before{background:linear-gradient(90deg,transparent,var(--teal),transparent);}
+.sidebar-card.g{border-color:rgba(255,204,68,.12);}
+.sidebar-card.g::before{background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.sidebar-card.p{border-color:rgba(170,102,255,.12);}
+.sidebar-card.p::before{background:linear-gradient(90deg,transparent,var(--purple),transparent);}
+.sidebar-title{font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--green);text-transform:uppercase;margin-bottom:14px;}
+.sidebar-card.b .sidebar-title{color:var(--blue);}
+.sidebar-card.t .sidebar-title{color:var(--teal);}
+.sidebar-card.g .sidebar-title{color:var(--gold);}
+.sidebar-card.p .sidebar-title{color:var(--purple);}
+.sidebar-nav{list-style:none;display:flex;flex-direction:column;gap:7px;}
+.sidebar-nav a{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1px;color:rgba(232,244,255,.32);text-decoration:none;transition:color .3s;display:flex;align-items:center;gap:8px;}
+.sidebar-nav a::before{content:'›';color:var(--green);font-size:14px;}
+.sidebar-nav a:hover{color:var(--green);}
+.qf{display:flex;flex-direction:column;}
+.qf-row{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid rgba(68,255,153,.06);}
+.qf-row:last-child{border:none;}
+.qf-key{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1px;color:rgba(68,255,153,.45);text-transform:uppercase;flex:0 0 80px;}
+.qf-val{font-size:12px;color:rgba(232,244,255,.6);}
+.qf-val strong{color:var(--white);}
+.ext-links{list-style:none;display:flex;flex-direction:column;gap:7px;}
+.ext-links a{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:.5px;color:rgba(0,255,204,.5);text-decoration:none;transition:all .3s;display:flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid rgba(0,255,204,.08);}
+.ext-links a:hover{color:var(--teal);border-color:rgba(0,255,204,.28);background:rgba(0,255,204,.03);}
+.ext-links a::before{content:'→';color:var(--teal);flex-shrink:0;}
+.ext-links.g a{color:rgba(255,204,68,.5);border-color:rgba(255,204,68,.08);}
+.ext-links.g a::before{color:var(--gold);}
+.ext-links.g a:hover{color:var(--gold);border-color:rgba(255,204,68,.28);background:rgba(255,204,68,.03);}
+
+/* FOOTER */
+footer{border-top:1px solid rgba(68,255,153,.08);padding:60px 48px 40px;position:relative;z-index:1;}
+.footer-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:52px;margin-bottom:48px;}
+.footer-brand p{font-size:13px;line-height:1.8;color:rgba(232,244,255,.26);margin-top:14px;max-width:270px;}
+.footer-col h5{font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:3px;color:var(--green);text-transform:uppercase;margin-bottom:16px;}
+.footer-col ul{list-style:none;}
+.footer-col li{margin-bottom:9px;}
+.footer-col a{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:1px;color:rgba(232,244,255,.28);text-decoration:none;transition:color .3s;}
+.footer-col a:hover{color:var(--teal);}
+.footer-bottom{border-top:1px solid rgba(68,255,153,.07);padding-top:24px;display:flex;justify-content:space-between;align-items:center;max-width:1280px;margin:0 auto;}
+.footer-bottom p{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;color:rgba(232,244,255,.14);}
+.footer-wsd{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;color:rgba(68,255,153,.2);}
+
+@media(max-width:1024px){.wiki-layout{grid-template-columns:1fr;}.sidebar{position:static;}.two-col,.nano-grid,.future-grid{grid-template-columns:1fr;}.footer-inner{grid-template-columns:1fr 1fr;}}
+@media(max-width:768px){nav{padding:14px 20px;}.nav-links{display:none;}.container{padding:0 20px;}.hero{padding:70px 20px 60px;}.toc-bar,.manifesto-band,.footer{padding-left:20px;padding-right:20px;}.footer-inner{grid-template-columns:1fr;}.footer-bottom{flex-direction:column;gap:10px;}.conclusion{padding:28px 20px;}.homo-card{padding:24px 20px;}}
+</style>
+</head>
+<body>
+<div class="scan-line"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="electric-technocracy.html" class="nav-logo">
+    <svg viewBox="0 0 60 60" fill="none">
+      <circle cx="30" cy="30" r="27" stroke="#00d4ff" stroke-width="1.5"/>
+      <circle cx="30" cy="30" r="21" stroke="#00d4ff" stroke-width="0.6" opacity="0.5"/>
+      <line x1="3" y1="30" x2="14" y2="30" stroke="#00d4ff" stroke-width="2"/>
+      <line x1="3" y1="26" x2="11" y2="26" stroke="#00d4ff" stroke-width="1.2"/>
+      <line x1="3" y1="34" x2="11" y2="34" stroke="#00d4ff" stroke-width="1.2"/>
+      <line x1="46" y1="30" x2="57" y2="30" stroke="#00d4ff" stroke-width="2"/>
+      <line x1="49" y1="26" x2="57" y2="26" stroke="#00d4ff" stroke-width="1.2"/>
+      <line x1="49" y1="34" x2="57" y2="34" stroke="#00d4ff" stroke-width="1.2"/>
+      <path d="M36 7 L21 30 L30 30 L24 53 L39 28 L30 28 Z" fill="#00d4ff"/>
+    </svg>
+    <div class="nav-brand">Electric Technocracy</div>
+  </a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#s1">Biology</a></li>
+      <li><a href="#s4">Nanotech</a></li>
+      <li><a href="#s5">CRISPR</a></li>
+      <li><a href="#s6">LEV</a></li>
+      <li><a href="#s9">AI Health</a></li>
+      <li><a href="#s13">Homo Tech</a></li>
+    </ul>
+    <a href="electric-technocracy.html" class="back-btn">← Back to Home</a>
+  </div>
+</nav>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner">
+    <div class="ticker-item">Radical Longevity <span>◆</span></div>
+    <div class="ticker-item">Longevity Escape Velocity <span>◆</span></div>
+    <div class="ticker-item">CRISPR Gene Editing <span>◆</span></div>
+    <div class="ticker-item">Medical Nanotechnology <span>◆</span></div>
+    <div class="ticker-item">Synthetic Biology <span>◆</span></div>
+    <div class="ticker-item">Brain-Computer Interface <span>◆</span></div>
+    <div class="ticker-item">Mind Uploading <span>◆</span></div>
+    <div class="ticker-item">Homo Technologicus <span>◆</span></div>
+    <div class="ticker-item">Digital Twin Medicine <span>◆</span></div>
+    <div class="ticker-item">Post-Aging Civilization <span>◆</span></div>
+    <div class="ticker-item">Electric Technocracy <span>◆</span></div>
+    <div class="ticker-item">Radical Longevity <span>◆</span></div>
+    <div class="ticker-item">Longevity Escape Velocity <span>◆</span></div>
+    <div class="ticker-item">CRISPR Gene Editing <span>◆</span></div>
+    <div class="ticker-item">Medical Nanotechnology <span>◆</span></div>
+    <div class="ticker-item">Synthetic Biology <span>◆</span></div>
+    <div class="ticker-item">Brain-Computer Interface <span>◆</span></div>
+    <div class="ticker-item">Mind Uploading <span>◆</span></div>
+    <div class="ticker-item">Homo Technologicus <span>◆</span></div>
+    <div class="ticker-item">Digital Twin Medicine <span>◆</span></div>
+    <div class="ticker-item">Post-Aging Civilization <span>◆</span></div>
+    <div class="ticker-item">Electric Technocracy <span>◆</span></div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">Biotechnology · Longevity · Evolution</div>
+      <h1>The <span class="g">Longevity Singularity</span><br>and the Rise of <span class="b">Electric Technocracy</span></h1>
+      <div class="hero-desc">
+        <p><strong>The future of humanity is no longer limited by biology.</strong> What was once imagined in mythology, religion, and speculative fiction is rapidly transforming into scientific reality. Humanity stands at the threshold of a civilization where aging, disease, scarcity, and even death itself become engineering problems rather than unavoidable destiny.</p>
+        <p><em>Electric Technocracy</em> describes this transition into a technologically coordinated civilization powered by Artificial Superintelligence, nanotechnology, synthetic biology, robotics, and direct digital democracy. In this system, technology no longer serves only economic growth — it becomes the foundation for <strong>human evolution itself</strong>.</p>
+      </div>
+      <div class="hero-ctas">
+        <a href="#s1" class="cta-btn cta-green">Explore Longevity Science</a>
+        <a href="#s13" class="cta-btn cta-blue">Homo Technologicus</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOC -->
+<div class="toc-bar">
+  <div class="toc-inner">
+    <span class="toc-label">Contents</span>
+    <a href="#s1" class="toc-link">§1 Biology</a>
+    <a href="#s2" class="toc-link">§2 ASI</a>
+    <a href="#s3" class="toc-link">§3 DDD</a>
+    <a href="#s4" class="toc-link">§4 Nanotech</a>
+    <a href="#s5" class="toc-link">§5 CRISPR</a>
+    <a href="#s6" class="toc-link">§6 LEV</a>
+    <a href="#s7" class="toc-link">§7 Cybernetics</a>
+    <a href="#s8" class="toc-link">§8 Organs</a>
+    <a href="#s9" class="toc-link">§9 AI Health</a>
+    <a href="#s10" class="toc-link">§10 UBI</a>
+    <a href="#s11" class="toc-link">§11 Post-Scarcity</a>
+    <a href="#s12" class="toc-link">§12 Mind Upload</a>
+    <a href="#s13" class="toc-link">§13 Homo Tech</a>
+    <a href="#s14" class="toc-link">§14 Future</a>
+  </div>
+</div>
+
+<!-- WIKI LAYOUT -->
+<section>
+  <div class="container">
+    <div class="wiki-layout">
+
+      <article class="article">
+
+        <!-- §1 -->
+        <span class="sec-anchor" id="s1"></span>
+        <h2><span class="sec-num">§ 1</span>The End of <span class="gn">Biological Limitation</span></h2>
+        <h3>Aging as an Engineering Problem</h3>
+        <p>For thousands of years, aging was considered inevitable. Human civilizations accepted disease, organ failure, cognitive decline, and mortality as natural processes. Today, however, modern biotechnology reveals something revolutionary: aging is not a mystical curse. Aging is the cumulative result of:</p>
+
+        <div class="two-col">
+          <ul class="feat-list">
+            <li>Molecular damage accumulation</li>
+            <li>Genetic instability</li>
+            <li>Mitochondrial decline</li>
+          </ul>
+          <ul class="feat-list">
+            <li>Cellular senescence</li>
+            <li>Chronic inflammation</li>
+            <li>Systemic degradation</li>
+          </ul>
+        </div>
+
+        <div class="def-box">
+          <p><strong>Every one of these processes can potentially be repaired, replaced, slowed, or reversed.</strong> The convergence of advanced sciences is creating the first real possibility of radical lifespan extension — not as fantasy, but as an engineering challenge.</p>
+        </div>
+
+        <p>Gene editing systems repair defective DNA. Nanobots may eventually patrol the bloodstream repairing tissues in real time. AI-driven diagnostics detect diseases before symptoms appear. Synthetic organs replace failing biological systems. Brain-computer interfaces expand cognition beyond natural limits. The result is not merely a longer life — it is the emergence of a new stage of civilization.</p>
+
+        <div class="art-divider"></div>
+
+        <!-- §2 -->
+        <span class="sec-anchor" id="s2"></span>
+        <h2><span class="sec-num">§ 2</span><span class="b">ASI</span> as the Architect of Civilization</h2>
+        <h3 class="b">From Ideology to Optimization</h3>
+        <p>Artificial Superintelligence (ASI) becomes the central analytical infrastructure of Electric Technocracy. Unlike traditional political systems dominated by ideology, lobbying, corruption, and geopolitical conflict, ASI operates through continuous optimization based on real-time global data.</p>
+
+        <div class="highlight-box b">
+          <p><strong>Energy systems, healthcare, transportation, production, resource management, and scientific research become coordinated through intelligent automation.</strong></p>
+        </div>
+
+        <p>Diseases are modeled before they emerge. Medical treatments become individualized at the molecular level. Climate systems are balanced algorithmically. Food production becomes automated and decentralized. Economic instability gradually disappears through predictive resource planning. Instead of governments competing for power, the future evolves toward globally synchronized technological administration supported by direct digital participation.</p>
+
+        <div class="art-divider"></div>
+
+        <!-- §3 -->
+        <span class="sec-anchor" id="s3"></span>
+        <h2><span class="sec-num">§ 3</span>Direct Digital Democracy and <span class="b">Governance</span></h2>
+        <h3 class="b">Scientific Optimization Replaces Political Competition</h3>
+        <p>Electric Technocracy proposes the replacement of traditional party politics with <strong>Direct Digital Democracy (DDD)</strong>. Citizens participate directly in policy decisions through secure digital systems supported by AI-driven analysis platforms. Professional politics, lobbying structures, and ideological polarization gradually lose their relevance.</p>
+        <p>ASI does not rule humanity. Instead, it functions as an objective advisory intelligence capable of simulating millions of outcomes in real time. Citizens receive transparent projections, risks, and optimization models before making collective decisions — creating governance designed around <em>scientific optimization, transparency, and global coordination</em> rather than political competition.</p>
+
+        <div class="art-divider"></div>
+
+        <!-- §4 -->
+        <span class="sec-anchor" id="s4"></span>
+        <h2><span class="sec-num">§ 4</span>Nanotechnology and <span class="gn">Cellular Repair</span></h2>
+        <h3>The Autonomous Medical Unit</h3>
+        <p>Nanotechnology represents one of the most transformative developments in future medicine. Microscopic repair systems may eventually enter the bloodstream and function as autonomous medical units.</p>
+
+        <div class="nano-grid">
+          <div class="nano-card">
+            <div class="nano-icon">🔬</div>
+            <div class="nano-label">Cancer Detection</div>
+            <div class="nano-desc">Identify and destroy malignant cells at earliest formation</div>
+          </div>
+          <div class="nano-card">
+            <div class="nano-icon">🧬</div>
+            <div class="nano-label">DNA Repair</div>
+            <div class="nano-desc">Real-time repair of damaged genetic structures</div>
+          </div>
+          <div class="nano-card">
+            <div class="nano-icon">🫀</div>
+            <div class="nano-label">Arterial Repair</div>
+            <div class="nano-desc">Remove plaque and restore vascular integrity</div>
+          </div>
+          <div class="nano-card">
+            <div class="nano-icon">🧠</div>
+            <div class="nano-label">Neuron Restoration</div>
+            <div class="nano-desc">Rebuild damaged neural pathways and connections</div>
+          </div>
+          <div class="nano-card">
+            <div class="nano-icon">⚡</div>
+            <div class="nano-label">Cell Metabolism</div>
+            <div class="nano-desc">Optimize mitochondrial function and cellular energy</div>
+          </div>
+          <div class="nano-card">
+            <div class="nano-icon">🛡️</div>
+            <div class="nano-label">Infection Removal</div>
+            <div class="nano-desc">Eliminate pathogens faster than biological immunity</div>
+          </div>
+        </div>
+
+        <div class="highlight-box">
+          <p>Unlike modern medicine, which reacts after disease develops, nanomedicine introduces <strong>permanent real-time maintenance</strong> of the human body.</p>
+        </div>
+
+        <div class="art-divider"></div>
+
+        <!-- §5 -->
+        <span class="sec-anchor" id="s5"></span>
+        <h2><span class="sec-num">§ 5</span>Gene Editing and <span class="gn">Biological Reprogramming</span></h2>
+        <h3>CRISPR and Beyond</h3>
+        <p>CRISPR and advanced gene editing technologies are redefining biology itself. Instead of treating symptoms, future medicine edits the underlying biological instructions. Genetic pathways associated with aging, inflammation, neurodegeneration, and cancer may eventually be switched off entirely.</p>
+
+        <div class="highlight-box t">
+          <p>Whale DNA repair systems, jellyfish regeneration capabilities, and radiation-resistant extremophile genetics may become components of <strong>future human enhancement</strong>.</p>
+        </div>
+
+        <p>Partial cellular reprogramming using epigenetic reset systems already demonstrates the possibility of reversing cellular age without destroying tissue identity. Combined with telomerase therapies, stem cell engineering, and DNA repair systems, humanity approaches the threshold of <em>biological rejuvenation</em>.</p>
+
+        <div class="art-divider"></div>
+
+        <!-- §6 -->
+        <span class="sec-anchor" id="s6"></span>
+        <h2><span class="sec-num">§ 6</span>The <span class="gn">Longevity Escape Velocity</span></h2>
+        <h3>The Threshold Point</h3>
+
+        <div class="lev-bar">
+          <div class="lev-label">Medical Progress vs. Aging Rate</div>
+          <div class="lev-track"><div class="lev-fill" style="--w:35%"></div></div>
+          <div class="lev-note">Current trajectory → approaching Longevity Escape Velocity</div>
+        </div>
+
+        <div class="def-box">
+          <p>Longevity Escape Velocity (LEV) describes the point where medical progress extends human life <strong>faster than biological aging reduces it</strong>. Once this threshold is crossed, aging effectively loses its power over civilization.</p>
+        </div>
+
+        <p>Every year of scientific advancement potentially adds multiple years of healthy lifespan. New therapies repair previous damage while newer technologies improve repair efficiency even further. The process becomes exponential rather than linear. Humanity transitions from survival-based civilization into a <em>post-aging civilization</em>.</p>
+
+        <div class="art-divider"></div>
+
+        <!-- §7 -->
+        <span class="sec-anchor" id="s7"></span>
+        <h2><span class="sec-num">§ 7</span>Cybernetics and <span class="b">Human Augmentation</span></h2>
+        <h3 class="b">Beyond Natural Evolution</h3>
+        <p>The future human body will not remain purely biological. Cybernetic systems expand physical and cognitive capabilities beyond natural evolution.</p>
+
+        <ul class="feat-list b">
+          <li>Artificial eyes seeing across infrared and ultraviolet spectrums</li>
+          <li>Neural implants enhancing memory and intelligence</li>
+          <li>Synthetic limbs outperforming biological muscles</li>
+          <li>Brain-computer interfaces connecting consciousness with digital networks</li>
+          <li>Consciousness backup systems and neural mapping technologies</li>
+        </ul>
+
+        <div class="highlight-box b">
+          <p>The distinction between biology and technology gradually dissolves. Future humans may exist simultaneously across <strong>biological, synthetic, and digital platforms</strong>.</p>
+        </div>
+
+        <div class="art-divider"></div>
+
+        <!-- §8 -->
+        <span class="sec-anchor" id="s8"></span>
+        <h2><span class="sec-num">§ 8</span>Synthetic Organs and <span class="t">Body Replacement</span></h2>
+        <h3 class="t">Organ Failure as a Maintenance Issue</h3>
+        <p>Bioprinting and synthetic biology enable the creation of fully customized organs grown from the patient's own cells. Hearts, lungs, kidneys, and even neural tissue can theoretically be manufactured on demand.</p>
+
+        <div class="highlight-box t">
+          <p><strong>Organ failure becomes a solvable maintenance issue rather than a terminal condition.</strong></p>
+        </div>
+
+        <p>Over time, biological systems may increasingly integrate with synthetic enhancements. Hybrid organs enhanced with nanoelectronics and AI monitoring systems outperform natural biology in durability, efficiency, and adaptability. Eventually, full-body replacement systems may emerge where consciousness transfers into upgraded biological or cybernetic platforms.</p>
+
+        <div class="art-divider"></div>
+
+        <!-- §9 -->
+        <span class="sec-anchor" id="s9"></span>
+        <h2><span class="sec-num">§ 9</span>AI Healthcare and <span class="gn">Digital Twins</span></h2>
+        <h3>Predictive Rather Than Reactive</h3>
+        <p>Future healthcare becomes predictive rather than reactive. Every individual may possess a continuously updated <strong>digital twin</strong> — an AI simulation of their entire biological system — analyzing genetic data, metabolism, environmental exposure, immune activity, neural patterns, and organ performance in real time.</p>
+
+        <div class="highlight-box">
+          <p>Treatments are <strong>simulated digitally before they are ever applied physically</strong>. The result is precision medicine with unprecedented efficiency — disease prevention replaces emergency intervention.</p>
+        </div>
+
+        <p>Aging itself becomes continuously managed through automated optimization systems.</p>
+
+        <div class="art-divider"></div>
+
+        <!-- §10 -->
+        <span class="sec-anchor" id="s10"></span>
+        <h2><span class="sec-num">§ 10</span>Universal Basic Income and the <span class="g">Automation Economy</span></h2>
+        <h3 class="g">Technology Tax · Machine Productivity</h3>
+        <p>As robotics and AI automate physical and intellectual labor, traditional employment structures begin to dissolve. Electric Technocracy proposes a Universal Basic Income financed through automated machine productivity and technology taxation.</p>
+
+        <div class="highlight-box g">
+          <p><strong>Human survival no longer depends on wage labor.</strong> Citizens gain the freedom to pursue science, creativity, philosophy, engineering, art, and exploration without economic insecurity.</p>
+        </div>
+
+        <p>Machines handle repetitive labor while humanity transitions toward self-realization and intellectual development. This transformation creates the foundation for a post-scarcity civilization.</p>
+
+        <div class="art-divider"></div>
+
+        <!-- §11 -->
+        <span class="sec-anchor" id="s11"></span>
+        <h2><span class="sec-num">§ 11</span>Post-Scarcity and <span class="g">Infinite Production</span></h2>
+        <h3 class="g">Abundance Economics</h3>
+        <p>Advanced manufacturing systems driven by AI, molecular engineering, and decentralized production networks radically reduce scarcity. Products are manufactured on demand. Waste becomes recyclable at the molecular level. Fusion energy potentially delivers virtually unlimited clean power.</p>
+
+        <div class="highlight-box g">
+          <p>The economic structures of scarcity-based civilization become obsolete. Production shifts toward <strong>abundance economics</strong> where access replaces ownership and global resource coordination eliminates artificial shortages.</p>
+        </div>
+
+        <div class="art-divider"></div>
+
+        <!-- §12 -->
+        <span class="sec-anchor" id="s12"></span>
+        <h2><span class="sec-num">§ 12</span>Mind Uploading and <span class="p">Digital Continuity</span></h2>
+        <h3 class="p">Consciousness Beyond Biology</h3>
+        <p>Brain-computer interfaces may eventually map and emulate the structure of human consciousness. While still theoretical, mind uploading represents one of the most radical possibilities of future technology. Human identity could continue inside digital substrates independent of biological limitations — existing across synthetic bodies, virtual environments, or distributed computational systems.</p>
+
+        <div class="highlight-box p">
+          <p><em>The concept of death itself becomes <strong>technologically negotiable</strong>.</em></p>
+        </div>
+
+        <div class="art-divider"></div>
+
+        <!-- §13 -->
+        <span class="sec-anchor" id="s13"></span>
+        <h2><span class="sec-num">§ 13</span>The Emergence of <span class="gn">Homo Technologicus</span></h2>
+
+        <div class="homo-card">
+          <div class="homo-title">The <span class="gn">New Human</span> — Homo Technologicus</div>
+          <div class="homo-sub">Intentional Evolution · Post-Biology · Civilizational Redesign</div>
+          <div class="homo-desc">
+            <p>The convergence of biotechnology, AI, nanotechnology, cybernetics, and synthetic biology creates the possibility of a new evolutionary stage. Humanity no longer evolves passively through natural selection. <strong>Evolution becomes intentional, directed, and technologically accelerated.</strong></p>
+            <p>The future human may possess <em>enhanced cognition, engineered immunity, programmable biology, extended lifespan, and direct integration with intelligent systems</em>.</p>
+            <p>This transition marks the emergence of Homo Technologicus — a civilization where intelligence consciously redesigns itself.</p>
+          </div>
+        </div>
+
+        <div class="art-divider"></div>
+
+        <!-- §14 FUTURE -->
+        <span class="sec-anchor" id="s14"></span>
+        <h2><span class="sec-num">§ 14</span>Electric Technocracy and the <span class="b">Future of Humanity</span></h2>
+        <h3 class="b">The Beginning of a New Era</h3>
+
+        <div class="future-grid">
+          <div class="future-item"><strong>AI coordinates</strong> global infrastructure and healthcare</div>
+          <div class="future-item"><strong>Nanotechnology</strong> continuously repairs biological systems</div>
+          <div class="future-item"><strong>Gene editing</strong> eliminates inherited disease</div>
+          <div class="future-item"><strong>Robotics</strong> automate dangerous and repetitive labor</div>
+          <div class="future-item"><strong>Fusion energy</strong> powers civilization sustainably</div>
+          <div class="future-item"><strong>Direct Digital Democracy</strong> replaces traditional politics</div>
+          <div class="future-item"><strong>Universal Basic Income</strong> guarantees economic security</div>
+          <div class="future-item"><strong>Human lifespan</strong> expands beyond historical limitations</div>
+        </div>
+
+        <div class="conclusion">
+          <h3>The Convergence Has <span class="gn">Already Begun</span></h3>
+          <p>Human civilization is entering the most transformative period in history. Fire changed survival. Agriculture changed society. Electricity changed industry. Artificial intelligence and biotechnology may ultimately <strong>change the meaning of human existence itself</strong>.</p>
+          <p>The future described here is not fantasy alone. Many of the foundational technologies already exist in early form today. Gene editing laboratories operate worldwide. AI systems outperform humans in complex analysis. Brain-computer interfaces already restore mobility. Nanotechnology advances every year. Longevity science accelerates continuously.</p>
+          <p><em>The goal is not merely survival. The goal is the full liberation of human potential.</em></p>
+        </div>
+
+      </article>
+
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+
+        <div class="sidebar-card">
+          <div class="sidebar-title">Quick Facts</div>
+          <div class="qf">
+            <div class="qf-row"><div class="qf-key">Focus</div><div class="qf-val"><strong>Radical Longevity</strong></div></div>
+            <div class="qf-row"><div class="qf-key">Key Tech</div><div class="qf-val">CRISPR, Nanobots, BCI</div></div>
+            <div class="qf-row"><div class="qf-key">Goal</div><div class="qf-val">LEV + Post-Aging Civ.</div></div>
+            <div class="qf-row"><div class="qf-key">Economy</div><div class="qf-val">UBI + Tech Tax</div></div>
+            <div class="qf-row"><div class="qf-key">Evolution</div><div class="qf-val">Homo Technologicus</div></div>
+            <div class="qf-row"><div class="qf-key">Governance</div><div class="qf-val">ASI + DDD</div></div>
+            <div class="qf-row"><div class="qf-key">Legal Basis</div><div class="qf-val">WSD 1400/98</div></div>
+          </div>
+        </div>
+
+        <div class="sidebar-card b">
+          <div class="sidebar-title">Sections</div>
+          <ul class="sidebar-nav">
+            <li><a href="#s1">§ 1 — Biological Limitation</a></li>
+            <li><a href="#s2">§ 2 — ASI Architecture</a></li>
+            <li><a href="#s3">§ 3 — Digital Democracy</a></li>
+            <li><a href="#s4">§ 4 — Nanotechnology</a></li>
+            <li><a href="#s5">§ 5 — Gene Editing / CRISPR</a></li>
+            <li><a href="#s6">§ 6 — Longevity Escape Velocity</a></li>
+            <li><a href="#s7">§ 7 — Cybernetics</a></li>
+            <li><a href="#s8">§ 8 — Synthetic Organs</a></li>
+            <li><a href="#s9">§ 9 — AI Healthcare</a></li>
+            <li><a href="#s10">§ 10 — UBI &amp; Automation</a></li>
+            <li><a href="#s11">§ 11 — Post-Scarcity</a></li>
+            <li><a href="#s12">§ 12 — Mind Uploading</a></li>
+            <li><a href="#s13">§ 13 — Homo Technologicus</a></li>
+            <li><a href="#s14">§ 14 — Future of Humanity</a></li>
+          </ul>
+        </div>
+
+        <div class="sidebar-card t">
+          <div class="sidebar-title">Official Links</div>
+          <ul class="ext-links">
+            <li><a href="https://worldsold.wixsite.com/electric-technocracy" target="_blank">Electric Technocracy</a></li>
+            <li><a href="https://electric-paradise.start.page" target="_blank">Electric Paradise (Start Page)</a></li>
+            <li><a href="https://worldsold.wixsite.com/world-sold/en" target="_blank">World Sold / WSD</a></li>
+            <li><a href="https://creators.spotify.com/pod/show/world-succession-deed" target="_blank">Podcast</a></li>
+            <li><a href="https://www.youtube.com/@Staatensukzessionsurkunde-1400" target="_blank">YouTube</a></li>
+            <li><a href="https://wiki.free.nf/" target="_blank">Wiki</a></li>
+            <li><a href="https://zenodo.org/communities/electric-technocracy" target="_blank">Zenodo Research</a></li>
+            <li><a href="https://wiki.free.nf/index.php/Juridical_Singularity" target="_blank">Juridical Singularity</a></li>
+          </ul>
+        </div>
+
+        <div class="sidebar-card g">
+          <div class="sidebar-title">Additional Resources</div>
+          <ul class="ext-links g">
+            <li><a href="https://wiki.technocracy.tech/" target="_blank">International Treaty Law Wiki</a></li>
+            <li><a href="https://singularity41.wordpress.com/" target="_blank">Singularity University Free Courses</a></li>
+            <li><a href="https://now31.wordpress.com" target="_blank">Homo Nexus Blog</a></li>
+            <li><a href="https://patch98.wordpress.com/2025/01/16/electric_technocracy_chatgpt/" target="_blank">The Patch Blog: Exponential Tech</a></li>
+          </ul>
+        </div>
+
+        <div class="sidebar-card p">
+          <div class="sidebar-title">Navigate</div>
+          <a href="electric-technocracy.html" class="back-btn" style="width:100%;justify-content:center;margin-bottom:10px;">← Back to Home</a>
+          <a href="asi-page.html" class="back-btn" style="width:100%;justify-content:center;border-color:rgba(170,102,255,.25);color:rgba(170,102,255,.7);margin-bottom:10px;">→ ASI Deep Dive</a>
+          <a href="asi-dawn-electric.html" class="back-btn" style="width:100%;justify-content:center;border-color:rgba(0,212,255,.25);color:rgba(0,212,255,.7);">→ Dawn of Electric Civ.</a>
+        </div>
+
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- MANIFESTO BAND -->
+<div class="manifesto-band">
+  <p class="manifesto-quote">
+    "The conquest of aging, scarcity, disease, and biological limitation represents
+    the next stage of civilization — driven by <span class="gn">longevity science</span>,
+    <span class="b">intelligent systems</span>, and the emergence of
+    <span class="p">Homo Technologicus</span>."
+  </p>
+  <div class="manifesto-sub">[ Longevity Singularity · CRISPR · Nanotechnology · ASI · Electric Technocracy · WSD 1400/98 ]</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="nav-brand" style="font-size:14px;">Electric Technocracy</div>
+      <p>A new form of government and society for a united world — governed by AI, ASI, and digital democracy, building universal abundance for all of humanity.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Sections</h5>
+      <ul>
+        <li><a href="#s1">§ 1 Biological Limitation</a></li>
+        <li><a href="#s4">§ 4 Nanotechnology</a></li>
+        <li><a href="#s5">§ 5 Gene Editing</a></li>
+        <li><a href="#s6">§ 6 Longevity Escape Velocity</a></li>
+        <li><a href="#s9">§ 9 AI Healthcare</a></li>
+        <li><a href="#s13">§ 13 Homo Technologicus</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Official</h5>
+      <ul>
+        <li><a href="https://worldsold.wixsite.com/electric-technocracy" target="_blank">Electric Technocracy</a></li>
+        <li><a href="https://electric-paradise.start.page" target="_blank">Electric Paradise</a></li>
+        <li><a href="https://zenodo.org/communities/electric-technocracy" target="_blank">Zenodo Research</a></li>
+        <li><a href="https://wiki.technocracy.tech/" target="_blank">Treaty Law Wiki</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Resources</h5>
+      <ul>
+        <li><a href="https://singularity41.wordpress.com/" target="_blank">Singularity University</a></li>
+        <li><a href="https://now31.wordpress.com" target="_blank">Homo Nexus Blog</a></li>
+        <li><a href="https://patch98.wordpress.com/2025/01/16/electric_technocracy_chatgpt/" target="_blank">The Patch Blog</a></li>
+        <li><a href="https://wiki.free.nf/index.php/Juridical_Singularity" target="_blank">Juridical Singularity</a></li>
+        <li><a href="mailto:sukzession1998@gmail.com">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© Electric Technocracy · The Longevity Singularity · All Rights Reserved</p>
+    <div class="footer-wsd">WSD 1400/98 · LEGAL BASIS</div>
+  </div>
+</footer>
+</body>
+</html>
