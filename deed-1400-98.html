@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Deed 1400/98 and the Reconfiguration of the Global Legal Order</title>
+<meta name="description" content="A detailed long-form landing page on Document 1400/98, state succession, global sovereignty, treaty chains, jurisdiction, domino expansion, and the legal transformation of the post-1998 world order.">
+<meta name="keywords" content="Document 1400/98, state succession, global sovereignty, international law, treaty chains, domino effect, NATO property, Turenne Barracks, legal transformation, imperium, dominium, global jurisdiction, new world order, Clean Slate principle, tabula rasa, treaty law, sovereignty transfer, legal order, international treaties, global state">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;900&family=Exo+2:ital,wght@0,300;0,400;0,600;1,300&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#020810;--blue:#00d4ff;--teal:#00ffcc;--gold:#ffcc44;--purple:#aa66ff;--red:#ff5533;--amber:#ff9922;--white:#e8f4ff;--grey:#4a6070;--glow-blue:0 0 20px #00d4ff88,0 0 60px #00d4ff33;--glow-teal:0 0 20px #00ffcc88,0 0 60px #00ffcc33;--glow-gold:0 0 20px #ffcc4488,0 0 60px #ffcc4433;--glow-purple:0 0 20px #aa66ff88,0 0 60px #aa66ff33;--glow-red:0 0 20px #ff553388,0 0 60px #ff553333;--glow-amber:0 0 20px #ff992288,0 0 60px #ff992233;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--white);font-family:'Exo 2',sans-serif;font-weight:300;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(255,153,34,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,153,34,.015) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;z-index:0;}
+@keyframes scan{0%{transform:translateY(-100%);}100%{transform:translateY(100vh);}}
+.scan-line{position:fixed;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(255,153,34,.1),transparent);animation:scan 9s linear infinite;pointer-events:none;z-index:999;}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:16px 48px;background:linear-gradient(180deg,#020810f0 0%,transparent 100%);border-bottom:1px solid rgba(255,153,34,.1);backdrop-filter:blur(10px);}
+.nav-logo{display:flex;align-items:center;gap:14px;text-decoration:none;}
+.nav-logo svg{width:36px;height:36px;filter:drop-shadow(var(--glow-blue));}
+.nav-brand{font-family:'Orbitron',monospace;font-size:12px;font-weight:700;letter-spacing:3px;color:var(--blue);text-shadow:var(--glow-blue);text-transform:uppercase;}
+.nav-right{display:flex;align-items:center;gap:24px;}
+.nav-links{display:flex;gap:20px;list-style:none;}
+.nav-links a{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--grey);text-decoration:none;transition:color .3s;}
+.nav-links a:hover{color:var(--amber);}
+.back-btn{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:rgba(0,255,204,.7);text-decoration:none;border:1px solid rgba(0,255,204,.25);padding:8px 20px;transition:all .3s;display:flex;align-items:center;gap:8px;}
+.back-btn:hover{color:var(--teal);border-color:var(--teal);box-shadow:var(--glow-teal);}
+
+.ticker{overflow:hidden;border-top:1px solid rgba(255,153,34,.1);border-bottom:1px solid rgba(255,153,34,.1);padding:13px 0;background:rgba(255,153,34,.01);position:relative;z-index:1;margin-top:70px;}
+.ticker-inner{display:flex;gap:70px;white-space:nowrap;animation:ticker 52s linear infinite;}
+.ticker-item{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:3px;color:rgba(255,153,34,.5);text-transform:uppercase;flex-shrink:0;}
+.ticker-item span{color:var(--gold);margin:0 8px;}
+@keyframes ticker{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+.hero{position:relative;padding:90px 48px 80px;overflow:hidden;z-index:1;border-bottom:1px solid rgba(255,153,34,.07);}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(255,153,34,.08) 0%,rgba(255,204,68,.03) 50%,transparent 80%);pointer-events:none;}
+.hero-inner{max-width:920px;}
+.hero-eyebrow{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:6px;color:rgba(255,153,34,.65);text-transform:uppercase;margin-bottom:22px;animation:fade-up .7s ease both;display:flex;align-items:center;gap:14px;}
+.hero-eyebrow::after{content:'';flex:0 0 60px;height:1px;background:linear-gradient(90deg,var(--amber),transparent);opacity:.5;}
+.hero h1{font-family:'Orbitron',monospace;font-size:clamp(20px,3.8vw,46px);font-weight:900;line-height:1.1;margin-bottom:18px;animation:fade-up .7s ease .1s both;}
+.hero h1 .a{color:var(--amber);text-shadow:var(--glow-amber);}
+.hero h1 .g{color:var(--gold);text-shadow:var(--glow-gold);}
+.hero h1 .b{color:var(--blue);text-shadow:var(--glow-blue);}
+.hero-date{font-family:'Share Tech Mono',monospace;font-size:12px;letter-spacing:4px;color:rgba(255,153,34,.5);margin-bottom:28px;animation:fade-up .7s ease .15s both;}
+.hero-desc{animation:fade-up .7s ease .2s both;}
+.hero-desc p{font-size:15px;line-height:1.95;color:rgba(232,244,255,.6);margin-bottom:14px;max-width:820px;}
+.hero-desc p strong{color:var(--white);}
+.hero-desc p em{color:var(--amber);font-style:normal;}
+.hero-ctas{display:flex;gap:16px;flex-wrap:wrap;margin-top:36px;animation:fade-up .7s ease .3s both;}
+.cta-btn{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:3px;text-transform:uppercase;padding:14px 32px;text-decoration:none;transition:all .3s;}
+.cta-amber{background:rgba(255,153,34,.08);border:1px solid rgba(255,153,34,.38);color:var(--amber);}
+.cta-amber:hover{background:rgba(255,153,34,.16);border-color:var(--amber);box-shadow:var(--glow-amber);}
+.cta-gold{border:1px solid rgba(255,204,68,.3);color:rgba(255,204,68,.8);}
+.cta-gold:hover{border-color:var(--gold);color:var(--gold);box-shadow:var(--glow-gold);}
+@keyframes fade-up{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+
+.toc-bar{background:rgba(255,153,34,.015);border-bottom:1px solid rgba(255,153,34,.1);padding:18px 48px;z-index:1;position:relative;}
+.toc-inner{max-width:1280px;margin:0 auto;display:flex;flex-wrap:wrap;gap:9px;align-items:center;}
+.toc-label{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:4px;color:var(--amber);text-transform:uppercase;margin-right:10px;opacity:.7;}
+.toc-link{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1.5px;color:rgba(232,244,255,.32);text-decoration:none;text-transform:uppercase;padding:5px 11px;border:1px solid rgba(255,153,34,.1);transition:all .3s;}
+.toc-link:hover{color:var(--amber);border-color:rgba(255,153,34,.38);}
+
+.container{max-width:1280px;margin:0 auto;padding:0 48px;}
+.wiki-layout{display:grid;grid-template-columns:1fr 300px;gap:60px;padding:72px 0 100px;align-items:start;}
+section{position:relative;z-index:1;}
+
+.article h2{font-family:'Orbitron',monospace;font-size:clamp(16px,2.2vw,23px);font-weight:700;color:var(--white);margin:60px 0 10px;line-height:1.2;display:flex;align-items:center;gap:16px;}
+.article h2:first-child{margin-top:0;}
+.article h2 .sec-num{font-size:10px;font-weight:700;color:var(--amber);border:1px solid rgba(255,153,34,.38);padding:4px 10px;letter-spacing:2px;flex-shrink:0;box-shadow:var(--glow-amber);}
+.article h2 .a{color:var(--amber);text-shadow:var(--glow-amber);}
+.article h2 .g{color:var(--gold);text-shadow:var(--glow-gold);}
+.article h2 .b{color:var(--blue);text-shadow:var(--glow-blue);}
+.article h2 .t{color:var(--teal);text-shadow:var(--glow-teal);}
+.article h2 .p{color:var(--purple);text-shadow:var(--glow-purple);}
+.article h2 .r{color:var(--red);text-shadow:var(--glow-red);}
+.article h3{font-family:'Orbitron',monospace;font-size:11px;font-weight:600;letter-spacing:2px;color:var(--amber);text-transform:uppercase;margin:26px 0 14px;padding-bottom:10px;border-bottom:1px solid rgba(255,153,34,.12);}
+.article h3.g{color:var(--gold);border-color:rgba(255,204,68,.12);}
+.article h3.b{color:var(--blue);border-color:rgba(0,212,255,.1);}
+.article h3.t{color:var(--teal);border-color:rgba(0,255,204,.1);}
+.article h3.p{color:var(--purple);border-color:rgba(170,102,255,.12);}
+.article h3.r{color:var(--red);border-color:rgba(255,85,51,.12);}
+.article p{font-size:15px;line-height:1.95;color:rgba(232,244,255,.65);margin-bottom:16px;}
+.article p strong{color:var(--white);font-weight:600;}
+.article p em{color:var(--amber);font-style:italic;}
+.sec-anchor{display:block;height:90px;margin-top:-90px;visibility:hidden;}
+.art-divider{height:1px;background:linear-gradient(90deg,rgba(255,153,34,.12),transparent);margin:54px 0;}
+
+.def-box{border:1px solid rgba(255,153,34,.2);background:rgba(255,153,34,.025);padding:24px 28px;margin:20px 0;position:relative;}
+.def-box::before{content:'DOC';position:absolute;top:12px;right:14px;font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:3px;color:rgba(255,153,34,.18);}
+.def-box p{margin:0;font-size:15px;line-height:1.85;color:rgba(232,244,255,.72);}
+.def-box p strong{color:var(--amber);}
+
+.highlight-box{border:1px solid rgba(255,153,34,.18);border-left:3px solid var(--amber);padding:20px 24px;margin:18px 0;background:rgba(255,153,34,.03);}
+.highlight-box.g{border:1px solid rgba(255,204,68,.18);border-left:3px solid var(--gold);background:rgba(255,204,68,.025);}
+.highlight-box.b{border:1px solid rgba(0,212,255,.18);border-left:3px solid var(--blue);background:rgba(0,212,255,.03);}
+.highlight-box.t{border:1px solid rgba(0,255,204,.16);border-left:3px solid var(--teal);background:rgba(0,255,204,.025);}
+.highlight-box.p{border:1px solid rgba(170,102,255,.18);border-left:3px solid var(--purple);background:rgba(170,102,255,.03);}
+.highlight-box.r{border:1px solid rgba(255,85,51,.18);border-left:3px solid var(--red);background:rgba(255,85,51,.03);}
+.highlight-box p{margin:0;font-size:15px;line-height:1.85;color:rgba(232,244,255,.72);}
+.highlight-box p strong{color:var(--amber);}
+.highlight-box.g p strong{color:var(--gold);}
+.highlight-box.b p strong{color:var(--blue);}
+.highlight-box.t p strong{color:var(--teal);}
+.highlight-box.p p strong{color:var(--purple);}
+.highlight-box.r p strong{color:var(--red);}
+
+.feat-list{list-style:none;display:flex;flex-direction:column;gap:8px;margin:14px 0 22px;}
+.feat-list li{display:flex;align-items:flex-start;gap:14px;padding:10px 16px;border:1px solid rgba(255,153,34,.1);background:rgba(255,153,34,.015);font-size:14px;line-height:1.6;color:rgba(232,244,255,.6);transition:all .3s;}
+.feat-list li:hover{border-color:rgba(255,153,34,.28);background:rgba(255,153,34,.04);}
+.feat-list li::before{content:'◆';color:var(--amber);font-size:8px;flex-shrink:0;margin-top:4px;text-shadow:var(--glow-amber);}
+.feat-list li strong{color:var(--white);}
+.feat-list.g li{border-color:rgba(255,204,68,.1);background:rgba(255,204,68,.015);}
+.feat-list.g li:hover{border-color:rgba(255,204,68,.28);background:rgba(255,204,68,.04);}
+.feat-list.g li::before{color:var(--gold);text-shadow:var(--glow-gold);}
+.feat-list.b li{border-color:rgba(0,212,255,.08);background:rgba(0,212,255,.015);}
+.feat-list.b li:hover{border-color:rgba(0,212,255,.24);background:rgba(0,212,255,.04);}
+.feat-list.b li::before{color:var(--blue);text-shadow:var(--glow-blue);}
+.feat-list.t li{border-color:rgba(0,255,204,.08);background:rgba(0,255,204,.015);}
+.feat-list.t li:hover{border-color:rgba(0,255,204,.24);background:rgba(0,255,204,.04);}
+.feat-list.t li::before{color:var(--teal);text-shadow:var(--glow-teal);}
+.feat-list.p li{border-color:rgba(170,102,255,.1);background:rgba(170,102,255,.015);}
+.feat-list.p li:hover{border-color:rgba(170,102,255,.28);background:rgba(170,102,255,.04);}
+.feat-list.p li::before{color:var(--purple);text-shadow:var(--glow-purple);}
+.feat-list.r li{border-color:rgba(255,85,51,.1);background:rgba(255,85,51,.015);}
+.feat-list.r li:hover{border-color:rgba(255,85,51,.28);background:rgba(255,85,51,.04);}
+.feat-list.r li::before{color:var(--red);text-shadow:var(--glow-red);}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0 22px;}
+
+/* IMPERIUM VS DOMINIUM */
+.imp-dom{display:grid;grid-template-columns:1fr 1fr;gap:0;margin:20px 0 28px;border:1px solid rgba(255,153,34,.15);overflow:hidden;}
+.id-col{padding:28px 24px;}
+.id-col.dom{background:rgba(0,212,255,.03);border-right:1px solid rgba(255,153,34,.1);}
+.id-col.imp{background:rgba(255,153,34,.03);}
+.id-label{font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid;}
+.id-col.dom .id-label{color:var(--blue);border-color:rgba(0,212,255,.2);}
+.id-col.imp .id-label{color:var(--amber);border-color:rgba(255,153,34,.2);}
+.id-def{font-size:13px;line-height:1.7;color:rgba(232,244,255,.55);margin-bottom:10px;}
+.id-desc{font-size:13px;line-height:1.7;color:rgba(232,244,255,.45);}
+
+/* THREE SCENARIOS */
+.scenarios{display:flex;flex-direction:column;gap:0;margin:20px 0 28px;}
+.scenario{display:flex;align-items:stretch;gap:0;border:1px solid;margin-bottom:-1px;transition:all .3s;}
+.scenario:hover{z-index:1;}
+.sc-num{font-family:'Orbitron',monospace;font-size:18px;font-weight:900;padding:20px 22px;border-right:1px solid;flex-shrink:0;width:64px;display:flex;align-items:center;justify-content:center;}
+.sc-content{padding:18px 22px;}
+.sc-title{font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
+.sc-desc{font-size:14px;line-height:1.7;color:rgba(232,244,255,.55);}
+.sc-desc strong{color:var(--white);}
+.scenario.s1{border-color:rgba(255,85,51,.15);}
+.scenario.s1:hover{border-color:rgba(255,85,51,.3);background:rgba(255,85,51,.02);}
+.scenario.s1 .sc-num{color:var(--red);border-color:rgba(255,85,51,.15);}
+.scenario.s1 .sc-title{color:var(--red);}
+.scenario.s2{border-color:rgba(255,153,34,.15);}
+.scenario.s2:hover{border-color:rgba(255,153,34,.3);background:rgba(255,153,34,.02);}
+.scenario.s2 .sc-num{color:var(--amber);border-color:rgba(255,153,34,.15);}
+.scenario.s2 .sc-title{color:var(--amber);}
+.scenario.s3{border-color:rgba(0,255,204,.15);}
+.scenario.s3:hover{border-color:rgba(0,255,204,.3);background:rgba(0,255,204,.02);}
+.scenario.s3 .sc-num{color:var(--teal);border-color:rgba(0,255,204,.15);}
+.scenario.s3 .sc-title{color:var(--teal);}
+
+/* DAY X */
+.day-x{background:rgba(255,153,34,.03);border:1px solid rgba(255,153,34,.2);padding:36px;margin:22px 0;position:relative;text-align:center;}
+.day-x::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--amber),transparent);}
+.day-x::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.dx-title{font-family:'Orbitron',monospace;font-size:clamp(24px,4vw,48px);font-weight:900;color:var(--amber);text-shadow:var(--glow-amber);margin-bottom:10px;}
+.dx-sub{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:5px;color:rgba(255,153,34,.35);text-transform:uppercase;margin-bottom:20px;}
+.dx-desc{max-width:680px;margin:0 auto;font-size:14px;line-height:1.85;color:rgba(232,244,255,.55);}
+.dx-desc strong{color:var(--white);}
+
+/* FAQ */
+.faq{display:flex;flex-direction:column;gap:0;margin:20px 0 28px;}
+.faq-item{border:1px solid rgba(255,153,34,.1);margin-bottom:-1px;padding:20px 22px;transition:all .3s;}
+.faq-item:hover{border-color:rgba(255,153,34,.28);background:rgba(255,153,34,.02);}
+.faq-q{font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--amber);text-transform:uppercase;margin-bottom:10px;}
+.faq-a{font-size:14px;line-height:1.75;color:rgba(232,244,255,.58);}
+.faq-a strong{color:var(--white);}
+
+/* CLEAN SLATE */
+.clean-slate{background:rgba(170,102,255,.03);border:1px solid rgba(170,102,255,.2);padding:32px;margin:22px 0;position:relative;}
+.clean-slate::before{content:'TABULA RASA';position:absolute;top:12px;right:14px;font-family:'Orbitron',monospace;font-size:9px;font-weight:700;letter-spacing:3px;color:rgba(170,102,255,.2);}
+.cs-title{font-family:'Orbitron',monospace;font-size:14px;font-weight:700;color:var(--purple);margin-bottom:14px;text-shadow:var(--glow-purple);}
+.cs-desc{font-size:14px;line-height:1.85;color:rgba(232,244,255,.6);margin-bottom:12px;}
+.cs-desc:last-child{margin:0;}
+.cs-desc strong{color:var(--white);}
+
+/* MANIFESTO BAND */
+.manifesto-band{padding:80px 48px;text-align:center;position:relative;overflow:hidden;z-index:1;border-top:1px solid rgba(255,153,34,.08);border-bottom:1px solid rgba(255,153,34,.08);}
+.manifesto-band::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(255,153,34,.06) 0%,rgba(255,204,68,.03) 50%,transparent 75%);pointer-events:none;}
+.manifesto-quote{font-family:'Orbitron',monospace;font-size:clamp(12px,1.8vw,20px);font-weight:600;line-height:1.7;max-width:900px;margin:0 auto 28px;}
+.manifesto-quote .a{color:var(--amber);text-shadow:var(--glow-amber);}
+.manifesto-quote .g{color:var(--gold);text-shadow:var(--glow-gold);}
+.manifesto-quote .b{color:var(--blue);text-shadow:var(--glow-blue);}
+.manifesto-quote .t{color:var(--teal);text-shadow:var(--glow-teal);}
+.manifesto-sub{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:5px;color:rgba(232,244,255,.18);text-transform:uppercase;}
+
+/* SIDEBAR */
+.sidebar{position:sticky;top:100px;display:flex;flex-direction:column;gap:18px;}
+.sidebar-card{border:1px solid rgba(255,153,34,.12);padding:22px;background:rgba(255,153,34,.015);position:relative;overflow:hidden;}
+.sidebar-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--amber),transparent);}
+.sidebar-card.g{border-color:rgba(255,204,68,.12);}
+.sidebar-card.g::before{background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+.sidebar-card.b{border-color:rgba(0,212,255,.12);}
+.sidebar-card.b::before{background:linear-gradient(90deg,transparent,var(--blue),transparent);}
+.sidebar-card.t{border-color:rgba(0,255,204,.12);}
+.sidebar-card.t::before{background:linear-gradient(90deg,transparent,var(--teal),transparent);}
+.sidebar-card.p{border-color:rgba(170,102,255,.12);}
+.sidebar-card.p::before{background:linear-gradient(90deg,transparent,var(--purple),transparent);}
+.sidebar-title{font-family:'Orbitron',monospace;font-size:11px;font-weight:700;letter-spacing:2px;color:var(--amber);text-transform:uppercase;margin-bottom:14px;}
+.sidebar-card.g .sidebar-title{color:var(--gold);}
+.sidebar-card.b .sidebar-title{color:var(--blue);}
+.sidebar-card.t .sidebar-title{color:var(--teal);}
+.sidebar-card.p .sidebar-title{color:var(--purple);}
+.sidebar-nav{list-style:none;display:flex;flex-direction:column;gap:7px;}
+.sidebar-nav a{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1px;color:rgba(232,244,255,.32);text-decoration:none;transition:color .3s;display:flex;align-items:center;gap:8px;}
+.sidebar-nav a::before{content:'›';color:var(--amber);font-size:14px;}
+.sidebar-nav a:hover{color:var(--amber);}
+.qf{display:flex;flex-direction:column;}
+.qf-row{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid rgba(255,153,34,.06);}
+.qf-row:last-child{border:none;}
+.qf-key{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:1px;color:rgba(255,153,34,.45);text-transform:uppercase;flex:0 0 80px;}
+.qf-val{font-size:12px;color:rgba(232,244,255,.6);}
+.qf-val strong{color:var(--white);}
+.ext-links{list-style:none;display:flex;flex-direction:column;gap:6px;}
+.ext-links a{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:.5px;color:rgba(0,255,204,.5);text-decoration:none;transition:all .3s;display:flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid rgba(0,255,204,.08);}
+.ext-links a:hover{color:var(--teal);border-color:rgba(0,255,204,.28);background:rgba(0,255,204,.03);}
+.ext-links a::before{content:'→';color:var(--teal);flex-shrink:0;}
+.ext-links.g a{color:rgba(255,204,68,.5);border-color:rgba(255,204,68,.08);}
+.ext-links.g a::before{color:var(--gold);}
+.ext-links.g a:hover{color:var(--gold);border-color:rgba(255,204,68,.28);background:rgba(255,204,68,.025);}
+
+footer{border-top:1px solid rgba(255,153,34,.08);padding:60px 48px 40px;position:relative;z-index:1;}
+.footer-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:52px;margin-bottom:48px;}
+.footer-brand p{font-size:13px;line-height:1.8;color:rgba(232,244,255,.26);margin-top:14px;max-width:270px;}
+.footer-col h5{font-family:'Orbitron',monospace;font-size:10px;font-weight:700;letter-spacing:3px;color:var(--amber);text-transform:uppercase;margin-bottom:16px;}
+.footer-col ul{list-style:none;}
+.footer-col li{margin-bottom:9px;}
+.footer-col a{font-family:'Share Tech Mono',monospace;font-size:11px;letter-spacing:1px;color:rgba(232,244,255,.28);text-decoration:none;transition:color .3s;}
+.footer-col a:hover{color:var(--teal);}
+.footer-bottom{border-top:1px solid rgba(255,153,34,.07);padding-top:24px;display:flex;justify-content:space-between;align-items:center;max-width:1280px;margin:0 auto;}
+.footer-bottom p{font-family:'Share Tech Mono',monospace;font-size:10px;letter-spacing:2px;color:rgba(232,244,255,.14);}
+.footer-wsd{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;color:rgba(255,153,34,.22);}
+
+@media(max-width:1024px){.wiki-layout{grid-template-columns:1fr;}.sidebar{position:static;}.two-col,.imp-dom{grid-template-columns:1fr;}.footer-inner{grid-template-columns:1fr 1fr;}}
+@media(max-width:768px){nav{padding:14px 20px;}.nav-links{display:none;}.container{padding:0 20px;}.hero{padding:70px 20px 60px;}.toc-bar,.manifesto-band,.footer{padding-left:20px;padding-right:20px;}.footer-inner{grid-template-columns:1fr;}.footer-bottom{flex-direction:column;gap:10px;}.day-x{padding:24px 20px;}}
+</style>
+</head>
+<body>
+<div class="scan-line"></div>
+
+<nav>
+  <a href="electric-technocracy.html" class="nav-logo">
+    <svg viewBox="0 0 60 60" fill="none">
+      <circle cx="30" cy="30" r="27" stroke="#00d4ff" stroke-width="1.5"/>
+      <circle cx="30" cy="30" r="21" stroke="#00d4ff" stroke-width="0.6" opacity="0.5"/>
+      <line x1="3" y1="30" x2="14" y2="30" stroke="#00d4ff" stroke-width="2"/>
+      <line x1="3" y1="26" x2="11" y2="26" stroke="#00d4ff" stroke-width="1.2"/>
+      <line x1="3" y1="34" x2="11" y2="34" stroke="#00d4ff" stroke-width="1.2"/>
+      <line x1="46" y1="30" x2="57" y2="30" stroke="#00d4ff" stroke-width="2"/>
+      <line x1="49" y1="26" x2="57" y2="26" stroke="#00d4ff" stroke-width="1.2"/>
+      <line x1="49" y1="34" x2="57" y2="34" stroke="#00d4ff" stroke-width="1.2"/>
+      <path d="M36 7 L21 30 L30 30 L24 53 L39 28 L30 28 Z" fill="#00d4ff"/>
+    </svg>
+    <div class="nav-brand">Electric Technocracy</div>
+  </a>
+  <div class="nav-right">
+    <ul class="nav-links">
+      <li><a href="#s1">Succession</a></li>
+      <li><a href="#s3">Imperium</a></li>
+      <li><a href="#s4">Domino</a></li>
+      <li><a href="#s6">Clean Slate</a></li>
+      <li><a href="#s8">Scenarios</a></li>
+      <li><a href="#s10">Day X</a></li>
+      <li><a href="#s12">FAQ</a></li>
+    </ul>
+    <a href="electric-technocracy.html" class="back-btn">← Back to Home</a>
+  </div>
+</nav>
+
+<div class="ticker">
+  <div class="ticker-inner">
+    <div class="ticker-item">Document 1400/98 <span>◆</span></div>
+    <div class="ticker-item">State Succession <span>◆</span></div>
+    <div class="ticker-item">Global Sovereignty <span>◆</span></div>
+    <div class="ticker-item">Imperium vs. Dominium <span>◆</span></div>
+    <div class="ticker-item">Domino Effect <span>◆</span></div>
+    <div class="ticker-item">Development Island <span>◆</span></div>
+    <div class="ticker-item">Clean Slate · Tabula Rasa <span>◆</span></div>
+    <div class="ticker-item">Day X · World Revolution <span>◆</span></div>
+    <div class="ticker-item">Electronic Technocracy <span>◆</span></div>
+    <div class="ticker-item">Global Jurisdiction <span>◆</span></div>
+    <div class="ticker-item">Document 1400/98 <span>◆</span></div>
+    <div class="ticker-item">State Succession <span>◆</span></div>
+    <div class="ticker-item">Global Sovereignty <span>◆</span></div>
+    <div class="ticker-item">Imperium vs. Dominium <span>◆</span></div>
+    <div class="ticker-item">Domino Effect <span>◆</span></div>
+    <div class="ticker-item">Development Island <span>◆</span></div>
+    <div class="ticker-item">Clean Slate · Tabula Rasa <span>◆</span></div>
+    <div class="ticker-item">Day X · World Revolution <span>◆</span></div>
+    <div class="ticker-item">Electronic Technocracy <span>◆</span></div>
+    <div class="ticker-item">Global Jurisdiction <span>◆</span></div>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">International Law · State Succession · Global Reconfiguration</div>
+      <h1>The <span class="a">Deed 1400/98</span> and the<br>Reconfiguration of the <span class="g">Global Legal Order</span></h1>
+      <div class="hero-date">Document 1400/98 · Entered into Force: 6 October 1998 · 5-Part Analysis</div>
+      <div class="hero-desc">
+        <p>This page presents a comprehensive reconstruction of the theory surrounding <strong>Document 1400/98</strong>, described as a treaty of extraordinary consequence that allegedly entered into force on <strong>6 October 1998</strong> and reshaped the legal architecture of the world.</p>
+        <p>According to the text, this was not merely a sale of land or an isolated contractual event, but the beginning of a far-reaching transformation in which an entirely new subject of international law emerged and the previous structure of sovereign states was fundamentally displaced. The decisive significance of the instrument lies not in the visible form of a property transaction, but in the legal consequences allegedly embedded in its clauses, infrastructure references, contractual linkages, and its connection to pre-existing international legal relationships.</p>
+      </div>
+      <div class="hero-ctas">
+        <a href="#s1" class="cta-btn cta-amber">The Legal Architecture</a>
+        <a href="#s8" class="cta-btn cta-gold">Three Future Scenarios</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="toc-bar">
+  <div class="toc-inner">
+    <span class="toc-label">Contents</span>
+    <a href="#s1" class="toc-link">§1 Succession</a>
+    <a href="#s2" class="toc-link">§2 The Buyer</a>
+    <a href="#s3" class="toc-link">§3 Imperium</a>
+    <a href="#s4" class="toc-link">§4 Domino</a>
+    <a href="#s5" class="toc-link">§5 Dev. Island</a>
+    <a href="#s6" class="toc-link">§6 Clean Slate</a>
+    <a href="#s7" class="toc-link">§7 Jurisdiction</a>
+    <a href="#s8" class="toc-link">§8 3 Scenarios</a>
+    <a href="#s9" class="toc-link">§9 Persecution</a>
+    <a href="#s10" class="toc-link">§10 Day X</a>
+    <a href="#s11" class="toc-link">§11 ET Gov.</a>
+    <a href="#s12" class="toc-link">§12 FAQ</a>
+  </div>
+</div>
+
+<section>
+  <div class="container">
+    <div class="wiki-layout">
+      <article class="article">
+
+        <!-- §1 -->
+        <span class="sec-anchor" id="s1"></span>
+        <h2><span class="sec-num">§ 1</span>A Different Understanding of <span class="a">State Succession</span></h2>
+        <h3>A New and More Radical Model</h3>
+        <p>In classical international law, state succession generally refers to the transfer of rights and obligations from one state to another entity when a state ceases to exist, splits apart, merges, or yields territory. The theory presented here argues that Document 1400/98 did <em>not</em> fit neatly into familiar categories such as universal succession, annexation, or ordinary territorial transfer, but instead established a new and much more radical model: the creation of a new sovereign legal subject on the basis of a pre-existing internationalized territorial nucleus.</p>
+
+        <div class="def-box">
+          <p>Rather than depicting the event as a routine change in ownership, the theory claims that the real legal operation concerned the <strong>refounding of world order through a new sovereign center</strong>. The key was not the parcel alone, but the international legal quality of the site, its historic military use, and the integration of the site into broader networks, treaty chains, and legal relations that extended far beyond the physical boundaries of the barracks property itself.</p>
+        </div>
+
+        <div class="art-divider"></div>
+
+        <!-- §2 -->
+        <span class="sec-anchor" id="s2"></span>
+        <h2><span class="sec-num">§ 2</span>The Central Figure: From <span class="a">Private Individual to Sovereign Actor</span></h2>
+        <h3>Historically Unparalleled Transformation</h3>
+        <p>At the center of the document stands the individual identified as <strong>Buyer 2 b)</strong>. Before the execution of the deed, he is described as a natural person without original sovereignty under international law; after the deed, the theory claims, he became the <em>accredited bearer of universal rights and obligations</em> and thus the sovereign of a newly emerging global legal order.</p>
+        <p>This alleged transformation is presented as historically unparalleled. Sovereignty did not simply pass from one recognized state to another already constituted state, but was generated anew in connection with a site whose legal environment had long been shaped by NATO use, foreign military presence, and arrangements deviating from ordinary domestic territorial sovereignty.</p>
+
+        <div class="highlight-box">
+          <p>The location identified as crucial is the <strong>Turenne Barracks</strong>. Because the site had allegedly functioned for decades under a special status linked to foreign armed forces and NATO structures, the theory insists that the transfer was not merely a domestic sale in the ordinary civil-law sense, but a legally much denser event with international consequences built into the property's status and operational context.</p>
+        </div>
+
+        <div class="art-divider"></div>
+
+        <!-- §3 -->
+        <span class="sec-anchor" id="s3"></span>
+        <h2><span class="sec-num">§ 3</span><span class="a">Imperium</span> Instead of Simple Ownership</h2>
+        <h3>The Core Conceptual Distinction</h3>
+
+        <div class="imp-dom">
+          <div class="id-col dom">
+            <div class="id-label">Dominium</div>
+            <div class="id-def">Private ownership in the civil-law sense</div>
+            <div class="id-desc">The right to possess, use, and transfer property within ordinary legal frameworks — what a deed normally conveys.</div>
+          </div>
+          <div class="id-col imp">
+            <div class="id-label">Imperium</div>
+            <div class="id-def">Sovereign authority — the power to command, legislate, decide, and govern</div>
+            <div class="id-desc">The central claim: the deed should not be understood as a transfer of dominium, but as the establishment and conveyance of imperium on a scale reaching far beyond the named property.</div>
+          </div>
+        </div>
+
+        <p>According to the source, the decisive clause was the sale of the property together with its access and infrastructure <strong>"as a unit"</strong> and with all rights, obligations, and components under international law. The text treats that formulation as the legal master key that transformed a local conveyance into a global succession event.</p>
+        <p>In that framework, the barracks were only the visible gateway. The real object of transfer was a legally interconnected package including not just buildings and land, but <em>network access, supply relations, communication systems, easements, contractual dependencies, and treaty-linked operational structures.</em></p>
+
+        <div class="art-divider"></div>
+
+        <!-- §4 -->
+        <span class="sec-anchor" id="s4"></span>
+        <h2><span class="sec-num">§ 4</span>The Infrastructure Theory and the <span class="r">Domino Mechanism</span></h2>
+        <h3 class="r">Territory Through Networks</h3>
+        <p>One of the most expansive elements of the theory is the so-called <strong>domino effect of territorial expansion</strong>. The sale of access and infrastructure "as a unit" did not remain confined to the barracks compound itself, but allegedly extended through all connected supply and communication networks — electricity, telecommunications, gas, district heating, and related systems.</p>
+        <p>Because such networks do not stop at the physical edges of a property, the theory argues that sovereignty expanded with the network connections. Once the core military-linked node was transferred together with its connected infrastructure, the legal effect supposedly propagated through interlinked systems, resulting in a global expansion of territorial and sovereign reach.</p>
+
+        <h3>Contract Chains as Legal Multipliers</h3>
+        <p>The argument also rests on what the text calls <strong>chains of contracts</strong>. The concession arrangement with <em>TKS Telepost Kabel-Service Kaiserslautern GmbH</em> is described as a legal bridge linking the deed to broader treaty systems involving NATO structures, military communications, host-nation arrangements, and international regulatory environments.</p>
+
+        <div class="highlight-box r">
+          <p>In this view, the deed allegedly functioned as more than a standalone contract. It is presented as a <strong>supplementary or amending legal instrument</strong> connected to already ratified treaty chains involving states, military structures, and international organizations — entering and transforming an existing network of obligations through already established legal channels.</p>
+        </div>
+
+        <div class="art-divider"></div>
+
+        <!-- §5 -->
+        <span class="sec-anchor" id="s5"></span>
+        <h2><span class="sec-num">§ 5</span>The <span class="g">"Development Island"</span> Theory</h2>
+        <h3 class="g">Why the Island Burst Its Borders</h3>
+        <p>The source places special emphasis on the Turenne Barracks as a kind of <em>development island</em> — partly self-contained, already connected in multiple ways to external utility and communications systems. The property stood at the intersection of several legal worlds at once: neither wholly civilian nor wholly military, neither purely domestic nor fully detached from international legal structures.</p>
+        <p>The theory holds that the development island ceased to remain an island the moment it was transferred as a legal unit with all of its internal and external servicing structures. The district heating plant, electricity ring main, telecommunications lines, broadband contracts, and gas easements are all treated as channels that tied the site into broader systems already extending beyond the barracks itself.</p>
+
+        <div class="highlight-box g">
+          <p>Because those systems were not confined to the site, the source argues that the legal effect of the transfer could not be confined either. <strong>The barracks became the spark, but the networked world became the field through which the spark propagated.</strong></p>
+        </div>
+
+        <h3>Legal Camouflage — The Trojan Horse</h3>
+        <p>A major part of the theory is the idea of <strong>legal camouflage</strong>. The document is said to have appeared outwardly as an ordinary real estate purchase agreement, while concealing a much more consequential legal architecture underneath. The severability or partial-invalidity clause allowed gaps, invalid sections, or omitted matters to be filled not simply by domestic civil law, but by the applicable rules of international law — making the deed "invisibly" supplemented by a much wider body of legal norms.</p>
+
+        <div class="art-divider"></div>
+
+        <!-- §6 -->
+        <span class="sec-anchor" id="s6"></span>
+        <h2><span class="sec-num">§ 6</span>The <span class="p">Clean Slate Principle</span> and Legal Continuity</h2>
+
+        <div class="clean-slate">
+          <div class="cs-title">Clean Slate · Tabula Rasa</div>
+          <div class="cs-desc">The theory holds that the Buyer, as the newly constituted sovereign, begins with a <strong>"clean slate"</strong> because the old agreements become functionally internalized and cease to bind him externally in the classic sense of treaty law between separate states.</div>
+          <div class="cs-desc">The former treaty order is neither simply destroyed nor conventionally preserved. Instead, it is transformed into a body of inherited material that can be retained, revised, suspended, or replaced within the framework of the new global legal structure centered on a single sovereign authority.</div>
+          <div class="cs-desc">If all treaty parties are allegedly succeeded into one person, then the old web of agreements remains as legal residue, but no longer as a system of <strong>reciprocal external commitments between independent actors</strong>.</div>
+        </div>
+
+        <div class="art-divider"></div>
+
+        <!-- §7 -->
+        <span class="sec-anchor" id="s7"></span>
+        <h2><span class="sec-num">§ 7</span>Jurisdiction, Legislation, and <span class="a">Consolidation of Power</span></h2>
+        <h3>Global Jurisdiction · Global Legislation</h3>
+        <p>The source claims that national and international jurisdiction, legislative competence, and executive authority were consolidated in the person of the Buyer, producing a structure comparable to a global and undivided sovereignty. Under this theory, every former court system, arbitration structure, administrative framework, and legislative process lost original legitimacy after 6 October 1998.</p>
+
+        <div class="two-col">
+          <ul class="feat-list">
+            <li>Domestic adjudication lost title</li>
+            <li>Public-law disputes reframed</li>
+            <li>Criminal matters reassigned</li>
+            <li>International legal conflicts</li>
+          </ul>
+          <ul class="feat-list">
+            <li>Constitutional courts disempowered</li>
+            <li>Civil courts lose legitimacy</li>
+            <li>All post-1998 legislation void without validation</li>
+            <li>Single sovereign lawgiver remains</li>
+          </ul>
+        </div>
+
+        <div class="highlight-box">
+          <p>Particular attention is given to the designation of <strong>Landau in der Pfalz</strong> as the place of jurisdiction in the deed. By naming a location rather than an existing sovereign institution, the deed is said to have enabled jurisdiction itself to pass into the new structure without relying on an old court as continuing authority.</p>
+        </div>
+
+        <div class="art-divider"></div>
+
+        <!-- §8 THREE SCENARIOS -->
+        <span class="sec-anchor" id="s8"></span>
+        <h2><span class="sec-num">§ 8</span>Three <span class="a">Future Scenarios</span></h2>
+        <h3>The Only Paths Forward After Declared Irreversibility</h3>
+
+        <div class="scenarios">
+          <div class="scenario s1">
+            <div class="sc-num">I</div>
+            <div class="sc-content">
+              <div class="sc-title">Ignore the Deed — Continued Denial</div>
+              <div class="sc-desc">This would leave the world without a valid legal foundation while former states continue to act unlawfully. Denial does not preserve the old order — it merely prolongs a condition of <strong>unlawful occupation, hidden illegitimacy, and escalating crisis</strong>.</div>
+            </div>
+          </div>
+          <div class="scenario s2">
+            <div class="sc-num">II</div>
+            <div class="sc-content">
+              <div class="sc-title">Attempt a Full Reversal</div>
+              <div class="sc-desc">The source rejects this as irrational and practically unsolvable. It would require <strong>total clarification, prosecution, compensation, evacuation, and lawful reconstitution</strong> by actors who are themselves disqualified by their own involvement — a contradiction so severe that the option fails in principle.</div>
+            </div>
+          </div>
+          <div class="scenario s3">
+            <div class="sc-num">III</div>
+            <div class="sc-content">
+              <div class="sc-title">Full Implementation — The Only Viable Path</div>
+              <div class="sc-desc">Complete implementation of Document 1400/98. The source calls this the only legally viable path — it accepts the Buyer's universal sovereignty as already established and seeks to build a new stable order on that basis, shaped through <strong>AI, automation, robotics, and Direct Digital Democracy</strong>.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="art-divider"></div>
+
+        <!-- §9 -->
+        <span class="sec-anchor" id="s9"></span>
+        <h2><span class="sec-num">§ 9</span>The <span class="r">Persecution</span> of the Buyer</h2>
+        <h3 class="r">Price of Sovereignty — Systematic Attrition</h3>
+        <p>A large portion of the text is devoted to a narrative of systematic persecution. The source claims that once the Buyer became the central sovereign figure of the new order, he and his mother were subjected to long-term, coordinated harm designed to neutralize, discredit, isolate, and incapacitate him. These allegations include physical and psychological attacks, forced measures, covert guardianship mechanisms, police involvement, repeated expulsions, loss of housing, approximately one thousand court cases, and what the text describes as media attacks through hundreds of articles.</p>
+
+        <div class="highlight-box r">
+          <p>The source interprets this not as random harassment, but as the reaction of powers that either lost control through the deed or hoped to seize its consequences for themselves. In that narrative, persecution becomes the <strong>"price of sovereignty"</strong> — the personal cost imposed on the individual who allegedly embodied the new global order.</p>
+        </div>
+
+        <p>The text also describes an alleged episode involving a later development agreement. It claims that pressure was exerted on the Buyer to sign an instrument that would have transferred roads, pipelines, or related development infrastructure back to German control — triggering a new domino effect in Germany's favor. The Buyer allegedly signed only a document confirming that the original deed had been fulfilled, meaning no valid transfer of sovereignty to Germany ever took place.</p>
+
+        <div class="art-divider"></div>
+
+        <!-- §10 DAY X -->
+        <span class="sec-anchor" id="s10"></span>
+        <h2><span class="sec-num">§ 10</span>The <span class="a">"Day X"</span> Motif and Financial Consequences</h2>
+
+        <div class="day-x">
+          <div class="dx-title">DAY X</div>
+          <div class="dx-sub">The Point of No Return · Hidden Truth Becomes Visible</div>
+          <div class="dx-desc">A recurring theme in the source is the anticipation of a decisive future moment — <strong>Day X</strong> — when hidden legal realities, suppressed conflicts, and accumulated liabilities become openly recognized and begin to overturn the visible legitimacy of the old order. Associated with legal revelation, the activation of claims, the collapse of false legitimacy, and the reassignment of criminal responsibility.</div>
+        </div>
+
+        <h3>The Insolvency Thesis</h3>
+        <p>The source argues that the transfer of sovereign rights created an immense universe of compensation rights in favor of the Buyer. State revenues, taxes, expenditures, and judgments issued after the transfer may all be unlawful if sovereignty had already passed. Once the deed's true nature were openly acknowledged on Day X, former states could become immediately <strong>over-indebted or functionally insolvent</strong> due to the scale of these accumulated claims.</p>
+
+        <div class="highlight-box g">
+          <p>This insolvency thesis explains why so many actors would allegedly have strong incentives to <strong>suppress, redirect, or delay recognition of the deed</strong> — the financial stakes are described as the largest legal-economic shift in modern history.</p>
+        </div>
+
+        <div class="art-divider"></div>
+
+        <!-- §11 -->
+        <span class="sec-anchor" id="s11"></span>
+        <h2><span class="sec-num">§ 11</span>Electronic Technocracy as <span class="t">Proposed Governance Model</span></h2>
+        <h3 class="t">AI, Automation, and Direct Digital Democracy</h3>
+        <p>The source describes <strong>Electronic Technocracy</strong> as the most promising answer to the governance problem created by the transition. This model is presented as a post-political and post-corruption alternative to inherited state structures described as self-serving, compromised, and structurally criminal.</p>
+
+        <ul class="feat-list t">
+          <li><strong>Artificial Superintelligence (ASI)</strong> — superior to human political classes in neutrality, analytical power, and resistance to corruption</li>
+          <li><strong>Automation and robotics</strong> — managing complexity, reducing arbitrariness</li>
+          <li><strong>Direct Digital Democracy</strong> — populations participate more immediately in collective decisions</li>
+          <li><strong>Naturalization</strong> — universal civic integration for all people into the new global state</li>
+        </ul>
+
+        <div class="highlight-box t">
+          <p>The source argues that old state officials <strong>cannot simply be carried over</strong> into the new order because they are portrayed as participants in unlawful sovereign activity after 1998 — legally compromised and structurally unfit to serve as the governing class of the future system. AI therefore becomes the practical answer to rebuilding governance after the supposed collapse of the legitimacy of the old administrative class.</p>
+        </div>
+
+        <div class="art-divider"></div>
+
+        <!-- §12 FAQ -->
+        <span class="sec-anchor" id="s12"></span>
+        <h2><span class="sec-num">§ 12</span>Frequently Asked <span class="g">Questions</span></h2>
+
+        <div class="faq">
+          <div class="faq-item">
+            <div class="faq-q">What is Document 1400/98 in this theory?</div>
+            <div class="faq-a">The source presents Document 1400/98 as far more than a purchase agreement. It is described as an international legal instrument that allegedly triggered the <strong>re-founding of a global subject of international law</strong> through the transfer of a former NATO-linked property together with all connected rights, obligations, and infrastructure.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Why does the text say the document changed the world?</div>
+            <div class="faq-a">The theory claims that the sale included infrastructure <strong>"as a unit"</strong>, treaty-linked legal relations, and contractual chains extending far beyond the property itself. Because those systems allegedly reached into national and global networks, the source argues that sovereignty expanded with them and produced a worldwide legal transformation.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">What is the Turenne Barracks' significance?</div>
+            <div class="faq-a">The property is portrayed as a legally unique starting point because of its NATO-related use, extraterritorial aspects, military communications role (connected to internationally networked systems such as <strong>MOBIDIC</strong>), and connection to broader infrastructure systems.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">What does the Clean Slate principle mean here?</div>
+            <div class="faq-a">The file argues that old treaties were formally taken over through succession and contract chains, yet ceased to bind externally once all sides of those relationships were allegedly united in one sovereign person. That is why the Buyer is said to begin with a practical <strong>tabula rasa</strong>, free to redesign the global legal order.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">Why does the source say there is no way back?</div>
+            <div class="faq-a">Reversing the deed would require complete clarification of decades of alleged unlawful acts, prosecutions without omission, and financial repair on a global scale so vast that the old order cannot realistically settle or unwind what it has allegedly done. Every additional year of continuation <strong>deepens the defect</strong> rather than reducing it.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">What future does the text propose?</div>
+            <div class="faq-a">Full implementation of the deed, linked to <strong>Electronic Technocracy, ASI, automation, robotics, Direct Digital Democracy</strong>, and the integration of humanity into a new global civic order. Implementation is presented as the only alternative to either continued denial or chaotic collapse.</div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-q">What is the final message of the text?</div>
+            <div class="faq-a">The true significance of Document 1400/98 lies not in what it appeared to be, but in what it allegedly accomplished beneath its ordinary legal surface. <strong>October 6, 1998 was not just a date attached to a contract — it was the moment a hidden transfer of world-structuring authority allegedly took place.</strong></div>
+          </div>
+        </div>
+
+      </article>
+
+      <!-- SIDEBAR -->
+      <aside class="sidebar">
+
+        <div class="sidebar-card">
+          <div class="sidebar-title">Quick Facts</div>
+          <div class="qf">
+            <div class="qf-row"><div class="qf-key">Document</div><div class="qf-val"><strong>1400/98</strong></div></div>
+            <div class="qf-row"><div class="qf-key">Date</div><div class="qf-val">6 October 1998</div></div>
+            <div class="qf-row"><div class="qf-key">Site</div><div class="qf-val">Turenne / Kreuzberg Barracks</div></div>
+            <div class="qf-row"><div class="qf-key">Key Clause</div><div class="qf-val">"As a unit with all rights"</div></div>
+            <div class="qf-row"><div class="qf-key">Effect</div><div class="qf-val">Juridical Domino Effect</div></div>
+            <div class="qf-row"><div class="qf-key">Doctrine</div><div class="qf-val">Imperium over Dominium</div></div>
+            <div class="qf-row"><div class="qf-key">Clean Slate</div><div class="qf-val">Tabula Rasa</div></div>
+            <div class="qf-row"><div class="qf-key">Future</div><div class="qf-val">Electronic Technocracy</div></div>
+          </div>
+        </div>
+
+        <div class="sidebar-card b">
+          <div class="sidebar-title">Sections</div>
+          <ul class="sidebar-nav">
+            <li><a href="#s1">§ 1 — State Succession Theory</a></li>
+            <li><a href="#s2">§ 2 — Private to Sovereign</a></li>
+            <li><a href="#s3">§ 3 — Imperium vs. Dominium</a></li>
+            <li><a href="#s4">§ 4 — Domino Mechanism</a></li>
+            <li><a href="#s5">§ 5 — Development Island</a></li>
+            <li><a href="#s6">§ 6 — Clean Slate / Tabula Rasa</a></li>
+            <li><a href="#s7">§ 7 — Global Jurisdiction</a></li>
+            <li><a href="#s8">§ 8 — Three Scenarios</a></li>
+            <li><a href="#s9">§ 9 — Persecution Narrative</a></li>
+            <li><a href="#s10">§ 10 — Day X &amp; Finance</a></li>
+            <li><a href="#s11">§ 11 — ET Governance Model</a></li>
+            <li><a href="#s12">§ 12 — FAQ</a></li>
+          </ul>
+        </div>
+
+        <div class="sidebar-card t">
+          <div class="sidebar-title">Official Links</div>
+          <ul class="ext-links">
+            <li><a href="https://worldsold.wixsite.com/electric-technocracy" target="_blank">Electric Technocracy</a></li>
+            <li><a href="https://electric-paradise.start.page" target="_blank">Electric Paradise (Start Page)</a></li>
+            <li><a href="https://worldsold.wixsite.com/world-sold/en" target="_blank">World Sold Archive</a></li>
+            <li><a href="https://kreuzbergkaserne.page.gd/" target="_blank">Kreuzbergkaserne Research</a></li>
+            <li><a href="https://creators.spotify.com/pod/show/world-succession-deed" target="_blank">Podcast</a></li>
+            <li><a href="https://www.youtube.com/@Staatensukzessionsurkunde-1400" target="_blank">YouTube</a></li>
+            <li><a href="https://wiki.technocracy.tech/" target="_blank">Legal Singularity Wiki</a></li>
+            <li><a href="https://zenodo.org/communities/electric-technocracy" target="_blank">Zenodo Research</a></li>
+            <li><a href="https://worldsold.wixsite.com/world-sold/en/post/ich-w%C3%BCrde-wirklich-gerne-wissen-wer-den-vertrag-geschrieben-hat-der-die-welt-verkauft-hat-1" target="_blank">Blog: Who Wrote the Contract?</a></li>
+          </ul>
+        </div>
+
+        <div class="sidebar-card g">
+          <div class="sidebar-title">Additional Resources</div>
+          <ul class="ext-links g">
+            <li><a href="https://singularity41.wordpress.com/" target="_blank">Singularity University Courses</a></li>
+            <li><a href="https://now31.wordpress.com" target="_blank">Homo Nexus Blog</a></li>
+            <li><a href="https://patch98.wordpress.com/2025/01/16/electric_technocracy_chatgpt/" target="_blank">The Patch Blog: Exp. Tech</a></li>
+          </ul>
+        </div>
+
+        <div class="sidebar-card p">
+          <div class="sidebar-title">Navigate</div>
+          <a href="electric-technocracy.html" class="back-btn" style="width:100%;justify-content:center;margin-bottom:10px;">← Back to Home</a>
+          <a href="wsd-legal-foundation.html" class="back-btn" style="width:100%;justify-content:center;border-color:rgba(255,204,68,.25);color:rgba(255,204,68,.7);margin-bottom:10px;">→ WSD Legal Foundation</a>
+          <a href="wsd-page.html" class="back-btn" style="width:100%;justify-content:center;border-color:rgba(255,85,51,.25);color:rgba(255,85,51,.7);">→ Who Wrote the Contract?</a>
+        </div>
+
+      </aside>
+    </div>
+  </div>
+</section>
+
+<div class="manifesto-band">
+  <p class="manifesto-quote">
+    "The deed is presented not as the end of history,
+    but as the beginning of an <span class="a">unfinished age</span> —
+    the future will turn on whether the world continues in <span class="g">denial</span>,
+    breaks into <span class="b">chaos</span>, or develops into a
+    <span class="t">new global legal and civic order</span> shaped by the deed's consequences."
+  </p>
+  <div class="manifesto-sub">[ Document 1400/98 · State Succession · Domino Effect · Day X · Electronic Technocracy · Juridical Singularity ]</div>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="nav-brand" style="font-size:14px;">Electric Technocracy</div>
+      <p>A new form of government and society for a united world — governed by AI, ASI, and digital democracy, building universal abundance for all of humanity.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Sections</h5>
+      <ul>
+        <li><a href="#s1">§ 1 State Succession</a></li>
+        <li><a href="#s3">§ 3 Imperium</a></li>
+        <li><a href="#s4">§ 4 Domino Effect</a></li>
+        <li><a href="#s6">§ 6 Clean Slate</a></li>
+        <li><a href="#s8">§ 8 Three Scenarios</a></li>
+        <li><a href="#s12">§ 12 FAQ</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Official</h5>
+      <ul>
+        <li><a href="https://worldsold.wixsite.com/electric-technocracy" target="_blank">Electric Technocracy</a></li>
+        <li><a href="https://electric-paradise.start.page" target="_blank">Electric Paradise</a></li>
+        <li><a href="https://wiki.technocracy.tech/" target="_blank">Legal Singularity Wiki</a></li>
+        <li><a href="https://zenodo.org/communities/electric-technocracy" target="_blank">Zenodo Research</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Resources</h5>
+      <ul>
+        <li><a href="https://singularity41.wordpress.com/" target="_blank">Singularity University</a></li>
+        <li><a href="https://now31.wordpress.com" target="_blank">Homo Nexus Blog</a></li>
+        <li><a href="https://patch98.wordpress.com/2025/01/16/electric_technocracy_chatgpt/" target="_blank">The Patch Blog</a></li>
+        <li><a href="mailto:sukzession1998@gmail.com">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© Electric Technocracy · Document 1400/98 · Global Legal Order Reconfiguration · All Rights Reserved</p>
+    <div class="footer-wsd">WSD 1400/98 · LEGAL BASIS</div>
+  </div>
+</footer>
+</body>
+</html>
