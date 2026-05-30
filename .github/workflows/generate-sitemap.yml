@@ -1,6 +1,6 @@
 name: Generate sitemap and commit
 on:
-  push:
+  push: 
     branches: [ main ]
   workflow_dispatch: {}
 
