@@ -1,4 +1,4 @@
-name: Generate sitemap from GitHub Wiki
+name: Generate sitemap
 on:
   push:
     branches: [ main ]
@@ -6,64 +6,61 @@ on:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
-  # Default base URL points to the GitHub repo; wiki pages will be under /wiki/<Page>
-  BASE_URL: ${{ github.server_url }}/${{ github.repository }}
+  # Setze BASE_URL auf die öffentliche Basis deiner Seiten, z. B. https://example.com or GitHub Pages URL
+  BASE_URL: 'https://example.com'
+  # Auf 'true' setzen, wenn sitemap.xml automatisch in main committed werden soll
   COMMIT_SITEMAP: 'false'
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository (for context)
+      - name: Checkout repository
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           persist-credentials: true
-
-      - name: Clone GitHub Wiki repository
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          # clone the wiki repo into ./wiki_repo
-          WIKI_URL="${{ github.server_url }}/${{ github.repository }}.wiki.git"
-          echo "Cloning wiki from $WIKI_URL"
-          git clone --depth 1 "$WIKI_URL" wiki_repo || {
-            echo "Failed to clone wiki. If the wiki is empty or private, check permissions."
-            exit 1
-          }
-          ls -la wiki_repo
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
-      - name: Generate sitemap from wiki pages
+      - name: Generate sitemap from repo files
         run: |
           python3 - <<'PY'
           import os, re, html, urllib.parse
           from datetime import datetime, timezone
 
-          base = os.environ.get("BASE_URL", "https://github.com/singularity-news/wiki").rstrip("/")
-          wiki_dir = "wiki_repo"
+          base = os.environ.get("BASE_URL", "https://example.com").rstrip("/")
+          exts = {".md", ".markdown", ".html", ".htm"}
           urls = set()
 
-          # include base wiki root
-          urls.add(base + "/wiki/")
+          # include base root
+          urls.add(base + "/")
 
-          for root, dirs, files in os.walk(wiki_dir):
+          for root, dirs, files in os.walk("."):
+              # skip .git and .github directories
+              if root.startswith("./.git") or "/.github" in root:
+                  continue
               for fn in files:
                   name, ext = os.path.splitext(fn)
-                  if ext.lower() != ".md":
+                  if ext.lower() not in exts:
                       continue
-                  rel = os.path.join(root, fn)
-                  # derive page name from filename (GitHub wiki uses file name as page title)
-                  page = os.path.splitext(os.path.basename(rel))[0]
-                  # GitHub wiki page URLs replace spaces with '-' and do not include .md
-                  # We'll URL-encode the page name to be safe
-                  page_for_url = page.replace(" ", "-")
-                  page_for_url = urllib.parse.quote(page_for_url, safe='-._~')
-                  url = f"{base}/wiki/{page_for_url}"
+                  rel = os.path.join(root, fn).lstrip("./")
+                  # convert README/index to directory root, otherwise remove extension
+                  if name.lower() in ("readme", "index"):
+                      path = os.path.dirname(rel)
+                  else:
+                      path = os.path.splitext(rel)[0]
+                  path = path.replace(os.sep, "/").strip("/")
+                  path = re.sub(r'\s+', '-', path)
+                  if path == "":
+                      url = base + "/"
+                  else:
+                      # URL-encode path segments safely
+                      segments = [urllib.parse.quote(p, safe='-._~') for p in path.split("/")]
+                      url = base + "/" + "/".join(segments)
                   urls.add(url)
 
           now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -111,6 +108,6 @@ jobs:
           if git diff --cached --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "CI: update generated sitemap from wiki"
+            git commit -m "CI: update generated sitemap"
             git push origin HEAD:main
           fi
