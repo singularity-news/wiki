@@ -1,46 +1,116 @@
-name: Generate sitemap
+name: Generate sitemap from GitHub Wiki
 on:
   push:
     branches: [ main ]
+  workflow_dispatch: {}
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+  # Default base URL points to the GitHub repo; wiki pages will be under /wiki/<Page>
+  BASE_URL: ${{ github.server_url }}/${{ github.repository }}
+  COMMIT_SITEMAP: 'false'
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout repository (for context)
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Clone GitHub Wiki repository
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # clone the wiki repo into ./wiki_repo
+          WIKI_URL="${{ github.server_url }}/${{ github.repository }}.wiki.git"
+          echo "Cloning wiki from $WIKI_URL"
+          git clone --depth 1 "$WIKI_URL" wiki_repo || {
+            echo "Failed to clone wiki. If the wiki is empty or private, check permissions."
+            exit 1
+          }
+          ls -la wiki_repo
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
-      - name: Run sitemap generator inline
+      - name: Generate sitemap from wiki pages
         run: |
           python3 - <<'PY'
-          import html
+          import os, re, html, urllib.parse
           from datetime import datetime, timezone
-          urls = ["https://example.com/","https://example.com/about","https://example.com/blog"]
+
+          base = os.environ.get("BASE_URL", "https://github.com/singularity-news/wiki").rstrip("/")
+          wiki_dir = "wiki_repo"
+          urls = set()
+
+          # include base wiki root
+          urls.add(base + "/wiki/")
+
+          for root, dirs, files in os.walk(wiki_dir):
+              for fn in files:
+                  name, ext = os.path.splitext(fn)
+                  if ext.lower() != ".md":
+                      continue
+                  rel = os.path.join(root, fn)
+                  # derive page name from filename (GitHub wiki uses file name as page title)
+                  page = os.path.splitext(os.path.basename(rel))[0]
+                  # GitHub wiki page URLs replace spaces with '-' and do not include .md
+                  # We'll URL-encode the page name to be safe
+                  page_for_url = page.replace(" ", "-")
+                  page_for_url = urllib.parse.quote(page_for_url, safe='-._~')
+                  url = f"{base}/wiki/{page_for_url}"
+                  urls.add(url)
+
           now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-          sitemap = ['<?xml version="1.0" encoding="UTF-8"?>','<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
-          for u in urls:
-              sitemap += ["  <url>", f"    <loc>{html.escape(u)}</loc>", f"    <lastmod>{now}</lastmod>", "  </url>"]
+          sitemap = ['<?xml version="1.0" encoding="UTF-8"?>',
+                     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+          for u in sorted(urls):
+              sitemap.append("  <url>")
+              sitemap.append(f"    <loc>{html.escape(u)}</loc>")
+              sitemap.append(f"    <lastmod>{now}</lastmod>")
+              sitemap.append("  </url>")
           sitemap.append("</urlset>")
-          with open("sitemap.xml","w",encoding="utf-8") as f:
+
+          out_path = "sitemap.xml"
+          with open(out_path, "w", encoding="utf-8") as f:
               f.write("\n".join(sitemap))
-          print(f"✨ Wrote sitemap.xml with {len(urls)} URLs")
+          print(f"✨ Wrote {out_path} with {len(urls)} URLs")
           PY
 
       - name: Verify sitemap exists
         run: |
+          echo "Working dir: $(pwd)"
           ls -la
-          head -n 40 sitemap.xml
+          if [ -f sitemap.xml ]; then
+            echo "sitemap.xml exists"
+            head -n 80 sitemap.xml
+          else
+            echo "sitemap.xml not found"
+            exit 1
+          fi
 
       - name: Upload sitemap artifact
         uses: actions/upload-artifact@v4
         with:
           name: sitemap
           path: sitemap.xml
+
+      - name: Commit sitemap to repo (optional)
+        if: env.COMMIT_SITEMAP == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add sitemap.xml
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "CI: update generated sitemap from wiki"
+            git push origin HEAD:main
+          fi
