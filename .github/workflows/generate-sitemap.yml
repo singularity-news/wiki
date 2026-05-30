@@ -36,15 +36,12 @@ jobs:
             exit 1
           fi
           echo "Using SITE_BASE_URL=${SITE_BASE_URL}"
-          # default pages dir can be overridden by workflow env
           echo "PAGES_DIR=${PAGES_DIR:-.}" > .sitemap_env
 
       - name: Fetch remote main for conflict check
         run: |
           git remote set-url origin "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
           git fetch origin main --no-tags --prune
-
-          # If remote has sitemap.xml, save it for comparison
           if git ls-tree --name-only origin/main | grep -q '^sitemap.xml$'; then
             git show origin/main:sitemap.xml > /tmp/remote-sitemap.xml || true
             echo "Remote sitemap.xml saved to /tmp/remote-sitemap.xml"
@@ -60,111 +57,105 @@ jobs:
         run: |
           # create generator script
           cat > .github/scripts/generate-sitemap.py <<'PY'
-#!/usr/bin/env python3
-import os, sys, html, math
-from datetime import datetime, timezone
+          #!/usr/bin/env python3
+          import os
+          import sys
+          import html
+          import math
+          from datetime import datetime, timezone
 
-OUTPUT_DIR = os.environ.get("PAGES_DIR") or "."
-BASE = (os.environ.get("BASE_URL") or os.environ.get("BASE_URL_ALT") or os.environ.get("BASE_URL") or os.environ.get("BASE_URL")).rstrip("/") if False else os.environ.get("BASE_URL") if os.environ.get("BASE_URL") else os.environ.get("SITE_BASE_URL") or os.environ.get("BASE_URL")
-# fallback to env variable passed by workflow
-BASE = os.environ.get("BASE_URL") or os.environ.get("SITE_BASE_URL") or os.environ.get("BASE") or ""
-if not BASE:
-    print("ERROR: BASE URL not set in environment (SITE_BASE_URL)", file=sys.stderr)
-    sys.exit(2)
+          OUTPUT_DIR = os.environ.get("PAGES_DIR") or "."
+          BASE = (os.environ.get("BASE_URL") or os.environ.get("SITE_BASE_URL") or "").rstrip("/")
+          if not BASE:
+              print("ERROR: BASE URL not set in environment (SITE_BASE_URL)", file=sys.stderr)
+              sys.exit(2)
 
-SITEMAP_MAX = int(os.environ.get("SITEMAP_MAX", "50000"))
-TODAY = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+          SITEMAP_MAX = int(os.environ.get("SITEMAP_MAX", "50000"))
+          TODAY = datetime.now(timezone.utc).strftime("%Y-%m-%d")
 
-def collect_html_files(root_dir):
-    files = []
-    for root, _, filenames in os.walk(root_dir):
-        parts = root.split(os.sep)
-        if ".git" in parts or "node_modules" in parts:
-            continue
-        for fn in filenames:
-            if fn.lower().endswith(".html"):
-                full = os.path.join(root, fn)
-                rel = os.path.relpath(full, root_dir).replace(os.sep, "/")
-                files.append((rel, full))
-    files.sort(key=lambda t: t[0])
-    return files
+          def collect_html_files(root_dir):
+              files = []
+              for root, _, filenames in os.walk(root_dir):
+                  parts = root.split(os.sep)
+                  if ".git" in parts or "node_modules" in parts:
+                      continue
+                  for fn in filenames:
+                      if fn.lower().endswith(".html"):
+                          full = os.path.join(root, fn)
+                          rel = os.path.relpath(full, root_dir).replace(os.sep, "/")
+                          files.append((rel, full))
+              files.sort(key=lambda t: t[0])
+              return files
 
-def build_sitemap(entries):
-    url_entries = []
-    for rel, full in entries:
-        if rel == "index.html":
-            url = BASE
-        elif rel.endswith("/index.html"):
-            url = f"{BASE}/{rel[:-len('index.html')]}".rstrip("/")
-        else:
-            url = f"{BASE}/{rel}".rstrip("/")
-        try:
-            lastmod = datetime.fromtimestamp(os.path.getmtime(full), timezone.utc).isoformat()
-        except Exception:
-            lastmod = TODAY
-        prio = "1.0" if rel == "index.html" else "0.7"
-        url_entries.append(
-            f'  <url>\\n    <loc>{html.escape(url)}</loc>\\n    <lastmod>{lastmod}</lastmod>\\n    <changefreq>monthly</changefreq>\\n    <priority>{prio}</priority>\\n  </url>'
-        )
-    xml = '<?xml version="1.0" encoding="UTF-8"?>\\n' \
-          '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\\n' \
-          + "\\n".join(url_entries) + "\\n</urlset>\\n"
-    return xml
+          def build_sitemap(entries):
+              url_entries = []
+              for rel, full in entries:
+                  if rel == "index.html":
+                      url = BASE
+                  elif rel.endswith("/index.html"):
+                      url = f"{BASE}/{rel[:-len('index.html')]}".rstrip("/")
+                  else:
+                      url = f"{BASE}/{rel}".rstrip("/")
+                  try:
+                      lastmod = datetime.fromtimestamp(os.path.getmtime(full), timezone.utc).isoformat()
+                  except Exception:
+                      lastmod = TODAY
+                  prio = "1.0" if rel == "index.html" else "0.7"
+                  url_entries.append(
+                      f"  <url>\n    <loc>{html.escape(url)}</loc>\n    <lastmod>{lastmod}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>{prio}</priority>\n  </url>"
+                  )
+              xml = '<?xml version="1.0" encoding="UTF-8"?>\n'
+              xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+              xml += "\n".join(url_entries) + "\n</urlset>\n"
+              return xml
 
-def main():
-    files = collect_html_files(OUTPUT_DIR)
-    total = len(files)
-    if total == 0:
-        print("[WARN] No HTML files found under", OUTPUT_DIR)
-    if total > SITEMAP_MAX:
-        print(f"[WARN] total ({total}) > SITEMAP_MAX ({SITEMAP_MAX}), truncating to first {SITEMAP_MAX}")
-        files = files[:SITEMAP_MAX]
-    sitemap = build_sitemap(files)
-    out_path = os.path.join(OUTPUT_DIR, "sitemap.xml")
+          def main():
+              files = collect_html_files(OUTPUT_DIR)
+              total = len(files)
+              if total == 0:
+                  print("[WARN] No HTML files found under", OUTPUT_DIR)
+              if total > SITEMAP_MAX:
+                  print(f"[WARN] total ({total}) > SITEMAP_MAX ({SITEMAP_MAX}), truncating to first {SITEMAP_MAX}")
+                  files = files[:SITEMAP_MAX]
+              sitemap = build_sitemap(files)
+              out_path = os.path.join(OUTPUT_DIR, "sitemap.xml")
 
-    # If remote sitemap exists (saved by earlier step), compare and abort on difference
-    remote_path = "/tmp/remote-sitemap.xml"
-    if os.path.exists(remote_path):
-        try:
-            with open(remote_path, "r", encoding="utf-8") as rf:
-                remote = rf.read()
-            if remote != sitemap:
-                print("ABORT: Remote sitemap.xml on origin/main differs from generated sitemap.xml.", file=sys.stderr)
-                print("To avoid conflicts the workflow will stop. Merge remote changes manually and re-run.", file=sys.stderr)
-                sys.exit(3)
-            else:
-                print("Remote sitemap.xml equals generated sitemap.xml. No update required.")
-                # If identical and local file exists, nothing to do
-                if os.path.exists(out_path):
-                    sys.exit(0)
-        except Exception as e:
-            print("Warning: could not read remote sitemap for comparison:", e)
+              remote_path = "/tmp/remote-sitemap.xml"
+              if os.path.exists(remote_path):
+                  try:
+                      with open(remote_path, "r", encoding="utf-8") as rf:
+                          remote = rf.read()
+                      if remote != sitemap:
+                          print("ABORT: Remote sitemap.xml on origin/main differs from generated sitemap.xml.", file=sys.stderr)
+                          print("To avoid conflicts the workflow will stop. Merge remote changes manually and re-run.", file=sys.stderr)
+                          sys.exit(3)
+                      else:
+                          print("Remote sitemap.xml equals generated sitemap.xml. No update required.")
+                          if os.path.exists(out_path):
+                              sys.exit(0)
+                  except Exception as e:
+                      print("Warning: could not read remote sitemap for comparison:", e)
 
-    # write only if changed
-    if os.path.exists(out_path):
-        try:
-            with open(out_path, "r", encoding="utf-8") as of:
-                old = of.read()
-            if old == sitemap:
-                print("[INFO] sitemap.xml unchanged — not writing")
-                sys.exit(0)
-        except Exception:
-            pass
+              if os.path.exists(out_path):
+                  try:
+                      with open(out_path, "r", encoding="utf-8") as of:
+                          old = of.read()
+                      if old == sitemap:
+                          print("[INFO] sitemap.xml unchanged — not writing")
+                          sys.exit(0)
+                  except Exception:
+                      pass
 
-    with open(out_path, "w", encoding="utf-8") as of:
-        of.write(sitemap)
-    print(f"[OK] Wrote sitemap.xml with {len(files)} entries to {out_path}")
+              with open(out_path, "w", encoding="utf-8") as of:
+                  of.write(sitemap)
+              print(f"[OK] Wrote sitemap.xml with {len(files)} entries to {out_path}")
 
-if __name__ == '__main__':
-    main()
-PY
+          if __name__ == '__main__':
+              main()
+          PY
+
           # run generator
           python3 .github/scripts/generate-sitemap.py
-        env:
-          SITE_BASE_URL: ${{ secrets.SITE_BASE_URL }}
-          BASE_URL: ${{ secrets.SITE_BASE_URL }}
-          PAGES_DIR: '.'
-          SITEMAP_MAX: '50000'
 
       - name: Commit and push sitemap.xml if changed
         env:
