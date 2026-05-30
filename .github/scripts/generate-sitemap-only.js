@@ -21,8 +21,9 @@ function walk(dir) {
     if (e.isDirectory()) {
       if (e.name === 'node_modules' || e.name === '.git') continue;
       results.push(...walk(full));
-    } else if (e.isFile() && e.name.toLowerCase().endsWith('.html')) {
-      results.push(full);
+    } else if (e.isFile()) {
+      const lower = e.name.toLowerCase();
+      if (lower.endsWith('.html')) results.push(full);
     }
   }
   return results;
@@ -30,11 +31,10 @@ function walk(dir) {
 
 function toUrl(filePath) {
   let rel = path.relative(PAGES_DIR, filePath).split(path.sep).join('/');
-  if (rel === 'index.html') rel = '';
-  if (rel.endsWith('/index.html')) rel = rel.slice(0, -'index.html'.length);
   rel = rel.replace(/^\.\//, '');
-  const url = `${BASE_URL}/${rel}`.replace(/\/+$/, '');
-  return url === `${BASE_URL}/` ? BASE_URL : url;
+  if (rel === 'index.html' || rel === '') return BASE_URL;
+  if (rel.endsWith('/index.html')) return `${BASE_URL}/${rel.slice(0, -'index.html'.length)}`.replace(/\/+$/, '');
+  return `${BASE_URL}/${rel}`.replace(/\/+$/, '');
 }
 
 function isoNow() {
@@ -42,62 +42,64 @@ function isoNow() {
 }
 
 try {
-  // 1) Build URL list
+  console.log('Scanning for HTML files under', PAGES_DIR);
   const files = walk(PAGES_DIR).sort();
+  console.log('Found', files.length, 'HTML files');
+  if (files.length === 0) {
+    console.warn('No HTML files found. Check PAGES_DIR and build step output.');
+  } else {
+    files.forEach((f, i) => {
+      console.log(`${i+1}. ${f}`);
+    });
+  }
+
   const urls = files.map(f => ({
     loc: toUrl(f),
     lastmod: fs.statSync(f).mtime.toISOString()
   }));
 
+  // Build sitemap content
   const entries = urls.map(u => `  <url>\n    <loc>${u.loc}</loc>\n    <lastmod>${u.lastmod}</lastmod>\n  </url>`).join('\n');
-
   const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${entries}\n</urlset>\n`;
 
-  // 2) Compare with remote sitemap.xml on origin/REMOTE_BRANCH (if exists)
-  let remoteExists = false;
-  let remoteContent = '';
-  try {
-    // fetch remote refs (requires checkout with fetch-depth:0 and network access)
-    execSync(`git fetch origin ${REMOTE_BRANCH}`, { stdio: 'ignore' });
-    // check if remote has sitemap.xml
-    const ls = execSync(`git ls-tree --name-only origin/${REMOTE_BRANCH}`, { encoding: 'utf8' });
-    if (ls.split('\n').some(name => name.trim() === SITEMAP_PATH)) {
-      remoteExists = true;
-      remoteContent = execSync(`git show origin/${REMOTE_BRANCH}:${SITEMAP_PATH}`, { encoding: 'utf8' });
-    }
-  } catch (e) {
-    // If git commands fail, be conservative: abort to avoid accidental overwrite
-    console.error('ERROR: Could not fetch/inspect origin branch. Aborting to avoid potential conflicts.');
-    console.error(e.message || e);
-    process.exit(3);
-  }
-
-  if (remoteExists) {
-    // If remote exists and differs from our generated content, abort to avoid conflict
-    if (remoteContent !== sitemapXml) {
-      console.error('ABORT: Remote sitemap.xml on origin/' + REMOTE_BRANCH + ' differs from locally generated sitemap.xml.');
-      console.error('To proceed automatically, either merge remote changes into main or adjust the workflow to allow controlled rebasing.');
-      process.exit(4);
-    } else {
-      // remote equals generated content -> nothing to change
-      console.log('Remote sitemap.xml equals generated sitemap.xml. No update required.');
-      process.exit(0);
-    }
-  }
-
-  // 3) If remote does not exist, write sitemap.xml only if changed
+  // Compare with existing local file
   let write = true;
   if (fs.existsSync(SITEMAP_PATH)) {
     const old = fs.readFileSync(SITEMAP_PATH, 'utf8');
-    if (old === sitemapXml) write = false;
+    if (old === sitemapXml) {
+      write = false;
+      console.log('Local sitemap.xml is identical to generated content. No write needed.');
+    }
+  }
+
+  // Optional: compare with remote and abort if remote}`, { stdio: 'ignore' });
+    const ls = execSync(`git ls-tree --name-only origin/${REMOTE_BRANCH}`, { encoding: 'utf8' });
+    if (ls.split('\n').some(name => name.trim() === SITEMAP_PATH)) {
+      const remoteContent = execSync(`git show origin/${REMOTE_BRANCH}:${SITEMAP_PATH}`, { encoding: 'utf8' });
+      if (remoteContent !== sitemapXml) {
+        console.error('Remote sitemap.xml differs from generated sitemap.xml. Aborting to avoid conflict.');
+        console.error('Remote file exists and is different. Resolve remote changes manually or allow controlled merge.');
+        process.exit(4);
+      } else {
+        console.log('Remote sitemap.xml equals generated content.');
+        // If identical and local file exists, nothing to do
+        if (!write) process.exit(0);
+      }
+    } else {
+      console.log('No remote sitemap.xml found on origin/' + REMOTE_BRANCH);
+    }
+  } catch (e) {
+    console.warn('Warning: could not compare with remote. Continuing with local write if needed.');
   }
 
   if (write) {
     fs.writeFileSync(SITEMAP_PATH, sitemapXml, 'utf8');
     console.log(`Wrote ${SITEMAP_PATH} with ${urls.length} entries at ${isoNow()}`);
-  } else {
-    console.log(`No change for ${SITEMAP_PATH}`);
   }
+
+  // Print small sample of sitemap for debugging
+  console.log('Sitemap sample (first 200 chars):');
+  console.log(sitemapXml.slice(0, 200));
 
   process.exit(0);
 
