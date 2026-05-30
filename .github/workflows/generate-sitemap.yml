@@ -1,4 +1,4 @@
-name: Generate sitemap
+name: Generate sitemap and commit
 on:
   push:
     branches: [ main ]
@@ -6,10 +6,8 @@ on:
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
-  # Setze BASE_URL auf die öffentliche Basis deiner Seiten, z. B. https://example.com or GitHub Pages URL
-  BASE_URL: 'https://example.com'
-  # Auf 'true' setzen, wenn sitemap.xml automatisch in main committed werden soll
-  COMMIT_SITEMAP: 'false'
+  BASE_URL: 'https://singularity-news.github.io/wiki'
+  COMMIT_SITEMAP: 'true'
 
 jobs:
   build:
@@ -26,41 +24,52 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Generate sitemap from repo files
+      - name: Generate sitemap (map repo files to .html URLs)
         run: |
           python3 - <<'PY'
-          import os, re, html, urllib.parse
+          import os, urllib.parse, html
           from datetime import datetime, timezone
 
           base = os.environ.get("BASE_URL", "https://example.com").rstrip("/")
-          exts = {".md", ".markdown", ".html", ".htm"}
+          exts_md = {".md", ".markdown"}
+          exts_html = {".html", ".htm"}
           urls = set()
 
-          # include base root
-          urls.add(base + "/")
+          # include base index
+          urls.add(base + "/index.html")
 
           for root, dirs, files in os.walk("."):
-              # skip .git and .github directories
+              # skip git and workflow internals
               if root.startswith("./.git") or "/.github" in root:
                   continue
               for fn in files:
-                  name, ext = os.path.splitext(fn)
-                  if ext.lower() not in exts:
+                  if fn.startswith("."):
                       continue
+                  name, ext = os.path.splitext(fn)
+                  ext = ext.lower()
                   rel = os.path.join(root, fn).lstrip("./")
-                  # convert README/index to directory root, otherwise remove extension
-                  if name.lower() in ("readme", "index"):
-                      path = os.path.dirname(rel)
-                  else:
+                  # skip files in .github or hidden folders
+                  if rel.startswith(".github/"):
+                      continue
+
+                  # determine URL path
+                  if ext in exts_md:
+                      # map markdown -> same basename + .html
                       path = os.path.splitext(rel)[0]
-                  path = path.replace(os.sep, "/").strip("/")
-                  path = re.sub(r'\s+', '-', path)
-                  if path == "":
-                      url = base + "/"
+                      url_path = path.replace(os.sep, "/")
+                      # replace spaces with underscore (matches your examples)
+                      url_path = url_path.replace(" ", "_")
+                      url = f"{base}/{urllib.parse.quote(url_path, safe='-._~/')}.html"
+                  elif ext in exts_html:
+                      # keep html files as-is
+                      url_path = rel.replace(os.sep, "/")
+                      url_path = url_path.replace(" ", "_")
+                      url = f"{base}/{urllib.parse.quote(url_path, safe='-._~/')}"
                   else:
-                      # URL-encode path segments safely
-                      segments = [urllib.parse.quote(p, safe='-._~') for p in path.split("/")]
-                      url = base + "/" + "/".join(segments)
+                      continue
+
+                  # normalize double slashes
+                  url = url.replace("//wiki/", "/wiki/")
                   urls.add(url)
 
           now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
@@ -79,25 +88,19 @@ jobs:
           print(f"✨ Wrote {out_path} with {len(urls)} URLs")
           PY
 
-      - name: Verify sitemap exists
+      - name: Verify sitemap
         run: |
           echo "Working dir: $(pwd)"
           ls -la
           if [ -f sitemap.xml ]; then
             echo "sitemap.xml exists"
-            head -n 80 sitemap.xml
+            head -n 120 sitemap.xml
           else
             echo "sitemap.xml not found"
             exit 1
           fi
 
-      - name: Upload sitemap artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: sitemap
-          path: sitemap.xml
-
-      - name: Commit sitemap to repo (optional)
+      - name: Commit sitemap to main
         if: env.COMMIT_SITEMAP == 'true'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
