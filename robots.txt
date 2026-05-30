@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://singularity-news.github.io/wiki/sitemap.xml
+Sitemap: https://singularity-news.github.io/wiki/sitemap-index.xml
