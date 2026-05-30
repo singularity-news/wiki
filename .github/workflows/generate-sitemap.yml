@@ -3,6 +3,9 @@ on:
   push:
     branches: [ main ]
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,7 +20,7 @@ jobs:
 
       - name: Run sitemap generator inline
         run: |
-          #!/usr/bin/env python3
+          python3 - <<'PY'
           import os, sys, html, math
           from datetime import datetime, timezone
 
@@ -42,3 +45,4 @@ jobs:
           with open(out_path, "w", encoding="utf-8") as f:
               f.write("\n".join(sitemap))
           print(f"✨ Wrote {out_path} with {len(urls)} URLs")
+          PY
