@@ -23,37 +23,21 @@ jobs:
           python3 - <<'PY'
           import html
           from datetime import datetime, timezone
-          urls = [
-              "https://example.com/",
-              "https://example.com/about",
-              "https://example.com/blog"
-          ]
+          urls = ["https://example.com/","https://example.com/about","https://example.com/blog"]
           now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-          sitemap = ['<?xml version="1.0" encoding="UTF-8"?>',
-                     '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+          sitemap = ['<?xml version="1.0" encoding="UTF-8"?>','<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
           for u in urls:
-              sitemap.append("  <url>")
-              sitemap.append(f"    <loc>{html.escape(u)}</loc>")
-              sitemap.append(f"    <lastmod>{now}</lastmod>")
-              sitemap.append("  </url>")
+              sitemap += ["  <url>", f"    <loc>{html.escape(u)}</loc>", f"    <lastmod>{now}</lastmod>", "  </url>"]
           sitemap.append("</urlset>")
-          out_path = "sitemap.xml"
-          with open(out_path, "w", encoding="utf-8") as f:
+          with open("sitemap.xml","w",encoding="utf-8") as f:
               f.write("\n".join(sitemap))
-          print(f"✨ Wrote {out_path} with {len(urls)} URLs")
+          print(f"✨ Wrote sitemap.xml with {len(urls)} URLs")
           PY
 
       - name: Verify sitemap exists
         run: |
-          echo "Working dir: $(pwd)"
           ls -la
-          if [ -f sitemap.xml ]; then
-            echo "sitemap.xml exists"
-            head -n 40 sitemap.xml
-          else
-            echo "sitemap.xml not found"
-            exit 1
-          fi
+          head -n 40 sitemap.xml
 
       - name: Upload sitemap artifact
         uses: actions/upload-artifact@v4
